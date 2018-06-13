@@ -35,10 +35,6 @@ namespace WeexCore {
 
   class Bridge {
   public:
-    virtual void setJSVersion(const char* version) = 0;
-
-    virtual void reportException(const char* pageId, const char *func, const char *exception_string) = 0;
-
     virtual int callNative(const char* pageId, const char *task, const char *callback) = 0;
 
     virtual void* callNativeModule(const char* pageId, const char *module, const char *method,

@@ -23,51 +23,6 @@ jclass g_WXBridge_clazz = NULL;
 
 }  // namespace
 
-static jint InitFrameworkEnv(JNIEnv* env, jobject jcaller,
-    jstring framework,
-    jobject params,
-    jstring cacheDir,
-    jboolean pieSupport);
-
-static jint InitFramework(JNIEnv* env, jobject jcaller,
-    jstring framework,
-    jobject params);
-
-static jint ExecJS(JNIEnv* env, jobject jcaller,
-    jstring instanceId,
-    jstring name,
-    jstring function,
-    jobjectArray args);
-
-static jint ExecJSService(JNIEnv* env, jobject jcaller,
-    jstring javascript);
-
-static jbyteArray ExecJSWithResult(JNIEnv* env, jobject jcaller,
-    jstring instanceId,
-    jstring _namespace,
-    jstring _function,
-    jobjectArray args);
-
-static jint CreateInstanceContext(JNIEnv* env, jobject jcaller,
-    jstring instanceId,
-    jstring name,
-    jstring function,
-    jobjectArray args);
-
-static jint DestoryInstance(JNIEnv* env, jobject jcaller,
-    jstring instanceId,
-    jstring name,
-    jstring function,
-    jobjectArray args);
-
-static jstring ExecJSOnInstance(JNIEnv* env, jobject jcaller,
-    jstring instanceId,
-    jstring script,
-    jint type);
-
-static void TakeHeapSnapshot(JNIEnv* env, jobject jcaller,
-    jstring filename);
-
 static void BindMeasurementToRenderObject(JNIEnv* env, jobject jcaller,
     jlong ptr);
 
@@ -138,77 +93,11 @@ static void SetViewPortWidth(JNIEnv* env, jobject jcaller,
     jstring instanceId,
     jfloat value);
 
-static void UpdateGlobalConfig(JNIEnv* env, jobject jcaller,
-    jstring config);
-
 // Step 2: method stubs.
 
 // Step 3: RegisterNatives.
 
 static const JNINativeMethod kMethodsWXBridge[] = {
-    { "nativeInitFrameworkEnv",
-"("
-"Ljava/lang/String;"
-"Lcom/taobao/weex/bridge/WXParams;"
-"Ljava/lang/String;"
-"Z"
-")"
-"I", reinterpret_cast<void*>(InitFrameworkEnv) },
-    { "nativeInitFramework",
-"("
-"Ljava/lang/String;"
-"Lcom/taobao/weex/bridge/WXParams;"
-")"
-"I", reinterpret_cast<void*>(InitFramework) },
-    { "nativeExecJS",
-"("
-"Ljava/lang/String;"
-"Ljava/lang/String;"
-"Ljava/lang/String;"
-"[Lcom/taobao/weex/bridge/WXJSObject;"
-")"
-"I", reinterpret_cast<void*>(ExecJS) },
-    { "nativeExecJSService",
-"("
-"Ljava/lang/String;"
-")"
-"I", reinterpret_cast<void*>(ExecJSService) },
-    { "nativeExecJSWithResult",
-"("
-"Ljava/lang/String;"
-"Ljava/lang/String;"
-"Ljava/lang/String;"
-"[Lcom/taobao/weex/bridge/WXJSObject;"
-")"
-"[B", reinterpret_cast<void*>(ExecJSWithResult) },
-    { "nativeCreateInstanceContext",
-"("
-"Ljava/lang/String;"
-"Ljava/lang/String;"
-"Ljava/lang/String;"
-"[Lcom/taobao/weex/bridge/WXJSObject;"
-")"
-"I", reinterpret_cast<void*>(CreateInstanceContext) },
-    { "nativeDestoryInstance",
-"("
-"Ljava/lang/String;"
-"Ljava/lang/String;"
-"Ljava/lang/String;"
-"[Lcom/taobao/weex/bridge/WXJSObject;"
-")"
-"I", reinterpret_cast<void*>(DestoryInstance) },
-    { "nativeExecJSOnInstance",
-"("
-"Ljava/lang/String;"
-"Ljava/lang/String;"
-"I"
-")"
-"Ljava/lang/String;", reinterpret_cast<void*>(ExecJSOnInstance) },
-    { "nativeTakeHeapSnapshot",
-"("
-"Ljava/lang/String;"
-")"
-"V", reinterpret_cast<void*>(TakeHeapSnapshot) },
     { "nativeBindMeasurementToRenderObject",
 "("
 "J"
@@ -311,11 +200,6 @@ static const JNINativeMethod kMethodsWXBridge[] = {
 "F"
 ")"
 "V", reinterpret_cast<void*>(SetViewPortWidth) },
-    { "nativeUpdateGlobalConfig",
-"("
-"Ljava/lang/String;"
-")"
-"V", reinterpret_cast<void*>(UpdateGlobalConfig) },
 };
 
 static bool RegisterNativesImpl(JNIEnv* env) {

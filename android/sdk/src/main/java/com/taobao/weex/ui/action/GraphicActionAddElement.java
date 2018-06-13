@@ -21,15 +21,14 @@ package com.taobao.weex.ui.action;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.RestrictTo.Scope;
 import android.support.annotation.WorkerThread;
+
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.common.WXErrorCode;
 import com.taobao.weex.dom.transition.WXTransition;
 import com.taobao.weex.ui.component.WXComponent;
 import com.taobao.weex.ui.component.WXVContainer;
-import com.taobao.weex.utils.WXExceptionUtils;
 import com.taobao.weex.utils.WXLogUtils;
-import java.util.Locale;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -77,14 +76,7 @@ public class GraphicActionAddElement extends GraphicActionAbstractAddElement {
         return;
       }
     }catch (ClassCastException e){
-      WXExceptionUtils.commitCriticalExceptionRT(instance.getInstanceId(),
-          WXErrorCode.WX_RENDER_ERR_CONTAINER_TYPE,
-          "GraphicActionAddElement",
-          String.format(Locale.ENGLISH,"You are trying to add a %s (ref: %s) to a %3$s (ref: %4$s), which is illegal as %3$s (ref: %4$s) is not a container",
-              componentType, ref,
-              WXSDKManager.getInstance().getWXRenderManager().getWXComponent(getPageId(), mParentRef).getComponentType(),
-              parentRef),
-          null);
+      e.printStackTrace();
     }
 
   }

@@ -582,7 +582,6 @@ public final class CaptureActivity extends Activity implements
 			} else if (uri.getQueryParameterNames().contains("_wx_devtool")) {
 				WXEnvironment.sRemoteDebugProxyUrl = uri.getQueryParameter("_wx_devtool");
 				WXEnvironment.sDebugServerConnectable = true;
-				WXSDKEngine.reload();
 				Toast.makeText(this, "devtool", Toast.LENGTH_SHORT).show();
 				finish();
 				return;

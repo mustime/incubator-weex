@@ -50,20 +50,16 @@ public class WXEnvironment {
     }
   }
   public static final String SYS_MODEL = android.os.Build.MODEL;
-  public static final String ENVIRONMENT = "environment";
   public static final String WEEX_CURRENT_KEY = "wx_current_url";
   /*********************
    * Global config
    ***************************/
-
-  public static String JS_LIB_SDK_VERSION = BuildConfig.buildJavascriptFrameworkVersion;
 
   public static String WXSDK_VERSION = BuildConfig.buildVersion;
   public static Application sApplication;
   public static final String DEV_Id = getDevId();
   @Deprecated
   public static int sDefaultWidth = 750;
-  public volatile static boolean JsFrameworkInit = false;
 
   public static final String SETTING_EXCLUDE_X86SUPPORT = "env_exclude_x86";
 
@@ -72,12 +68,9 @@ public class WXEnvironment {
    * Debug model
    */
   public static boolean sDebugMode = false;
-  public static final boolean sForceEnableDevTool = false;
-  public static String sDebugWsUrl = "";
   public static boolean sDebugServerConnectable = false;
   public static boolean sRemoteDebugMode = false;
   public static String sRemoteDebugProxyUrl = "";
-  public static boolean sDebugNetworkEventReporterEnable = false;//debugtool network switch
   public static long sJSLibInitTime = 0;
 
   public static long sSDKInitStart = 0;// init start timestamp

@@ -26,6 +26,7 @@ import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.animation.PathInterpolatorCompat;
 import android.text.TextUtils;
@@ -34,13 +35,8 @@ import android.view.View;
 import android.view.animation.Interpolator;
 
 import com.taobao.weex.WXEnvironment;
-import com.taobao.weex.WXSDKManager;
 import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.common.Constants;
-//import com.taobao.weex.dom.DOMActionContext;
-//import com.taobao.weex.dom.WXDomHandler;
-//import com.taobao.weex.dom.WXDomObject;
-//import com.taobao.weex.dom.flex.Spacing;
 import com.taobao.weex.dom.CSSShorthand;
 import com.taobao.weex.ui.animation.BackgroundColorProperty;
 import com.taobao.weex.ui.animation.TransformParser;
@@ -65,6 +61,11 @@ import static com.taobao.weex.common.Constants.TimeFunction.EASE_IN;
 import static com.taobao.weex.common.Constants.TimeFunction.EASE_IN_OUT;
 import static com.taobao.weex.common.Constants.TimeFunction.EASE_OUT;
 import static com.taobao.weex.common.Constants.TimeFunction.LINEAR;
+
+//import com.taobao.weex.dom.DOMActionContext;
+//import com.taobao.weex.dom.WXDomHandler;
+//import com.taobao.weex.dom.WXDomObject;
+//import com.taobao.weex.dom.flex.Spacing;
 
 /**
  *   transition on dom thread
@@ -571,7 +572,7 @@ public class WXTransition {
             return;
         }
 
-        WXSDKManager.getInstance().getWXBridgeManager().post(new Runnable() {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
                 switch (propertyName){

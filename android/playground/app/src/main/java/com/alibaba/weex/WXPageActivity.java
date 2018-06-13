@@ -23,7 +23,6 @@ import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -54,22 +53,15 @@ import com.alibaba.weex.https.WXHttpTask;
 import com.alibaba.weex.https.WXRequestListener;
 import com.taobao.weex.IWXRenderListener;
 import com.taobao.weex.RenderContainer;
-import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXSDKEngine;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.appfram.navigator.IActivityNavBarSetter;
-import com.taobao.weex.bridge.WXBridgeManager;
-import com.taobao.weex.common.IWXDebugProxy;
-import com.taobao.weex.common.WXRenderStrategy;
 import com.taobao.weex.ui.component.NestedContainer;
 import com.taobao.weex.ui.component.WXComponent;
 import com.taobao.weex.ui.component.WXVContainer;
-import com.taobao.weex.utils.WXFileUtils;
-import com.taobao.weex.utils.WXJsonUtils;
 import com.taobao.weex.utils.WXLogUtils;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -150,7 +142,6 @@ public class WXPageActivity extends WXBaseActivity implements IWXRenderListener,
       loadWXfromLocal(false);
     }
     mInstance.onActivityCreate();
-    registerBroadcastReceiver();
 
     mWxAnalyzerDelegate = new WXAnalyzerDelegate(this);
     mWxAnalyzerDelegate.onCreate();
@@ -186,9 +177,6 @@ public class WXPageActivity extends WXBaseActivity implements IWXRenderListener,
         ctx.getWindow().getDecorView().getWindowVisibleDisplayFrame(outRect);
         mConfigMap.put("bundleUrl", mUri.toString());
         String path = "file".equals(mUri.getScheme()) ? assembleFilePath(mUri) : mUri.toString();
-        mInstance.render(TAG, WXFileUtils.loadAsset(path, WXPageActivity.this),
-            mConfigMap, null,
-            WXRenderStrategy.APPEND_ASYNC);
       }
     });
   }
@@ -245,12 +233,7 @@ public class WXPageActivity extends WXBaseActivity implements IWXRenderListener,
       @Override
       public void onSuccess(WXHttpTask task) {
         Log.i(TAG, "into--[http:onSuccess] url:" + url);
-        try {
-          mConfigMap.put("bundleUrl", url);
-          mInstance.render(TAG, new String(task.response.data, "utf-8"), mConfigMap, null, WXRenderStrategy.APPEND_ASYNC);
-        } catch (UnsupportedEncodingException e) {
-          e.printStackTrace();
-        }
+
       }
 
       @Override
@@ -513,15 +496,6 @@ public class WXPageActivity extends WXBaseActivity implements IWXRenderListener,
     }
   }
 
-  private void registerBroadcastReceiver() {
-    mReceiver = new RefreshBroadcastReceiver();
-    IntentFilter filter = new IntentFilter();
-    filter.addAction(IWXDebugProxy.ACTION_DEBUG_INSTANCE_REFRESH);
-    filter.addAction(IWXDebugProxy.ACTION_INSTANCE_RELOAD);
-
-    registerReceiver(mReceiver, filter);
-  }
-
   private void unregisterBroadcastReceiver() {
     if (mReceiver != null) {
       unregisterReceiver(mReceiver);
@@ -587,24 +561,7 @@ public class WXPageActivity extends WXBaseActivity implements IWXRenderListener,
   public class RefreshBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-      if (IWXDebugProxy.ACTION_INSTANCE_RELOAD.equals(intent.getAction()) ||
-              IWXDebugProxy.ACTION_DEBUG_INSTANCE_REFRESH.equals(intent.getAction())) {
-        // String myUrl = intent.getStringExtra("url");
-        // Log.e("WXPageActivity", "RefreshBroadcastReceiver reload onReceive ACTION_DEBUG_INSTANCE_REFRESH mBundleUrl:" + myUrl + " mUri:" + mUri);
 
-        Log.v(TAG, "connect to debug server success");
-        if (mUri != null) {
-          if (TextUtils.equals(mUri.getScheme(), "http") || TextUtils.equals(mUri.getScheme(), "https")) {
-            String weexTpl = mUri.getQueryParameter(Constants.WEEX_TPL_KEY);
-            String url = TextUtils.isEmpty(weexTpl) ? mUri.toString() : weexTpl;
-            // Log.e("WXPageActivity", "loadWXfromService reload url:" + url);
-            loadWXfromService(url);
-          } else {
-            // Log.e("WXPageActivity", "loadWXfromLocal reload from local url:" + mUri.toString());
-            loadWXfromLocal(true);
-          }
-        }
-      }
     }
   }
 }

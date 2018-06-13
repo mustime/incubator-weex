@@ -1,0 +1,32 @@
+{
+    "cls-div" :
+    {
+        "background-color" : "#286090"
+    },
+    "cls-text" :
+    {
+        "height" : 80,
+        "padding" : 20,
+        "color" : "#FFFFFF"
+    },
+    "cls-input" :
+    {
+        "font-size" : "60px",
+        "height" : "80px",
+        "width" : "750px"
+    },
+    "cls-button" :
+    {
+        "font-size" : 36,
+        "width" : 200,
+        "color" : "#41B883",
+        "text-align" : "center",
+        "padding-top" : 10,
+        "padding-bottom" : 10,
+        "border-width" : 2,
+        "border-style" : "solid",
+        "margin-right" : 20,
+        "border-color" : "rgb(162, 217, 192)",
+        "background-color" : "rgba(162, 217, 192, 0.2)"
+    }
+}

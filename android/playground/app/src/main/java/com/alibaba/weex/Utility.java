@@ -20,8 +20,6 @@ package com.alibaba.weex;
 
 import android.util.Pair;
 
-import java.util.Map;
-
 /**
  * Created by sospartan on 28/03/2017.
  */

@@ -32,15 +32,12 @@ import com.taobao.weex.adapter.ITracingAdapter;
 import com.taobao.weex.adapter.IWXAccessibilityRoleAdapter;
 import com.taobao.weex.adapter.IWXHttpAdapter;
 import com.taobao.weex.adapter.IWXImgLoaderAdapter;
-import com.taobao.weex.adapter.IWXJSExceptionAdapter;
 import com.taobao.weex.adapter.IWXSoLoaderAdapter;
 import com.taobao.weex.adapter.IWXUserTrackAdapter;
 import com.taobao.weex.adapter.URIAdapter;
 import com.taobao.weex.appfram.navigator.IActivityNavBarSetter;
 import com.taobao.weex.appfram.storage.DefaultWXStorage;
 import com.taobao.weex.appfram.storage.IWXStorageAdapter;
-import com.taobao.weex.appfram.websocket.IWebSocketAdapter;
-import com.taobao.weex.appfram.websocket.IWebSocketAdapterFactory;
 import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.bridge.WXModuleManager;
 import com.taobao.weex.bridge.WXValidateProcessor;
@@ -53,7 +50,6 @@ import com.taobao.weex.ui.WXRenderManager;
 import com.taobao.weex.utils.WXLogUtils;
 import com.taobao.weex.utils.WXUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,17 +78,12 @@ public class WXSDKManager {
 
   private ICrashInfoReporter mCrashInfo;
 
-  private IWXJSExceptionAdapter mIWXJSExceptionAdapter;
-
   private IWXStorageAdapter mIWXStorageAdapter;
   private IWXStatisticsListener mStatisticsListener;
   private URIAdapter mURIAdapter;
   private ClassLoaderAdapter mClassLoaderAdapter;
-  private IWebSocketAdapterFactory mIWebSocketAdapterFactory;
   private ITracingAdapter mTracingAdapter;
   private WXValidateProcessor mWXValidateProcessor;
-  // Tell weexv8 to initialize v8, default is true.
-  private boolean mNeedInitV8 = true;
 
   private List<InstanceLifeCycleCallbacks> mLifeCycleCallbacks;
 
@@ -130,34 +121,6 @@ public class WXSDKManager {
     }
   }
 
-  public void setNeedInitV8(boolean need) {
-    mNeedInitV8 = need;
-  }
-
-  public boolean needInitV8() {
-    return mNeedInitV8;
-  }
-
-  public void takeJSHeapSnapshot(String path) {
-    File file = new File(path);
-    if (!file.exists()) {
-      if (!file.mkdir()) {
-        return;
-      }
-    }
-
-    String name = String.valueOf(sInstanceId.get());
-    String filename = path;
-
-    if (!path.endsWith(File.separator)) {
-      filename += File.separator;
-    }
-    filename += name;
-    filename += ".heapsnapshot";
-
-    mBridgeManager.takeJSHeapSnapshot(filename);
-  }
-
   public static WXSDKManager getInstance() {
     if (sManager == null) {
       synchronized (WXSDKManager.class) {
@@ -189,14 +152,6 @@ public class WXSDKManager {
     this.mActivityNavBarSetter = mActivityNavBarSetter;
   }
 
-  public void restartBridge() {
-    mBridgeManager.restart();
-  }
-
-  public WXBridgeManager getWXBridgeManager() {
-    return mBridgeManager;
-  }
-
   public WXRenderManager getWXRenderManager() {
     return mWXRenderManager;
   }
@@ -217,28 +172,6 @@ public class WXSDKManager {
     if (mWXWorkThreadManager != null) {
       mWXWorkThreadManager.destroy();
     }
-  }
-
-  @Deprecated
-  public void callback(String instanceId, String funcId, Map<String, Object> data) {
-    mBridgeManager.callback(instanceId, funcId, data);
-  }
-
-  @Deprecated
-  public void callback(String instanceId, String funcId, Map<String, Object> data,boolean keepAlive) {
-    mBridgeManager.callback(instanceId, funcId, data,keepAlive);
-  }
-
-  public void initScriptsFramework(String framework) {
-    mBridgeManager.initScriptsFramework(framework);
-  }
-
-  public void registerComponents(List<Map<String, Object>> components) {
-    mBridgeManager.registerComponents(components);
-  }
-
-  public void registerModules(Map<String, Object> modules) {
-    mBridgeManager.registerModules(modules);
   }
 
   /**
@@ -266,21 +199,12 @@ public class WXSDKManager {
     if (WXEnvironment.isApkDebugable() && Looper.getMainLooper().getThread().getId() != Thread.currentThread().getId()) {
       throw new WXRuntimeException("[WXSDKManager]  fireEvent error");
     }
-    mBridgeManager.fireEventOnNode(instanceId, ref, type, params,domChanges);
-  }
-
-  void createInstance(WXSDKInstance instance, String code, Map<String, Object> options, String jsonInitData) {
-    mWXRenderManager.registerInstance(instance);
-    mBridgeManager.createInstance(instance.getInstanceId(), code, options, jsonInitData);
-    if (mLifeCycleCallbacks != null) {
-      for (InstanceLifeCycleCallbacks callbacks : mLifeCycleCallbacks) {
-        callbacks.onInstanceCreated(instance.getInstanceId());
-      }
-    }
+//    mBridgeManager.fireEventOnNode(instanceId, ref, type, params,domChanges);
+    // XXTODO
   }
 
   void refreshInstance(String instanceId, WXRefreshData jsonData) {
-    mBridgeManager.refreshInstance(instanceId, jsonData);
+    // XXTODO
   }
 
   void destroyInstance(String instanceId) {
@@ -297,7 +221,6 @@ public class WXSDKManager {
       }
     }
     mWXRenderManager.removeRenderStatement(instanceId);
-    mBridgeManager.destroyInstance(instanceId);
     WXModuleManager.destroyInstanceModules(instanceId);
   }
 
@@ -315,14 +238,6 @@ public class WXSDKManager {
 
   public IDrawableLoader getDrawableLoader() {
     return mDrawableLoader;
-  }
-
-  public IWXJSExceptionAdapter getIWXJSExceptionAdapter() {
-    return mIWXJSExceptionAdapter;
-  }
-
-  public void setIWXJSExceptionAdapter(IWXJSExceptionAdapter IWXJSExceptionAdapter) {
-    mIWXJSExceptionAdapter = IWXJSExceptionAdapter;
   }
 
   public @NonNull IWXHttpAdapter getIWXHttpAdapter() {
@@ -371,8 +286,6 @@ public class WXSDKManager {
     this.mIWXStorageAdapter = config.getStorageAdapter();
     this.mIWXUserTrackAdapter = config.getUtAdapter();
     this.mURIAdapter = config.getURIAdapter();
-    this.mIWebSocketAdapterFactory = config.getWebSocketAdapterFactory();
-    this.mIWXJSExceptionAdapter = config.getJSExceptionAdapter();
     this.mIWXSoLoaderAdapter = config.getIWXSoLoaderAdapter();
     this.mClassLoaderAdapter = config.getClassLoaderAdapter();
   }
@@ -386,45 +299,6 @@ public class WXSDKManager {
       }
     }
     return mIWXStorageAdapter;
-  }
-
-  /**
-   * Weex embedders can use <code>notifyTrimMemory</code> to reduce
-   * memory at a proper time.
-   *
-   * It's not a good idea to reduce memory at any time, because
-   * memory trimming is a expense operation, and V8 needs to do
-   * a full GC and all the inline caches get to be cleared.
-   *
-   * The embedder needs to make some scheduling strategies to
-   * ensure that the embedded application is just on an idle time.
-   * If the application use the same js bundle to render pages,
-   * it's not a good idea to trim memory every time of exiting
-   * pages.
-   */
-  public void notifyTrimMemory() {
-    mBridgeManager.notifyTrimMemory();
-  }
-
-  /**
-   * Weex embedders can use <code>notifySerializeCodeCache</code> to
-   * serialize code caches if the jsfm has the alility to compile 'new Function'
-   * against js bundles on the weex native side.
-   *
-   * It's a good time to serialize a code cache after exiting a weex page.
-   * Then, the next time of entering the same weex page, V8 would compile
-   * 'new Function' against the code cache deseriazed from the js bundle.
-   */
-  public void notifySerializeCodeCache() {
-    mBridgeManager.notifySerializeCodeCache();
-  }
-
-  public @Nullable
-  IWebSocketAdapter getIWXWebSocketAdapter() {
-    if (mIWebSocketAdapterFactory != null) {
-      return mIWebSocketAdapterFactory.createWebSocketAdapter();
-    }
-    return null;
   }
 
   public void registerValidateProcessor(WXValidateProcessor processor){
@@ -467,6 +341,10 @@ public class WXSDKManager {
 
   public IWXAccessibilityRoleAdapter getAccessibilityRoleAdapter() {
     return mRoleAdapter;
+  }
+
+  public WXBridgeManager getWXBridgeManager() {
+    return mBridgeManager;
   }
 
   public interface InstanceLifeCycleCallbacks {

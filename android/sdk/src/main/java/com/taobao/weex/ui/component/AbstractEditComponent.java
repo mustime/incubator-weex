@@ -42,14 +42,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.WXSDKManager;
 import com.taobao.weex.annotation.JSMethod;
-import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.common.Constants;
 import com.taobao.weex.common.WXThread;
 import com.taobao.weex.dom.CSSConstants;
 import com.taobao.weex.dom.WXStyle;
 import com.taobao.weex.layout.ContentBoxMeasurement;
 import com.taobao.weex.layout.MeasureMode;
-import com.taobao.weex.layout.MeasureSize;
 import com.taobao.weex.ui.action.BasicComponentData;
 import com.taobao.weex.ui.component.helper.SoftKeyboardDetector;
 import com.taobao.weex.ui.component.helper.WXTimeInputHelper;
@@ -828,7 +826,8 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
       result.put(Constants.Name.SELECTION_START, start);
       result.put(Constants.Name.SELECTION_END, end);
     }
-    WXBridgeManager.getInstance().callback(getInstanceId(), callbackId, result, false);
+//    WXBridgeManager.getInstance().callback(getInstanceId(), callbackId, result, false);
+    // XXTODO
   }
 
   @JSMethod

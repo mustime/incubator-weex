@@ -20,9 +20,6 @@ package com.taobao.weex.bridge;
 
 import com.taobao.weex.common.WXModule;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 /**
  * Created by sospartan on 6/17/16.
  */

@@ -1,0 +1,120 @@
+{
+    "view" : "div",
+    "subviews" : [
+        { "view" : "div", "subviews" : [
+            { "view" : "text", "id" : "text1", "style" : { "font-size" : "40px" } },
+            { "view" : "text", "id" : "text2", "style" : { "font-size" : "40px" } },
+            { "view" : "text", "id" : "text3", "style" : { "font-size" : "40px" } },
+            { "view" : "text", "id" : "text4", "style" : { "font-size" : "40px" } }
+        ]},
+        { "view" : "scroller", "subviews" : [
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input type = text", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "text", "class" : "cls-input", "placeholder" : "Input Text" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input type = password", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "password", "class" : "cls-input", "placeholder" : "Input Password" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input type = url", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "url", "class" : "cls-input", "placeholder" : "Input URL" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input type = email", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "email", "class" : "cls-input", "placeholder" : "Input Email" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input type = tel", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "tel", "class" : "cls-input", "placeholder" : "Input Tel" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input type = time", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "time", "class" : "cls-input", "placeholder" : "Input Time" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input type = number", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "number", "class" : "cls-input", "placeholder" : "Input Number" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input type = date", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "date", "class" : "cls-input", "placeholder" : "Input Date", "min" : "2018-01-01", "max" : "2018-12-31" }
+            ]},
+            
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input return-key-type = default", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "text", "return-key-type" : "default", "class" : "cls-input", "placeholder" : "please input" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input return-key-type = go", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "text", "return-key-type" : "go", "class" : "cls-input", "placeholder" : "please input" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input return-key-type = next", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "text", "return-key-type" : "next", "class" : "cls-input", "placeholder" : "please input" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input return-key-type = search", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "text", "return-key-type" : "search", "class" : "cls-input", "placeholder" : "please input" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input return-key-type = send", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "text", "return-key-type" : "send", "class" : "cls-input", "placeholder" : "please input" }
+            ]},
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input return-key-type = done", "class" : "cls-text" }
+                ]},
+                { "view" : "input", "type" : "text", "return-key-type" : "done", "class" : "cls-input", "placeholder" : "please input" }
+            ]},
+
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "function focus() & blur()", "class" : "cls-text" }
+                ]},
+                { "view" : "div", "style" : { "flex-direction" : "row", "margin-bottom" : "16px", "justify-content" : "space-between" }, "subviews" : [
+                    { "view" : "text", "type" : "primary", "class" : "cls-button", "value" : "focus" },
+                    { "view" : "text", "type" : "primary", "class" : "cls-button", "value" : "blur" }
+                ]},
+                { "view" : "input", "id" : "inputfunction", "type" : "text", "placeholder": "test focus & blur", "class" : "cls-input" }
+            ]},
+
+            { "view" : "div", "subviews" : [
+                { "view" : "div", "class" : "cls-div", "subviews" : [
+                    { "view" : "text", "value" : "input selection", "class" : "cls-text" }
+                ]},
+                { "view" : "div", "style" : { "flex-direction" : "row", "margin-bottom" : "16px", "justify-content" : "space-between" }, "subviews" : [
+                    { "view" : "text", "type" : "primary", "class" : "cls-button", "value" : "setRange" },
+                    { "view" : "text", "type" : "primary", "class" : "cls-button", "value" : "getSelectionRange" }
+                ]},
+                { "view" : "input", "id" : "inputselection", "type" : "text", "placeholder" : "test selection", "value" : "123456789", "class" : "cls-input" }
+            ]},
+        ]}
+    ]
+}

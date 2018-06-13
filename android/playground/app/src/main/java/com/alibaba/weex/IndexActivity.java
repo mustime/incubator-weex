@@ -18,37 +18,33 @@
  */
 package com.alibaba.weex;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.weex.commons.AbstractWeexActivity;
-import com.alibaba.weex.update.CheckForUpdateUtil;
 import com.google.zxing.client.android.CaptureActivity;
-import com.taobao.weex.WXSDKEngine;
+import com.taobao.weex.IWXRenderListener;
+import com.taobao.weex.RenderContainer;
 import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.common.WXErrorCode;
-import com.taobao.weex.utils.WXFileUtils;
-import com.taobao.weex.utils.WXSoInstallMgrSdk;
+import com.taobao.weex.WXSDKManager;
+import com.taobao.weex.bridge.WXBridgeManager;
+import com.taobao.weex.common.Constants;
+import com.taobao.weex.ui.WXRenderManager;
+import com.taobao.weex.ui.component.WXBasicComponentType;
 
-public class IndexActivity extends AbstractWeexActivity {
+import java.util.HashMap;
+import java.util.HashSet;
+
+public class IndexActivity extends WXBaseActivity implements IWXRenderListener {
 
   private static final String TAG = "IndexActivity";
   private static final int CAMERA_PERMISSION_REQUEST_CODE = 0x1;
@@ -61,51 +57,69 @@ public class IndexActivity extends AbstractWeexActivity {
 
   private BroadcastReceiver mReloadReceiver;
 
+  ViewGroup mContainer = null;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_index);
-    setContainer((ViewGroup) findViewById(R.id.index_container));
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-    getWindow().setFormat(PixelFormat.TRANSLUCENT);
+    mContainer = (ViewGroup)findViewById(R.id.index_container);
 
-    mProgressBar = (ProgressBar) findViewById(R.id.index_progressBar);
-    mTipView = (TextView) findViewById(R.id.index_tip);
-    mProgressBar.setVisibility(View.VISIBLE);
-    mTipView.setVisibility(View.VISIBLE);
+//    mProgressBar = (ProgressBar) findViewById(R.id.index_progressBar);
+//    mTipView = (TextView) findViewById(R.id.index_tip);
+//    mProgressBar.setVisibility(View.VISIBLE);
+//    mTipView.setVisibility(View.VISIBLE);
+//
+//
+//    if (!WXSoInstallMgrSdk.isCPUSupport()) {
+//      mProgressBar.setVisibility(View.INVISIBLE);
+//      mTipView.setText(R.string.cpu_not_support_tip);
+//      return;
+//    }
+//
+//    if (TextUtils.equals(sCurrentIp, DEFAULT_IP)) {
+//      renderPage(WXFileUtils.loadAsset("landing.weex.js", this), getIndexUrl());
+//    } else {
+//      renderPageByURL(getIndexUrl());
+//    }
+//
+//
+//    mReloadReceiver = new BroadcastReceiver() {
+//      @Override
+//      public void onReceive(Context context, Intent intent) {
+//        createWeexInstance();
+//        if (TextUtils.equals(sCurrentIp, DEFAULT_IP)) {
+//          renderPage(WXFileUtils.loadAsset("landing.weex.js", getApplicationContext()), getIndexUrl());
+//        } else {
+//          renderPageByURL(getIndexUrl());
+//        }
+//        mProgressBar.setVisibility(View.VISIBLE);
+//      }
+//    };
+//
+//    LocalBroadcastManager.getInstance(this).registerReceiver(mReloadReceiver, new IntentFilter(WXSDKEngine.JS_FRAMEWORK_RELOAD));
+//
+//    CheckForUpdateUtil.checkForUpdate(this);
 
+    WXSDKInstance mInstance = new WXSDKInstance(this);
+    mInstance.setInstanceViewPortWidth(750);
+    mInstance.registerRenderListener(this);
 
-    if (!WXSoInstallMgrSdk.isCPUSupport()) {
-      mProgressBar.setVisibility(View.INVISIBLE);
-      mTipView.setText(R.string.cpu_not_support_tip);
-      return;
-    }
+    HashMap<String, String> styles = new HashMap<>();
+    styles.put(Constants.Name.WIDTH, "200wx");
+    styles.put(Constants.Name.MAX_HEIGHT, "80wx");
+	styles.put(Constants.Name.COLOR, "#FF0000");
+	styles.put(Constants.Name.BACKGROUND_COLOR, "#00FF00");
+    WXRenderManager manager = WXSDKManager.getInstance().getWXRenderManager();
+    manager.registerInstance(mInstance);
+    RenderContainer renderContainer = new RenderContainer(this);
+    mInstance.setRenderContainer(renderContainer);
+    mInstance.ensureRenderArchor();
+    mContainer.addView(renderContainer);
+    mInstance.mRendered = true;
 
-    if (TextUtils.equals(sCurrentIp, DEFAULT_IP)) {
-      renderPage(WXFileUtils.loadAsset("landing.weex.js", this), getIndexUrl());
-    } else {
-      renderPageByURL(getIndexUrl());
-    }
-
-
-    mReloadReceiver = new BroadcastReceiver() {
-      @Override
-      public void onReceive(Context context, Intent intent) {
-        createWeexInstance();
-        if (TextUtils.equals(sCurrentIp, DEFAULT_IP)) {
-          renderPage(WXFileUtils.loadAsset("landing.weex.js", getApplicationContext()), getIndexUrl());
-        } else {
-          renderPageByURL(getIndexUrl());
-        }
-        mProgressBar.setVisibility(View.VISIBLE);
-      }
-    };
-
-    LocalBroadcastManager.getInstance(this).registerReceiver(mReloadReceiver, new IntentFilter(WXSDKEngine.JS_FRAMEWORK_RELOAD));
-
-    CheckForUpdateUtil.checkForUpdate(this);
+    WXBridgeManager.getInstance().callCreateBody(mInstance.getInstanceId(), WXBasicComponentType.INPUT, "100", styles, new HashMap<String, String>(), new HashSet<String>(),
+            new float[] {100, 100, 100, 100}, new float[] {100, 100, 100, 100}, null);
   }
 
   @Override
@@ -119,34 +133,6 @@ public class IndexActivity extends AbstractWeexActivity {
   }
 
   @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.action_refresh:
-        if (!TextUtils.equals(sCurrentIp, DEFAULT_IP)) {
-          createWeexInstance();
-          renderPageByURL(getIndexUrl());
-          mProgressBar.setVisibility(View.VISIBLE);
-        }
-        break;
-      case R.id.action_scan:
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-          if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-            Toast.makeText(this, "please give me the permission", Toast.LENGTH_SHORT).show();
-          } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
-          }
-        } else {
-          startActivity(new Intent(this, CaptureActivity.class));
-        }
-        break;
-      default:
-        break;
-    }
-
-    return super.onOptionsItemSelected(item);
-  }
-
-  @Override
   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     if (requestCode == CAMERA_PERMISSION_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -154,25 +140,6 @@ public class IndexActivity extends AbstractWeexActivity {
     } else if (requestCode == WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
     } else {
       Toast.makeText(this, "request camara permission fail!", Toast.LENGTH_SHORT).show();
-    }
-  }
-
-  @Override
-  public void onRenderSuccess(WXSDKInstance wxsdkInstance, int i, int i1) {
-    super.onRenderSuccess(wxsdkInstance,i,i1);
-    mProgressBar.setVisibility(View.GONE);
-    mTipView.setVisibility(View.GONE);
-  }
-
-  @Override
-  public void onException(WXSDKInstance wxsdkInstance, String s, String s1) {
-    super.onException(wxsdkInstance,s,s1);
-    mProgressBar.setVisibility(View.GONE);
-    mTipView.setVisibility(View.VISIBLE);
-    if (TextUtils.equals(s, WXErrorCode.WX_DEGRAD_ERR_NETWORK_BUNDLE_DOWNLOAD_FAILED.getErrorCode())) {
-      mTipView.setText(R.string.index_tip);
-    } else {
-      mTipView.setText("network render error:" + s1);
     }
   }
 
@@ -190,6 +157,29 @@ public class IndexActivity extends AbstractWeexActivity {
 
   private static String getIndexUrl() {
     return "http://" + sCurrentIp + ":12580/examples/build/index.js";
+  }
+
+  @Override
+  public void onViewCreated(WXSDKInstance instance, View view) {
+    if(view.getParent() == null) {
+      mContainer.addView(view);
+    }
+    mContainer.requestLayout();
+  }
+
+  @Override
+  public void onRenderSuccess(WXSDKInstance instance, int width, int height) {
+
+  }
+
+  @Override
+  public void onRefreshSuccess(WXSDKInstance instance, int width, int height) {
+
+  }
+
+  @Override
+  public void onException(WXSDKInstance instance, String errCode, String msg) {
+
   }
 }
 

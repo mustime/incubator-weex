@@ -18,9 +18,8 @@
  */
 package com.taobao.weex.http;
 
-import static com.taobao.weex.http.WXHttpUtil.KEY_USER_AGENT;
-
 import android.net.Uri;
+
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.taobao.weex.WXEnvironment;
@@ -29,11 +28,11 @@ import com.taobao.weex.adapter.IWXHttpAdapter;
 import com.taobao.weex.adapter.URIAdapter;
 import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;
-import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.common.WXModule;
 import com.taobao.weex.common.WXRequest;
 import com.taobao.weex.common.WXResponse;
 import com.taobao.weex.utils.WXLogUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.taobao.weex.http.WXHttpUtil.KEY_USER_AGENT;
 
 public class WXStreamModule extends WXModule {
 
@@ -59,7 +60,7 @@ public class WXStreamModule extends WXModule {
   /**
    * send HTTP request
    *
-   * @param params   {method:POST/GET/PUT/DELETE/HEAD/PATCH,url:http://xxx,header:{key:value},
+   * @param paramsObj{method:POST/GET/PUT/DELETE/HEAD/PATCH,url:http://xxx,header:{key:value},
    *                 body:{key:value}}
    * @param callback formate：handler(err, response)
    */
@@ -89,19 +90,20 @@ public class WXStreamModule extends WXModule {
     sendRequest(builder.createOptions(), new ResponseCallback() {
       @Override
       public void onResponse(WXResponse response, Map<String, String> headers) {
-        if(callback != null && mWXSDKInstance != null)
-          WXBridgeManager.getInstance().callback(mWXSDKInstance.getInstanceId(), callback,
-                  (response == null || response.originalData == null) ? "{}" :
-                          readAsString(response.originalData,
-                                  headers!=null?getHeader(headers,"Content-Type"):""
-                          ));
+        // XXTODO
+//        if(callback != null && mWXSDKInstance != null)
+//          WXBridgeManager.getInstance().callback(mWXSDKInstance.getInstanceId(), callback,
+//                  (response == null || response.originalData == null) ? "{}" :
+//                          readAsString(response.originalData,
+//                                  headers!=null?getHeader(headers,"Content-Type"):""
+//                          ));
       }
     }, null, mWXSDKInstance.getInstanceId(), mWXSDKInstance.getBundleUrl());
   }
 
   /**
    *
-   * @param optionsStr request options include:
+   * @param optionsObj request options include:
    *  method: GET 、POST、PUT、DELETE、HEAD、PATCH
    *  headers：object，request header
    *  url:

@@ -36,7 +36,8 @@ public class ATagUtil {
     String href = instance.rewriteUri(Uri.parse(url), URIAdapter.LINK).toString();
     JSONArray array = new JSONArray();
     array.add(href);
-    WXSDKManager.getInstance().getWXBridgeManager().
-        callModuleMethod(instanceId, "event", "openURL", array);
+    // XXTODO
+//    WXSDKManager.getInstance().getWXBridgeManager().
+//        callModuleMethod(instanceId, "event", "openURL", array);
   }
 }

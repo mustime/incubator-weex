@@ -26,8 +26,6 @@
 #include <map>
 #include <android/base/string/jstring_cache.h>
 
-static jmethodID jSetJSFrmVersionMethodId;
-static jmethodID jReportExceptionMethodId;
 static jmethodID jCallNativeMethodId;
 static jmethodID jCallNativeModuleMethodId;
 static jmethodID jCallNativeComponentMethodId;
@@ -64,8 +62,6 @@ namespace WeexCore {
 
   void Bridge_Impl_Android::setGlobalRef(jobject &jRef) {
     jThis = jRef;
-    jSetJSFrmVersionMethodId = NULL;
-    jReportExceptionMethodId = NULL;
     jCallNativeMethodId = NULL;
     jCallNativeModuleMethodId = NULL;
     jCallNativeComponentMethodId = NULL;
@@ -131,48 +127,6 @@ namespace WeexCore {
       env->CallBooleanMethod(jSet, jSetAddMethodId, jValue);
       env->DeleteLocalRef(jValue);
     }
-  }
-
-  void Bridge_Impl_Android::setJSVersion(const char* version) {
-
-    JNIEnv *env = getJNIEnv();
-    jstring jVersion = env->NewStringUTF(version);
-
-    if (jSetJSFrmVersionMethodId == NULL) {
-      jSetJSFrmVersionMethodId = env->GetMethodID(jBridgeClazz,
-                                                  "setJSFrmVersion",
-                                                  "(Ljava/lang/String;)V");
-    }
-    env->CallVoidMethod(jThis, jSetJSFrmVersionMethodId, jVersion);
-
-    if (jVersion != nullptr)
-      env->DeleteLocalRef(jVersion);
-  }
-
-  void Bridge_Impl_Android::reportException(const char* pageId, const char *func, const char *exception_string) {
-
-    RenderPage *page = RenderManager::GetInstance()->GetPage(pageId);
-    long long startTime = getCurrentTime();
-
-    JNIEnv *env = getJNIEnv();
-    jstring jFunc = env->NewStringUTF(func);
-    jstring jExceptionString = env->NewStringUTF(exception_string);
-    jstring jPageId = getKeyFromCache(env, pageId);
-
-    if (jReportExceptionMethodId == NULL) {
-      jReportExceptionMethodId = env->GetMethodID(jBridgeClazz,
-                                                  "reportJSException",
-                                                  "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
-    }
-    env->CallVoidMethod(jThis, jReportExceptionMethodId, jPageId, jFunc, jExceptionString);
-
-    if (jFunc != nullptr)
-      env->DeleteLocalRef(jFunc);
-    if (jExceptionString != nullptr)
-      env->DeleteLocalRef(jExceptionString);
-
-    if (page != nullptr)
-      page->CallBridgeTime(getCurrentTime() - startTime);
   }
 
   int Bridge_Impl_Android::callNative(const char* pageId, const char *task, const char *callback) {
@@ -844,27 +798,6 @@ namespace WeexCore {
     if (page != nullptr)
       page->CallBridgeTime(getCurrentTime() - startTime);
     return flag;
-  }
-
-
-  void Bridge_Impl_Android::handlePostMessage(jstring jVmId, jbyteArray jData) {
-    JNIEnv *env = getJNIEnv();
-    if (jPostMessage == NULL) {
-      jPostMessage = env->GetMethodID(jWMBridgeClazz,
-                                    "postMessage",
-                                    "(Ljava/lang/String;[B)V");
-    }
-    env->CallVoidMethod(jWMThis, jPostMessage, jVmId, jData);
-  }
-
-  void Bridge_Impl_Android::handleDispatchMessage(jstring jClientId, jstring jVmId, jbyteArray jData, jstring jCallback) {
-    JNIEnv *env = getJNIEnv();
-    if (jDispatchMeaasge == NULL) {
-      jDispatchMeaasge = env->GetMethodID(jWMBridgeClazz,
-                                        "dispatchMessage",
-                                        "(Ljava/lang/String;Ljava/lang/String;[BLjava/lang/String;)V");
-    }
-    env->CallVoidMethod(jWMThis, jDispatchMeaasge, jClientId, jVmId, jData, jCallback);
   }
 
   jobject Bridge_Impl_Android::getMeasureFunc(const char* pageId, jlong renderObjectPtr) {

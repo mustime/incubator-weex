@@ -163,13 +163,8 @@ public class WXPerformance {
 
   public long interactionTime;
 
-  /**
-   * Time used for
-   * {@link com.taobao.weex.bridge.WXBridgeManager#createInstance(String, String, Map, String)}
-   */
   @RestrictTo(RestrictTo.Scope.LIBRARY)
   public long callCreateInstanceTime;
-
 
   public long fsCallJsTotalTime;
 
@@ -294,10 +289,6 @@ public class WXPerformance {
   public long componentCount;
 
   public long componentCreateTime;
-  /**
-   * Version of JavaScript libraray
-   */
-  public String JSLibVersion = WXEnvironment.JS_LIB_SDK_VERSION;
 
   /**
    * Version of Weex SDK
@@ -432,7 +423,6 @@ public class WXPerformance {
 
   public Map<String, String> getDimensionMap() {
     Map<String, String> quotas = new HashMap<>();
-    quotas.put(Dimension.JSLibVersion.toString(), JSLibVersion);
     quotas.put(Dimension.WXSDKVersion.toString(), WXSDKVersion);
     quotas.put(Dimension.pageName.toString(), pageName);
     quotas.put(Dimension.requestType.toString(), requestType);
@@ -491,7 +481,7 @@ public class WXPerformance {
               + ",requestType:" + requestType
               + ",initInvokeTime:" + WXEnvironment.sSDKInitInvokeTime + ",initExecuteTime:" + WXEnvironment.sSDKInitExecuteTime
               + ",SDKInitTime:" + WXEnvironment.sSDKInitTime
-              + ",totalTime:" + totalTime + ",JSLibVersion:" + JSLibVersion + ",WXSDKVersion:" + WXSDKVersion
+              + ",totalTime:" + totalTime + ",WXSDKVersion:" + WXSDKVersion
               + ",errCode:" + errCode + ",renderFailedDetail:" + renderFailedDetail
               + ",arg:" + args
               + ",errMsg:" + getErrMsg();
@@ -510,7 +500,6 @@ public class WXPerformance {
             + " JSTemplateSize:" + JSTemplateSize
             + " SDKInitTime:" + WXEnvironment.sSDKInitTime
             + " totalTime:" + totalTime
-            + " JSLibVersion:" + JSLibVersion
             + " WXSDKVersion:" + WXSDKVersion
             + " pageName:" + pageName
             + " useScroller:" + useScroller;

@@ -64,7 +64,6 @@ import com.taobao.weex.bridge.Invoker;
 import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.common.Constants;
 import com.taobao.weex.common.IWXObject;
-import com.taobao.weex.common.WXErrorCode;
 import com.taobao.weex.common.WXPerformance;
 import com.taobao.weex.common.WXRuntimeException;
 import com.taobao.weex.dom.CSSShorthand;
@@ -100,7 +99,6 @@ import com.taobao.weex.ui.view.gesture.WXGestureObservable;
 import com.taobao.weex.ui.view.gesture.WXGestureType;
 import com.taobao.weex.utils.BoxShadowUtil;
 import com.taobao.weex.utils.WXDataStructureUtil;
-import com.taobao.weex.utils.WXExceptionUtils;
 import com.taobao.weex.utils.WXLogUtils;
 import com.taobao.weex.utils.WXReflectionUtils;
 import com.taobao.weex.utils.WXResourceUtils;
@@ -460,10 +458,7 @@ public abstract class WXComponent<T extends View> extends WXBasicComponent imple
     final Invoker invoker = mHolder.getMethodInvoker(method);
     if (invoker != null) {
       try {
-        getInstance()
-                .getNativeInvokeHelper()
-                .invoke(this, invoker, args);
-
+        // XXTODO
       } catch (Exception e) {
         WXLogUtils.e("[WXComponent] updateProperties :" + "class:" + getClass() + "method:" + invoker.toString() + " function " + WXLogUtils.getStackTrace(e));
       }
@@ -678,9 +673,7 @@ public abstract class WXComponent<T extends View> extends WXBasicComponent imple
       String value = WXUtils.getString(param, null);
 
       if (key == null) {
-        WXExceptionUtils.commitCriticalExceptionRT(getInstanceId(),
-                WXErrorCode.WX_RENDER_ERR_NULL_KEY, "updateProperties",
-                WXErrorCode.WX_RENDER_ERR_NULL_KEY.getErrorMsg(), null);
+        WXLogUtils.e("weex", "key is null");
       } else {
         if (TextUtils.isEmpty(value)) {
           param = convertEmptyProperty(key, value);

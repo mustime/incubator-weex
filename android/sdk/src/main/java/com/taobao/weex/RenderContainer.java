@@ -27,8 +27,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 
-import com.taobao.weex.bridge.WXBridgeManager;
-
 import java.lang.ref.WeakReference;
 
 /**

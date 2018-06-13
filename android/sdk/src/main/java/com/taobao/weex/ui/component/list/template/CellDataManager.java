@@ -24,7 +24,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.taobao.weex.WXEnvironment;
-import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.utils.WXUtils;
 
 import java.util.Collection;
@@ -241,11 +240,6 @@ public class CellDataManager {
                 if(virtualComponentRenderStates != null){
                     virtualComponentRenderStates.remove(virtualComponentId);
                 }
-                WXBridgeManager.getInstance().asyncCallJSEventVoidResult(WXBridgeManager.METHD_COMPONENT_HOOK_SYNC,
-                        templateList.getInstanceId(),
-                        null,
-                        virtualComponentId, VirtualComponentLifecycle.LIFECYCLE, VirtualComponentLifecycle.DETACH, null);
-
             }
         }
     }

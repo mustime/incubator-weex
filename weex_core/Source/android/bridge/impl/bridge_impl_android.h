@@ -47,7 +47,7 @@ namespace WeexCore {
 
     Bridge_Impl_Android();
 
-    ~Bridge_Impl_Android();
+    virtual ~Bridge_Impl_Android();
 
     static Bridge_Impl_Android *getInstance() {
       if (m_instance == nullptr) {
@@ -61,10 +61,6 @@ namespace WeexCore {
     void setGlobalWMRef(jobject &jRef) {
       jWMThis = jRef;
     }
-
-    void setJSVersion(const char* version);
-
-    void reportException(const char* pageId, const char *func, const char *exception_string);
 
     int callNative(const char* pageId, const char *task, const char *callback);
 

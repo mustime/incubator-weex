@@ -21,7 +21,6 @@
 #define WEEXCORE_WEEX_CORE_MANAGER_H
 
 #include <core/bridge/bridge.h>
-#include <core/bridge/js_bridge.h>
 #include <core/layout/measure_func_adapter.h>
 
 namespace WeexCore {
@@ -30,7 +29,6 @@ namespace WeexCore {
         static WeexCoreManager *m_pInstance;
         Bridge *platformBridge = nullptr;
         MeasureFunctionAdapter *measureFunctionAdapter = nullptr;
-        JSBridge* jsBridge = nullptr;
 
     private:
         WeexCoreManager() {};
@@ -38,8 +36,6 @@ namespace WeexCore {
         ~WeexCoreManager() {
             delete platformBridge;
             platformBridge = nullptr;
-            delete jsBridge;
-            jsBridge = nullptr;
         };
 
         //just to release singleton object
@@ -65,10 +61,6 @@ namespace WeexCore {
         Bridge *getPlatformBridge();
 
         WeexCoreManager *setPlatformBridge(Bridge *pBridge);
-
-        JSBridge* getJSBridge();
-
-        WeexCoreManager *setJSBridge(JSBridge *jsBridge);
 
         void SetMeasureFunctionAdapter(MeasureFunctionAdapter *measureFunctionAdapter);
 

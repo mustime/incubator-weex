@@ -22,7 +22,6 @@
 #include <android/base/log_utils.h>
 #include <android/base/string/scoped_jstring.h>
 #include <android/base/string/scoped_jstring_utf8.h>
-#include <android/jsengine/multiprocess/WeexJSConnection.h>
 #include <android/base/string/jstring_cache.h>
 #include <jni.h>
 #include <string>
@@ -51,7 +50,7 @@ extern jfloatArray c2jFloatArray(JNIEnv *env, const float c_array[]);
 
 namespace WeexCore {
 
-bool RegisterJNIUtils(JNIEnv *env);
+bool RegisterJNIGlobal(JNIEnv *env);
 
 jint OnLoad(JavaVM *vm, void *reserved);
 

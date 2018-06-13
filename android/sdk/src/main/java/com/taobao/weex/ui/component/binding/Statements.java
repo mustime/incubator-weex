@@ -25,8 +25,6 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.taobao.weex.WXEnvironment;
-import com.taobao.weex.bridge.EventResult;
-import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.common.Constants;
 import com.taobao.weex.dom.WXAttr;
 import com.taobao.weex.dom.WXEvent;
@@ -47,7 +45,6 @@ import com.taobao.weex.ui.component.WXVContainer;
 import com.taobao.weex.ui.component.list.WXCell;
 import com.taobao.weex.ui.component.list.template.CellDataManager;
 import com.taobao.weex.ui.component.list.template.CellRenderContext;
-import com.taobao.weex.ui.component.list.template.VirtualComponentLifecycle;
 import com.taobao.weex.ui.component.list.template.WXRecyclerTemplateList;
 import com.taobao.weex.ui.component.list.template.jni.NativeRenderObjectUtils;
 import com.taobao.weex.utils.WXLogUtils;
@@ -365,42 +362,6 @@ public class Statements {
                 Object compoentData = null;
                 if(!TextUtils.isEmpty(compoentId)){
                     String virtualComponentId =  context.getRenderState().getVirtualComponentIds().get(component.getViewTreeKey());
-                   if(virtualComponentId == null){ //none virtualComponentId, create and do attach
-                        virtualComponentId =  CellDataManager.createVirtualComponentId(context.templateList.getRef(),
-                                component.getViewTreeKey(), context.templateList.getItemId(context.position));
-                        Map<String, Object>  props  = renderProps(JSONUtils.toJSON(attr.get(ELUtils.COMPONENT_PROPS)), context.stack);
-                        EventResult result = WXBridgeManager.getInstance().syncCallJSEventWithResult(WXBridgeManager.METHD_COMPONENT_HOOK_SYNC, component.getInstanceId(), null, compoentId, VirtualComponentLifecycle.LIFECYCLE, VirtualComponentLifecycle.CREATE,  new Object[]{
-                                virtualComponentId,
-                                props
-                        }, null);
-                        if(result != null
-                                && result.getResult() != null
-                                && result.getResult() instanceof Map){
-                            props.putAll((Map<? extends String, ?>) result.getResult());
-                        }
-                        compoentData  =  props;
-                        context.getRenderState().getVirtualComponentIds().put(component.getViewTreeKey(), virtualComponentId);
-                        context.templateList.getCellDataManager().createVirtualComponentData(context.position, virtualComponentId, compoentData);
-                        //create virtual componentId
-                        WXBridgeManager.getInstance().asyncCallJSEventVoidResult(WXBridgeManager.METHD_COMPONENT_HOOK_SYNC, component.getInstanceId(), null, virtualComponentId, VirtualComponentLifecycle.LIFECYCLE, VirtualComponentLifecycle.ATTACH, null);
-                     }else{ // get virtual component data check has dirty's update
-                       compoentData = context.getRenderState().getVirtualComponentDatas().get(virtualComponentId);
-                       if(context.getRenderState().isHasDataUpdate()){
-                           Map<String, Object>  props  = renderProps((JSONObject) attr.get(ELUtils.COMPONENT_PROPS), context.stack);
-                           EventResult result = WXBridgeManager.getInstance().syncCallJSEventWithResult(WXBridgeManager.METHD_COMPONENT_HOOK_SYNC, component.getInstanceId(), null, virtualComponentId, VirtualComponentLifecycle.LIFECYCLE, VirtualComponentLifecycle.SYNSTATE,  new Object[]{
-                                   virtualComponentId,
-                                   props
-                           }, null);
-
-                           if(result != null
-                                   && result.getResult() != null
-                                   && result.getResult() instanceof Map){
-                               props.putAll((Map<? extends String, ?>) result.getResult());
-                               context.templateList.getCellDataManager().updateVirtualComponentData(virtualComponentId, props);
-                               compoentData = props;
-                           }
-                       }
-                    }
                     component.getAttrs().put(CellDataManager.VIRTUAL_COMPONENT_ID, virtualComponentId);
                 }else{ //stateless component
                     Map<String, Object>  props  = renderProps((JSONObject) attr.get(ELUtils.COMPONENT_PROPS), context.stack);

@@ -22,28 +22,17 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-import com.alibaba.weex.commons.adapter.DefaultWebSocketAdapterFactory;
 import com.alibaba.weex.commons.adapter.ImageAdapter;
-import com.alibaba.weex.commons.adapter.JSExceptionAdapter;
 import com.alibaba.weex.extend.adapter.DefaultAccessibilityRoleAdapter;
 import com.alibaba.weex.extend.adapter.InterceptWXHttpAdapter;
 import com.alibaba.weex.extend.component.RichText;
 import com.alibaba.weex.extend.component.WXComponentSyncTest;
-import com.alibaba.weex.extend.component.WXMask;
 import com.alibaba.weex.extend.component.WXParallax;
-import com.alibaba.weex.extend.module.GeolocationModule;
-import com.alibaba.weex.extend.module.MyModule;
-import com.alibaba.weex.extend.module.RenderModule;
-import com.alibaba.weex.extend.module.SyncTestModule;
-import com.alibaba.weex.extend.module.WXEventModule;
-import com.alibaba.weex.extend.module.WXTitleBar;
-import com.alibaba.weex.extend.module.WXWsonTestModule;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.taobao.weex.InitConfig;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXSDKEngine;
 import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.common.WXException;
 
 public class WXApplication extends Application {
@@ -62,7 +51,6 @@ public class WXApplication extends Application {
      * Fresco.initialize(this,config);
      **/
 //    initDebugEnvironment(true, false, "DEBUG_SERVER_HOST");
-    WXBridgeManager.updateGlobalConfig("wson_on");
     WXEnvironment.setOpenDebugLog(false);
     WXEnvironment.setApkDebugable(false);
     WXSDKEngine.addCustomOptions("appName", "WXSample");
@@ -71,8 +59,6 @@ public class WXApplication extends Application {
                            new InitConfig.Builder()
                                //.setImgAdapter(new FrescoImageAdapter())// use fresco adapter
                                .setImgAdapter(new ImageAdapter())
-                               .setWebSocketAdapterFactory(new DefaultWebSocketAdapterFactory())
-                               .setJSExceptionAdapter(new JSExceptionAdapter())
                                .setHttpAdapter(new InterceptWXHttpAdapter())
                                .build()
                           );
@@ -85,17 +71,6 @@ public class WXApplication extends Application {
       WXSDKEngine.registerComponent(WXParallax.PARALLAX, WXParallax.class);
 
       WXSDKEngine.registerComponent("richtext", RichText.class);
-      WXSDKEngine.registerModule("render", RenderModule.class);
-      WXSDKEngine.registerModule("event", WXEventModule.class);
-      WXSDKEngine.registerModule("syncTest", SyncTestModule.class);
-
-      WXSDKEngine.registerComponent("mask",WXMask.class);
-      WXSDKEngine.registerModule("myModule", MyModule.class);
-      WXSDKEngine.registerModule("geolocation", GeolocationModule.class);
-
-      WXSDKEngine.registerModule("titleBar", WXTitleBar.class);
-
-      WXSDKEngine.registerModule("wsonTest", WXWsonTestModule.class);
 
 
       /**
@@ -143,15 +118,7 @@ public class WXApplication extends Application {
 
       @Override
       public void onActivityDestroyed(Activity activity) {
-        // The demo code of calling 'notifyTrimMemory()'
-        if (false) {
-          // We assume that the application is on an idle time.
-          WXSDKManager.getInstance().notifyTrimMemory();
-        }
-        // The demo code of calling 'notifySerializeCodeCache()'
-        if (false) {
-          WXSDKManager.getInstance().notifySerializeCodeCache();
-        }
+
       }
     });
 

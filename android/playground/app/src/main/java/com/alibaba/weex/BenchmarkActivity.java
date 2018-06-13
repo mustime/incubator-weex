@@ -20,7 +20,6 @@
 package com.alibaba.weex;
 
 import android.os.Bundle;
-import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -34,8 +33,6 @@ import com.taobao.weex.InitConfig;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXSDKEngine;
 import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.common.WXRenderStrategy;
-import com.taobao.weex.utils.WXFileUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -177,43 +174,12 @@ public class BenchmarkActivity extends AppCompatActivity implements IWXRenderLis
           perfStart = true;
           Log.v(TAG, "Start: " + startTime);
           startTime = System.currentTimeMillis();
-          mInstance.render(TAG,
-                           WXFileUtils.loadAsset("hello.js", BenchmarkActivity.this),
-                           options,
-                           null,
-                           WXRenderStrategy.APPEND_ASYNC);
         } else {
           root.removeAllViews();
           perfStart = true;
           startTime = System.currentTimeMillis();
           View.inflate(BenchmarkActivity.this, R.layout.hello_weex, root);
         }
-      }
-    });
-  }
-
-  public void loadWeexPage() {
-    loadWeexPage(URL);
-  }
-
-  public void loadWeexPage(final String url) {
-    perfEnd = false;
-    runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        if (mInstance != null) {
-          mInstance.destroy();
-        }
-        mInstance = new WXSDKInstance(BenchmarkActivity.this);
-        Map<String, Object> options = new HashMap<>();
-        options.put(WXSDKInstance.BUNDLE_URL, url);
-        mInstance.registerRenderListener(BenchmarkActivity.this);
-        mInstance.renderByUrl(
-            TAG,
-            url,
-            options,
-            null,
-            WXRenderStrategy.APPEND_ASYNC);
       }
     });
   }

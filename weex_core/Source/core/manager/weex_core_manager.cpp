@@ -31,14 +31,6 @@ namespace WeexCore {
         return this->platformBridge;
     }
 
-    WeexCoreManager *WeexCoreManager::setJSBridge(JSBridge *jsBridge) {
-        this->jsBridge = jsBridge;
-    }
-
-    JSBridge* WeexCoreManager::getJSBridge() {
-        return this->jsBridge;
-    }
-
     void WeexCoreManager::SetMeasureFunctionAdapter(MeasureFunctionAdapter *measureFunctionAdapter) {
       this->measureFunctionAdapter = measureFunctionAdapter;
     }

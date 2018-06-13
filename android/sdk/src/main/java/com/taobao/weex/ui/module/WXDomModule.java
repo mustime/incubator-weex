@@ -21,11 +21,9 @@ package com.taobao.weex.ui.module;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.common.WXModule;
 import com.taobao.weex.dom.binding.JSONUtils;
 import com.taobao.weex.ui.action.ActionAddRule;
-import com.taobao.weex.ui.action.ActionGetComponentRect;
 import com.taobao.weex.ui.action.ActionInvokeMethod;
 import com.taobao.weex.ui.action.GraphicActionScrollToElement;
 import com.taobao.weex.ui.action.UpdateComponentDataAction;
@@ -60,15 +58,6 @@ public final class WXDomModule extends WXModule {
     mWXSDKInstance = instance;
   }
 
-  public void callDomMethod(JSONObject task, long... parseNanos) {
-    if (task == null) {
-      return;
-    }
-    String method = (String) task.get(WXBridgeManager.METHOD);
-    JSONArray args = (JSONArray) task.get(WXBridgeManager.ARGS);
-    callDomMethod(method,args,parseNanos);
-  }
-
   public Object callDomMethod(String method, JSONArray args, long... parseNanos) {
 
     if (method == null) {
@@ -94,14 +83,6 @@ public final class WXDomModule extends WXModule {
           new ActionAddRule(mWXSDKInstance.getInstanceId(), args.getString(0), args.getJSONObject(1))
                   .executeAction();
           break;
-        }
-        case GET_COMPONENT_RECT:{
-            if(args == null){
-                return null;
-            }
-            new ActionGetComponentRect(mWXSDKInstance.getInstanceId(), args.getString(0), args.getString(1))
-                    .executeActionOnRender();
-            break;
         }
         case INVOKE_METHOD: {
           if(args == null){

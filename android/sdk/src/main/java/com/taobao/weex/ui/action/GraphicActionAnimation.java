@@ -54,7 +54,6 @@ import com.taobao.weex.utils.WXResourceUtils;
 import com.taobao.weex.utils.WXUtils;
 import com.taobao.weex.utils.WXViewUtils;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class GraphicActionAnimation extends BasicGraphicAction {
@@ -211,10 +210,6 @@ public class GraphicActionAnimation extends BasicGraphicAction {
         public void onAnimationEnd(Animator animation) {
           if (instance == null || instance.isDestroy()) {
             WXLogUtils.e("RenderContextImpl-onAnimationEnd WXSDKInstance == null NPE or instance is destroyed");
-          } else {
-            WXSDKManager.getInstance().callback(instance.getInstanceId(),
-                                                callBack,
-                                                new HashMap<String, Object>());
           }
         }
       };

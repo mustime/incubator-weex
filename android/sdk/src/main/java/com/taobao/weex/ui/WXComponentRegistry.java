@@ -19,10 +19,7 @@
 package com.taobao.weex.ui;
 
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.common.WXException;
 import com.taobao.weex.ui.config.AutoScanConfigRegister;
 import com.taobao.weex.utils.WXLogUtils;
@@ -30,7 +27,6 @@ import com.taobao.weex.utils.WXLogUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -50,27 +46,19 @@ public class WXComponentRegistry {
     AutoScanConfigRegister.preLoad(holder);
 
     //execute task in js thread to make sure register order is same as the order invoke register method.
-    WXBridgeManager.getInstance()
-        .post(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          Map<String, Object> registerInfo = componentInfo;
-          if (registerInfo == null){
-            registerInfo = new HashMap<>();
-          }
-
-          registerInfo.put("type",type);
-          registerInfo.put("methods",holder.getMethods());
-          registerNativeComponent(type, holder);
-          registerJSComponent(registerInfo);
-          sComponentInfos.add(registerInfo);
-        } catch (WXException e) {
-          WXLogUtils.e("register component error:", e);
-        }
-
+    try {
+      Map<String, Object> registerInfo = componentInfo;
+      if (registerInfo == null){
+        registerInfo = new HashMap<>();
       }
-    });
+
+      registerInfo.put("type",type);
+      registerInfo.put("methods",holder.getMethods());
+      registerNativeComponent(type, holder);
+      sComponentInfos.add(registerInfo);
+    } catch (WXException e) {
+      WXLogUtils.e("register component error:", e);
+    }
     return true;
   }
 
@@ -85,30 +73,8 @@ public class WXComponentRegistry {
     return true;
   }
 
-  private static boolean registerJSComponent(Map<String, Object> componentInfo) throws WXException {
-    ArrayList<Map<String, Object>> coms = new ArrayList<>();
-    coms.add(componentInfo);
-    WXSDKManager.getInstance().registerComponents(coms);
-    return true;
-  }
-
   public static IFComponentHolder getComponent(String type) {
     return sTypeComponentMap.get(type);
-  }
-
-  public static void reload(){
-    WXBridgeManager.getInstance().post(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          for(Map<String,Object> com:sComponentInfos){
-            registerJSComponent(com);
-          }
-        } catch (WXException e) {
-          WXLogUtils.e("", e);
-        }
-      }
-    });
   }
 
 }

@@ -18,8 +18,6 @@
  */
 package com.taobao.weex.common;
 
-import com.taobao.weex.bridge.WXJSObject;
-import com.taobao.weex.bridge.WXParams;
 import com.taobao.weex.dom.CSSShorthand;
 import com.taobao.weex.layout.ContentBoxMeasurement;
 
@@ -35,92 +33,6 @@ public interface IWXBridge extends IWXObject {
   int INSTANCE_RENDERING = 1;
   int INSTANCE_RENDERING_ERROR = 0;
 
-  /**
-   * init Weex
-   *
-   * @param framework assets/main.js
-   * @return
-   */
-  int initFramework(String framework, WXParams params);
-
-
-  /**
-   * init Weex
-   *
-   * @param framework assets/main.js
-   * @return
-   */
-  int initFrameworkEnv(String framework, WXParams params, String cacheDir, boolean pieSupport);
-
-  /**
-   * execute javascript function
-   */
-  int execJS(String instanceId, String namespace, String function, WXJSObject[] args);
-
-  /**
-   * execute javascript function, return execute result as json array
-   */
-  byte[] execJSWithResult(String instanceId, String namespace, String function, WXJSObject[] args);
-
-  int execJSService(String javascript);
-
-  /**
-   * take the heap snapshot and serialize the heap to a local file.
-   *
-   * @param filename
-   */
-  void takeHeapSnapshot(String filename);
-
-  /**
-   * createInstance
-   * @param instanceId
-   * @param namespace
-   * @param function
-   * @param args
-   * @return
-   */
-  int createInstanceContext(String instanceId, String namespace, String function, WXJSObject[] args);
-
-  /**
-   * destoryInstance
-   * @param instanceId
-   * @param namespace
-   * @param function
-   * @param args
-   * @return
-   */
-  int destoryInstance(String instanceId, String namespace, String function, WXJSObject[] args);
-
-  /**
-   * execJSOnInstance
-   * @param instanceId
-   * @param script
-   * @param type
-   * @return
-   */
-  String execJSOnInstance(String instanceId, String script, int type);
-
-  /**
-   * js call native
-   */
-  int callNative(String instanceId, byte[] tasks, String callback);
-
-
-  int callNative(String instanceId, String tasks, String callback);
-
-  void reportJSException(String instanceId, String func, String exception);
-
-  Object callNativeModule(String instanceId, String module, String method, byte[] arguments, byte[] options);
-
-  void callNativeComponent(String instanceId, String ref, String method, byte[] arguments, byte[] options);
-
-  int callUpdateFinish(String instanceId, byte[] tasks, String callback);
-
-  int callRefreshFinish(String instanceId, byte[] tasks, String callback);
-
-  void reportServerCrash(String instanceId, String crashFile);
-
-
   int callCreateBody(String instanceId, String componentType, String ref,
                             HashMap<String, String> styles, HashMap<String, String> attributes, HashSet<String> events,
                             float[] margins, float[] paddings, float[] borders);
@@ -132,10 +44,6 @@ public interface IWXBridge extends IWXObject {
   int callRemoveElement(String instanceId, String ref);
 
   int callMoveElement(String instanceId, String ref, String parentref, int index);
-
-  int callAddEvent(String instanceId, String ref, String event);
-
-  int callRemoveEvent(String instanceId, String ref, String event);
 
   int callUpdateStyle(String instanceId, String ref,
                              HashMap<String, Object> styles,

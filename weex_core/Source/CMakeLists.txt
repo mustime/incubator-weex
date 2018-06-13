@@ -12,7 +12,6 @@ add_definitions(-DDEBUG=1)
 add_definitions(-DRENDER_LOG=0)
 add_definitions(-DPERFORMANCE_LOG=0)
 add_definitions(-DLAYOUT_LOG=0)
-add_definitions(-DJSAPI_LOG=0)
 add_definitions(-DDOM_PARSER_LOG=0)
 
 set(COMMON_SRCS
@@ -42,7 +41,6 @@ set(COMMON_SRCS
 
   ./core/moniter/render_performance.cpp
   ./core/manager/weex_core_manager.cpp
-  ./core/bridge/js_bridge.cpp
   ./core/parser/dom_wson.cpp
         )
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/wson)
@@ -54,11 +52,6 @@ SET(FINAL_ADD_LIBRARY
 SET(FINAL_TARGET_LINK_LIBRARIES wson)
 
 if (ANDROID)
-  ## add_subdirectory for subdirectory has a CMakeLists.txt
-  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/IPC)
-  ## include_directories for include head file
-  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IPC)
-
   set (ANDROID_SRCS
     ./android/jniprebuild/jni_load.cc
     ./android/base/jni/android_jni.cpp
@@ -73,17 +66,7 @@ if (ANDROID)
     ./android/bridge/impl/weexcore_impl_android.cpp
     ./android/bridge/impl/measure_mode_impl_android.cpp
     ./android/bridge/impl/content_box_measurement_impl_android.cpp
-    ./android/bridge/impl/jsfunction_impl_android.cpp
     ./android/bridge/impl/native_render_object_utils_impl_android.cpp
-
-    ./android/jsengine/multiprocess/WeexJSConnection.cpp
-    ./android/jsengine/multiprocess/WeexProxy.cpp
-    ./android/jsengine/multiprocess/ExtendJSApi.cpp
-
-
-    ./android/jsengine/api/WeexJSCoreApi.cpp
-     
-
   )
   SET(FINAL_ADD_LIBRARY
           ${FINAL_ADD_LIBRARY}
@@ -94,7 +77,6 @@ if (ANDROID)
           ${FINAL_TARGET_LINK_LIBRARIES}
           wson
           android
-          weexipc
           log
           z
           )

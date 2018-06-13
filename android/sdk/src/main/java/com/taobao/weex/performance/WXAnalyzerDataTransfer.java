@@ -19,8 +19,6 @@ package com.taobao.weex.performance;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.common.WXErrorCode;
-import com.taobao.weex.common.WXJSExceptionInfo;
 import com.taobao.weex.common.WXPerformance;
 
 import org.json.JSONObject;
@@ -78,37 +76,6 @@ public class WXAnalyzerDataTransfer {
     }
     for (IWXAnalyzer transfer : transferList) {
       transfer.transfer(GROUP, MODULE_PERFORMANCE, "instance", data);
-    }
-  }
-
-  public static void transferError(WXJSExceptionInfo exceptionInfo, String instanceId) {
-    if (!WXEnvironment.isApkDebugable()) {
-      return;
-    }
-    List<IWXAnalyzer> transferList = WXSDKManager.getInstance().getWXAnalyzerList();
-    if (null == transferList || transferList.size() == 0) {
-      return;
-    }
-
-    WXSDKInstance instance = WXSDKManager.getInstance().getSDKInstance(instanceId);
-    if (null == instance) {
-      return;
-    }
-    WXErrorCode errorCode = exceptionInfo.getErrCode();
-    String data = "";
-    try {
-      data = new JSONObject()
-              .put("instanceId", instanceId)
-              .put("url", instance.getBundleUrl())
-              .put("errorCode", errorCode.getErrorCode())
-              .put("errorMsg", errorCode.getErrorMsg())
-              .put("errorGroup", errorCode.getErrorGroup())
-              .toString();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    for (IWXAnalyzer transfer : transferList) {
-      transfer.transfer(GROUP, MODULE_ERROR, errorCode.getErrorType().toString(), data);
     }
   }
 

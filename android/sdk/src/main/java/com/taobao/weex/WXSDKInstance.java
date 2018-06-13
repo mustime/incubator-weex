@@ -18,13 +18,14 @@
  */
 package com.taobao.weex;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
@@ -43,26 +44,16 @@ import com.taobao.weex.adapter.IWXHttpAdapter;
 import com.taobao.weex.adapter.IWXImgLoaderAdapter;
 import com.taobao.weex.adapter.IWXUserTrackAdapter;
 import com.taobao.weex.adapter.URIAdapter;
-import com.taobao.weex.appfram.websocket.IWebSocketAdapter;
 import com.taobao.weex.bridge.EventResult;
-import com.taobao.weex.bridge.NativeInvokeHelper;
-import com.taobao.weex.bridge.SimpleJSCallback;
 import com.taobao.weex.bridge.WXBridgeManager;
-import com.taobao.weex.bridge.WXModuleManager;
 import com.taobao.weex.common.Constants;
 import com.taobao.weex.common.Destroyable;
-import com.taobao.weex.common.IWXDebugProxy;
 import com.taobao.weex.common.OnWXScrollListener;
 import com.taobao.weex.common.WXErrorCode;
-import com.taobao.weex.common.WXModule;
 import com.taobao.weex.common.WXPerformance;
-import com.taobao.weex.common.WXPerformance.Dimension;
 import com.taobao.weex.common.WXRefreshData;
 import com.taobao.weex.common.WXRenderStrategy;
-import com.taobao.weex.common.WXRequest;
-import com.taobao.weex.common.WXResponse;
 import com.taobao.weex.dom.WXEvent;
-import com.taobao.weex.http.WXHttpUtil;
 import com.taobao.weex.layout.ContentBoxMeasurement;
 import com.taobao.weex.performance.WXAnalyzerDataTransfer;
 import com.taobao.weex.tracing.WXTracing;
@@ -71,11 +62,9 @@ import com.taobao.weex.ui.component.NestedContainer;
 import com.taobao.weex.ui.component.WXBasicComponentType;
 import com.taobao.weex.ui.component.WXComponent;
 import com.taobao.weex.ui.component.WXComponentFactory;
-import com.taobao.weex.ui.component.WXEmbed;
 import com.taobao.weex.ui.flat.FlatGUIContext;
 import com.taobao.weex.ui.view.WXScrollView;
 import com.taobao.weex.utils.Trace;
-import com.taobao.weex.utils.WXExceptionUtils;
 import com.taobao.weex.utils.WXFileUtils;
 import com.taobao.weex.utils.WXJsonUtils;
 import com.taobao.weex.utils.WXLogUtils;
@@ -89,11 +78,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.taobao.weex.http.WXHttpUtil.KEY_USER_AGENT;
 
 
 /**
@@ -114,14 +100,13 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   private final String mInstanceId;
   private RenderContainer mRenderContainer;
   private WXComponent mRootComp;
-  private boolean mRendered;
+  public boolean mRendered;
   private WXRefreshData mLastRefreshData;
   private NestedInstanceInterceptor mNestedInstanceInterceptor;
   private String mBundleUrl = "";
   public static String requestUrl = "requestUrl";
   private boolean isDestroy=false;
   private Map<String,Serializable> mUserTrackParams;
-  private NativeInvokeHelper mNativeInvokeHelper;
   private boolean isCommit=false;
   private WXGlobalEventReceiver mGlobalEventReceiver=null;
   private boolean trackComponent;
@@ -191,24 +176,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
   private Map<Long, ContentBoxMeasurement> mContentBoxMeasurements = new ArrayMap<>();
 
-  /**
-   * set make weexCore run in single process mode
-   * @param flag true means weexCore run in single process mode or multi process mode
-   */
-  public void setUseSingleProcess(boolean flag) {
-    WXBridgeManager.getInstance().setUseSingleProcess(flag);
-  }
-
-  /**
-   * set open SandBox
-   * @param flag
-   */
-  public void setUseSandBox(boolean flag) {
-    WXBridgeManager.getInstance().setSandBoxContext(flag);
-  }
-
-  public PriorityQueue<WXEmbed> hiddenEmbeds;
-
   private int maxHiddenEmbedsNum = -1; //max hidden embed num, -1 standard for ulimit
 
   public int getMaxHiddenEmbedsNum() {
@@ -251,19 +218,9 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
     mRenderContainer = a;
     if (mRenderContainer != null && mRenderContainer.getLayoutParams() != null
             && mRenderContainer.getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT) {
-      WXBridgeManager.getInstance().post(new Runnable() {
-        @Override
-        public void run() {
-          WXBridgeManager.getInstance().setRenderContentWrapContentToCore(true, getInstanceId());
-        }
-      });
+      WXBridgeManager.getInstance().setRenderContentWrapContentToCore(true, getInstanceId());
     } else {
-      WXBridgeManager.getInstance().post(new Runnable() {
-        @Override
-        public void run() {
-          WXBridgeManager.getInstance().setRenderContentWrapContentToCore(false, getInstanceId());
-        }
-      });
+      WXBridgeManager.getInstance().setRenderContentWrapContentToCore(false, getInstanceId());
     }
   }
 
@@ -381,7 +338,7 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
   public void init(Context context) {
     mContext = context;
-    mNativeInvokeHelper = new NativeInvokeHelper(mInstanceId);
+
 
     mWXPerformance = new WXPerformance();
     mWXPerformance.WXSDKVersion = WXEnvironment.WXSDK_VERSION;
@@ -403,10 +360,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
   public ComponentObserver getComponentObserver(){
     return mComponentObserver;
-  }
-
-  public NativeInvokeHelper getNativeInvokeHelper() {
-    return mNativeInvokeHelper;
   }
 
   @Deprecated
@@ -441,88 +394,7 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   public void setIWXUserTrackAdapter(IWXUserTrackAdapter adapter) {
   }
 
-  /**
-   * Render template asynchronously, use {@link WXRenderStrategy#APPEND_ASYNC} as render strategy
-   * @param template bundle js
-   * @param options  os   iphone/android/ipad
-   *                 weexversion    Weex version(like 1.0.0)
-   *                 appversion     App version(like 1.0.0)
-   *                 devid        Device id(like Aqh9z8dRJNBhmS9drLG5BKCmXhecHUXIZoXOctKwFebH)
-   *                 sysversion    Device system version(like 5.4.4、7.0.4, should be used with os)
-   *                 sysmodel     Device model(like iOS:"MGA82J/A", android:"MI NOTE LTE")
-   *                 Time    UNIX timestamp, UTC+08:00
-   *                 TTID(Optional)
-   *                 MarkertId
-   *                 Appname(Optional)  tm,tb,qa
-   *                 Bundleurl(Optional)  template url
-   * @param jsonInitData Initial data for rendering
-   */
-  public void render(String template, Map<String, Object> options, String jsonInitData) {
-    render(template, options, jsonInitData, WXRenderStrategy.APPEND_ASYNC);
-  }
-
-  /**
-   * Render template asynchronously
-   * @param template bundle js
-   * @param options  os   iphone/android/ipad
-   *                 weexversion    Weex version(like 1.0.0)
-   *                 appversion     App version(like 1.0.0)
-   *                 devid        Device id(like Aqh9z8dRJNBhmS9drLG5BKCmXhecHUXIZoXOctKwFebH)
-   *                 sysversion    Device system version(like 5.4.4、7.0.4, should be used with os)
-   *                 sysmodel     Device model(like iOS:"MGA82J/A", android:"MI NOTE LTE")
-   *                 Time    UNIX timestamp, UTC+08:00
-   *                 TTID(Optional)
-   *                 MarkertId
-   *                 Appname(Optional)  tm,tb,qa
-   *                 Bundleurl(Optional)  template url
-   * @param jsonInitData Initial data for rendering
-   * @param flag     RenderStrategy {@link WXRenderStrategy}
-   */
-  @Deprecated
-  public void render(String template, Map<String, Object> options, String jsonInitData, WXRenderStrategy flag) {
-    render(WXPerformance.DEFAULT, template, options, jsonInitData, flag);
-  }
-
-  /**
-   * Render template asynchronously
-   *
-   * @param pageName, used for performance log.
-   * @param template bundle js
-   * @param options  os   iphone/android/ipad
-   *                 weexversion    Weex version(like 1.0.0)
-   *                 appversion     App version(like 1.0.0)
-   *                 devid        Device id(like Aqh9z8dRJNBhmS9drLG5BKCmXhecHUXIZoXOctKwFebH)
-   *                 sysversion    Device system version(like 5.4.4、7.0.4, should be used with os)
-   *                 sysmodel     Device model(like iOS:"MGA82J/A", android:"MI NOTE LTE")
-   *                 Time    UNIX timestamp, UTC+08:00
-   *                 TTID(Optional)
-   *                 MarkertId
-   *                 Appname(Optional)  tm,tb,qa
-   *                 Bundleurl(Optional)  template url
-   * @param jsonInitData Initial data for rendering
-   * @param flag     RenderStrategy {@link WXRenderStrategy}
-   */
-  public void render(String pageName, String template, Map<String, Object> options, String jsonInitData, WXRenderStrategy flag) {
-    mWXPerformance.beforeInstanceRender(mInstanceId);
-
-    if(WXEnvironment.isApkDebugable() && WXPerformance.DEFAULT.equals(pageName)){
-      WXLogUtils.e("WXSDKInstance", "Please set your pageName or your js bundle url !!!!!!!");
-
-      if (getUIContext() != null) {
-        new AlertDialog.Builder(getUIContext())
-                .setTitle("Error: Missing pageName")
-                .setMessage("We highly recommend you to set pageName. Call" +
-                        "\nWXSDKInstance#render(String pageName, String template, Map<String, Object> options, String jsonInitData, WXRenderStrategy flag)\n" +
-                        "to fix it.")
-                .show();
-      }
-
-      return;
-    }
-    renderInternal(pageName,template,options,jsonInitData,flag);
-  }
-
-  private void ensureRenderArchor(){
+  public void ensureRenderArchor(){
     if(mRenderContainer == null){
       if (getContext() != null) {
         setRenderContainer(new RenderContainer(getContext()));
@@ -534,161 +406,9 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
     }
   }
 
-  private void renderInternal(String pageName,
-                              String template,
-                              Map<String, Object> options,
-                              String jsonInitData,
-                              WXRenderStrategy flag){
-    if (mRendered || TextUtils.isEmpty(template)) {
-      return;
-    }
-
-    mWXPerformance.pageName = (TextUtils.isEmpty(pageName) ? "defaultBundleUrl":pageName);
-    if (TextUtils.isEmpty(mBundleUrl)) {
-      mBundleUrl = mWXPerformance.pageName;
-    }
-
-    WXLogUtils.d("WXSDKInstance", "Start render page: " + pageName);
-
-    if (WXTracing.isAvailable()) {
-      WXTracing.TraceEvent traceEvent = WXTracing.newEvent("executeBundleJS", mInstanceId, -1);
-      traceEvent.traceId = mExecJSTraceId;
-      traceEvent.iid = mInstanceId;
-      traceEvent.tname = "JSThread";
-      traceEvent.ph = "B";
-      traceEvent.submit();
-      mRenderStartNanos = System.nanoTime();
-    }
-
-    ensureRenderArchor();
-
-    Map<String, Object> renderOptions = options;
-    if (renderOptions == null) {
-      renderOptions = new HashMap<>();
-    }
-
-    if (WXEnvironment.sDynamicMode && !TextUtils.isEmpty(WXEnvironment.sDynamicUrl) && renderOptions.get("dynamicMode") == null) {
-      renderOptions.put("dynamicMode", "true");
-      renderByUrl(pageName, WXEnvironment.sDynamicUrl, renderOptions, jsonInitData, flag);
-      return;
-    }
-
-    mWXPerformance.JSTemplateSize = template.length() / 1024f;
-
-    mRenderStartTime = System.currentTimeMillis();
-    mRenderStrategy = flag;
-
-    WXSDKManager.getInstance().setCrashInfo(WXEnvironment.WEEX_CURRENT_KEY,pageName);
-
-    WXSDKManager.getInstance().createInstance(this, template, renderOptions, jsonInitData);
-    mRendered = true;
-  }
-
-  private void renderByUrlInternal(String pageName,
-                                   final String url,
-                                   Map<String, Object> options,
-                                   final String jsonInitData,
-                                   final WXRenderStrategy flag) {
-
-    ensureRenderArchor();
-    pageName = wrapPageName(pageName, url);
-    mBundleUrl = url;
-    if(WXSDKManager.getInstance().getValidateProcessor()!=null) {
-      mNeedValidate = WXSDKManager.getInstance().getValidateProcessor().needValidate(mBundleUrl);
-    }
-
-    Map<String, Object> renderOptions = options;
-    if (renderOptions == null) {
-      renderOptions = new HashMap<>();
-    }
-    if (!renderOptions.containsKey(BUNDLE_URL)) {
-      renderOptions.put(BUNDLE_URL, url);
-    }
-
-    Uri uri = Uri.parse(url);
-    if (uri != null && TextUtils.equals(uri.getScheme(), "file")) {
-      render(pageName, WXFileUtils.loadFileOrAsset(assembleFilePath(uri), mContext), renderOptions, jsonInitData, flag);
-      return;
-    }
-
-    IWXHttpAdapter adapter = WXSDKManager.getInstance().getIWXHttpAdapter();
-
-    WXRequest wxRequest = new WXRequest();
-    wxRequest.url = rewriteUri(Uri.parse(url),URIAdapter.BUNDLE).toString();
-    if(wxRequest != null && !TextUtils.isEmpty(wxRequest.url)){
-      requestUrl = wxRequest.url;
-    }else {
-      requestUrl = pageName;
-    }
-
-    if (wxRequest.paramMap == null) {
-      wxRequest.paramMap = new HashMap<String, String>();
-    }
-    wxRequest.instanceId = getInstanceId();
-    wxRequest.paramMap.put(KEY_USER_AGENT, WXHttpUtil.assembleUserAgent(mContext,WXEnvironment.getConfig()));
-    WXHttpListener httpListener =
-            new WXHttpListener(pageName, renderOptions, jsonInitData, flag, System.currentTimeMillis());
-    httpListener.setSDKInstance(this);
-    adapter.sendRequest(wxRequest, (IWXHttpAdapter.OnHttpListener) httpListener);
-  }
-
-  /**
-   * Use {@link #render(String, String, Map, String, WXRenderStrategy)} instead.
-   * @param pageName
-   * @param template
-   * @param options
-   * @param jsonInitData
-   * @param width
-   * @param height
-   * @param flag
-   */
-  @Deprecated
-  public void render(String pageName, String template, Map<String, Object> options, String jsonInitData, int width, int height, WXRenderStrategy flag) {
-    render(pageName,template,options,jsonInitData,flag);
-  }
-
-  /**
-   * Render template asynchronously, use {@link WXRenderStrategy#APPEND_ASYNC} as render strategy
-   * @param template bundle js
-   */
-  public void render(String template) {
-    render(WXPerformance.DEFAULT, template, null, null, mRenderStrategy);
-  }
-
-  /**
-   * Use {@link #render(String)} instead.
-   * @param template
-   * @param width
-   * @param height
-   */
-  @Deprecated
-  public void render(String template, int width, int height) {
-    render(template);
-  }
-
-  /**
-   * Use {@link #renderByUrl(String, String, Map, String, WXRenderStrategy)} instead.
-   * @param pageName
-   * @param url
-   * @param options
-   * @param jsonInitData
-   * @param width
-   * @param height
-   * @param flag
-   */
-  @Deprecated
-  public void renderByUrl(String pageName, final String url, Map<String, Object> options, final String jsonInitData, final int width, final int height, final WXRenderStrategy flag){
-    renderByUrl(pageName,url,options,jsonInitData,flag);
-  }
-
-  public void renderByUrl(String pageName, final String url, Map<String, Object> options, final String jsonInitData, final WXRenderStrategy flag) {
-    renderByUrlInternal(pageName,url,options,jsonInitData,flag);
-  }
-
   private String wrapPageName(String pageName, String url) {
     if(TextUtils.equals(pageName, WXPerformance.DEFAULT)){
       pageName = url;
-      WXExceptionUtils.degradeUrl = pageName;
       try {
         Uri uri=Uri.parse(url);
         if(uri!=null){
@@ -709,24 +429,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
       return uri.getPath().replaceFirst("/","");
     }
     return "";
-  }
-
-  public void reloadPage(boolean reloadThis) {
-
-    WXSDKEngine.reload();
-
-    if (reloadThis) {
-      if (mContext != null)  {
-        Intent intent = new Intent();
-        intent.setAction(IWXDebugProxy.ACTION_INSTANCE_RELOAD);
-        intent.putExtra("url", mBundleUrl);
-        mContext.sendBroadcast(intent);
-      }
-      // mRendered = false;
-      //    destroy();
-      // renderInternal(mPackage, mTemplate, mOptions, mJsonInitData, mFlag);
-      // refreshInstance("{}");
-    }
   }
 
   /**
@@ -811,11 +513,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
     return mStatisticsListener;
   }
 
-  public @Nullable
-  IWebSocketAdapter getWXWebSocketAdapter() {
-    return WXSDKManager.getInstance().getIWXWebSocketAdapter();
-  }
-
   @Deprecated
   public void reloadImages() {
     if (mScrollView == null) {
@@ -873,10 +570,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
   @Override
   public void onActivityCreate() {
-
-    // module listen Activity onActivityCreate
-    WXModuleManager.onActivityCreate(getInstanceId());
-
     if(mRootComp != null) {
       mRootComp.onActivityCreate();
     }else{
@@ -889,9 +582,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
   @Override
   public void onActivityStart() {
-
-    // module listen Activity onActivityCreate
-    WXModuleManager.onActivityStart(getInstanceId());
     if(mRootComp != null) {
       mRootComp.onActivityStart();
     }else{
@@ -901,8 +591,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   }
 
   public boolean onCreateOptionsMenu(Menu menu) {
-
-    WXModuleManager.onCreateOptionsMenu(getInstanceId(),menu);
     if(mRootComp != null) {
       mRootComp.onCreateOptionsMenu(menu);
     }else{
@@ -928,8 +616,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
       WXAnalyzerDataTransfer.transferPerformance(mWXPerformance, getInstanceId());
       isCommit=true;
     }
-    // module listen Activity onActivityPause
-    WXModuleManager.onActivityPause(getInstanceId());
     if(mRootComp != null) {
       mRootComp.onActivityPause();
     }else{
@@ -950,10 +636,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
   @Override
   public void onActivityResume() {
-
-    // notify onActivityResume callback to module
-    WXModuleManager.onActivityResume(getInstanceId());
-
     if(mRootComp != null) {
       mRootComp.onActivityResume();
     }else{
@@ -979,10 +661,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
   @Override
   public void onActivityStop() {
-
-    // notify onActivityResume callback to module
-    WXModuleManager.onActivityStop(getInstanceId());
-
     if(mRootComp != null) {
       mRootComp.onActivityStop();
     }else{
@@ -994,8 +672,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
   @Override
   public void onActivityDestroy() {
-    WXModuleManager.onActivityDestroy(getInstanceId());
-
     if(mRootComp != null) {
       mRootComp.onActivityDestroy();
     }else{
@@ -1007,9 +683,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
   @Override
   public boolean onActivityBack() {
-
-    WXModuleManager.onActivityBack(getInstanceId());
-
     if(mRootComp != null) {
       return mRootComp.onActivityBack();
     }else{
@@ -1041,8 +714,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   }
 
   public void onActivityResult(int requestCode, int resultCode, Intent data){
-    WXModuleManager.onActivityResult(getInstanceId(),requestCode,resultCode,data);
-
     if(mRootComp != null) {
       mRootComp.onActivityResult(requestCode,resultCode,data);
     }else{
@@ -1052,9 +723,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
 
   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-    WXModuleManager.onRequestPermissionsResult(getInstanceId(),requestCode,permissions,grantResults);
-
     if(mRootComp != null) {
        mRootComp.onRequestPermissionsResult(requestCode,permissions,grantResults);
     }else{
@@ -1386,11 +1054,10 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
       }
       mWXPerformance.afterInstanceDestroy(mInstanceId);
 
-      WXBridgeManager.getInstance().post(new Runnable() {
+      new Handler(Looper.getMainLooper()).post(new Runnable() {
         @Override
         public void run() {
           WXBridgeManager.getInstance().onInstanceClose(getInstanceId());
-          inactiveAddElementAction.clear();
         }
       });
     }
@@ -1496,7 +1163,7 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
           final boolean isWidthWrapContent = layoutParams.width == ViewGroup.LayoutParams.WRAP_CONTENT;
           final boolean isHeightWrapContent = layoutParams.height == ViewGroup.LayoutParams.WRAP_CONTENT;
 
-          WXBridgeManager.getInstance().post(new Runnable() {
+          new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
               WXBridgeManager.getInstance().setDefaultRootSize(getInstanceId(), realWidth, realHeight, isWidthWrapContent,
@@ -1515,7 +1182,8 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
     List<String> callbacks=mGlobalEvents.get(eventName);
     if(callbacks!=null){
       for(String callback:callbacks){
-        WXSDKManager.getInstance().callback(mInstanceId,callback,params,true);
+//        WXSDKManager.getInstance().callback(mInstanceId,callback,params,true);
+        // XXTODO
       }
     }
   }
@@ -1584,51 +1252,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
     mGlobalEvents.remove(eventName);
   }
 
-  /**
-   * Notifies WEEX that this event has occurred
-   * @param eventName WEEX register event
-   * @param module Events occur in this Module
-   * @param params The parameters to be notified to WEEX are required
-   */
-  public void fireModuleEvent(String eventName, WXModule module,Map<String, Object> params) {
-    if (TextUtils.isEmpty(eventName) || module == null) {
-      return;
-    }
-
-    Map<String, Object> event = new HashMap<>();
-    event.put("type", eventName);
-    event.put("module", module.getModuleName());
-    event.put("data", params);
-
-    List<String> callbacks = module.getEventCallbacks(eventName);
-    if (callbacks != null) {
-      for (String callback : callbacks) {
-        SimpleJSCallback jsCallback = new SimpleJSCallback(mInstanceId, callback);
-        if (module.isOnce(callback)) {
-          jsCallback.invoke(event);
-        } else {
-          jsCallback.invokeAndKeepAlive(event);
-        }
-      }
-    }
-  }
-
-  /**
-   * Check whether the current module registered the event
-   * @param eventName EventName register in weex
-   * @param module Events occur in this Module
-   * @return  register->true
-   */
-  public boolean checkModuleEventRegistered(String eventName,WXModule module) {
-    if (module != null) {
-      List<String> events = module.getEventCallbacks(eventName);
-      if (events != null && events.size() > 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   public WXPerformance getWXPerformance(){
     return mWXPerformance;
   }
@@ -1676,182 +1299,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   public void onHttpStart(){
     if (!mEnd){
       mWXPerformance.fsRequestNum++;
-    }
-  }
-
-  /**
-   * load bundle js listener
-   */
-  class WXHttpListener implements IWXHttpAdapter.OnHttpListener {
-
-    private String pageName;
-    private Map<String, Object> options;
-    private String jsonInitData;
-    private WXRenderStrategy flag;
-    private WXSDKInstance instance;
-    private long startRequestTime;
-    private int traceId;
-
-    private WXHttpListener(String pageName, Map<String, Object> options, String jsonInitData, WXRenderStrategy flag, long startRequestTime) {
-      this.pageName = pageName;
-      this.options = options;
-      this.jsonInitData = jsonInitData;
-      this.flag = flag;
-      this.startRequestTime = startRequestTime;
-      this.traceId = WXTracing.nextId();
-
-      if (WXTracing.isAvailable()) {
-        WXTracing.TraceEvent event = WXTracing.newEvent("downloadBundleJS", mInstanceId, -1);
-        event.iid = mInstanceId;
-        event.tname = "Network";
-        event.ph = "B";
-        event.traceId = traceId;
-        event.submit();
-      }
-    }
-
-    public void setSDKInstance(WXSDKInstance instance) {
-      this.instance = instance;
-    }
-
-    @Override
-    public void onHttpStart() {
-      if (this.instance != null
-              && this.instance.getWXStatisticsListener() != null) {
-        this.instance.getWXStatisticsListener().onHttpStart();
-      }
-    }
-
-    @Override
-    public void onHeadersReceived(int statusCode, Map<String,List<String>> headers) {
-      if (this.instance != null
-              && this.instance.getWXStatisticsListener() != null) {
-        this.instance.getWXStatisticsListener().onHeadersReceived();
-        this.instance.onHttpStart();
-      }
-      if(this.instance != null
-              && this.instance.responseHeaders != null
-              && headers != null){
-        this.instance.responseHeaders.putAll(headers);
-      }
-    }
-
-    @Override
-    public void onHttpUploadProgress(int uploadProgress) {
-
-    }
-
-    @Override
-    public void onHttpResponseProgress(int loadedLength) {
-
-    }
-
-    @Override
-    public void onHttpFinish(WXResponse response) {
-      if (this.instance != null
-              && this.instance.getWXStatisticsListener() != null) {
-        this.instance.getWXStatisticsListener().onHttpFinish();
-      }
-
-      if (WXTracing.isAvailable()) {
-        WXTracing.TraceEvent event = WXTracing.newEvent("downloadBundleJS", mInstanceId, -1);
-        event.traceId = traceId;
-        event.tname = "Network";
-        event.ph = "E";
-        event.extParams = new HashMap<>();
-        if (response != null && response.originalData != null) {
-          event.extParams.put("BundleSize", response.originalData.length);
-        }
-        event.submit();
-      }
-
-      mWXPerformance.networkTime = System.currentTimeMillis() - startRequestTime;
-      if(response.extendParams!=null){
-        Object actualNetworkTime=response.extendParams.get("actualNetworkTime");
-        mWXPerformance.actualNetworkTime=actualNetworkTime instanceof Long?(long)actualNetworkTime:0;
-        WXLogUtils.renderPerformanceLog("actualNetworkTime", mWXPerformance.actualNetworkTime);
-
-        Object pureNetworkTime=response.extendParams.get("pureNetworkTime");
-        mWXPerformance.pureNetworkTime=pureNetworkTime instanceof Long?(long)pureNetworkTime:0;
-        WXLogUtils.renderPerformanceLog("pureNetworkTime", mWXPerformance.pureNetworkTime);
-
-        Object connectionType=response.extendParams.get("connectionType");
-        mWXPerformance.connectionType=connectionType instanceof String?(String)connectionType:"";
-
-        Object packageSpendTime=response.extendParams.get("packageSpendTime");
-        mWXPerformance.packageSpendTime=packageSpendTime instanceof Long ?(long)packageSpendTime:0;
-
-        Object syncTaskTime=response.extendParams.get("syncTaskTime");
-        mWXPerformance.syncTaskTime=syncTaskTime instanceof Long ?(long)syncTaskTime:0;
-
-        Object requestType=response.extendParams.get("requestType");
-        mWXPerformance.requestType=requestType instanceof String?(String)requestType:"none";
-
-        Object cacheType = response.extendParams.get(Dimension.cacheType.toString());
-        if(cacheType instanceof String){
-          mWXPerformance.cacheType = (String) cacheType;
-        }
-
-        Object zCacheInfo = response.extendParams.get("zCacheInfo");
-        mWXPerformance.zCacheInfo = zCacheInfo instanceof String?(String)zCacheInfo:"";
-
-        if(isNet(mWXPerformance.requestType) && mUserTrackAdapter!=null){
-          WXPerformance performance=new WXPerformance();
-          if(!TextUtils.isEmpty(mBundleUrl)){
-            try {
-              performance.args= Uri.parse(mBundleUrl).buildUpon().clearQuery().toString();
-            } catch (Exception e) {
-              performance.args=pageName;
-            }
-          }
-          if(!"200".equals(response.statusCode)){
-            performance.errCode=WXErrorCode.WX_ERR_JSBUNDLE_DOWNLOAD.getErrorCode();
-            performance.appendErrMsg(response.errorCode);
-            performance.appendErrMsg("|");
-            performance.appendErrMsg(response.errorMsg);
-
-          }else if("200".equals(response.statusCode) && (response.originalData==null || response.originalData.length<=0)){
-            performance.errCode=WXErrorCode.WX_ERR_JSBUNDLE_DOWNLOAD.getErrorCode();
-            performance.appendErrMsg(response.statusCode);
-            performance.appendErrMsg("|template is null!");
-          }else {
-            performance.errCode=WXErrorCode.WX_SUCCESS.getErrorCode();
-          }
-
-          if (mUserTrackAdapter != null) {
-            mUserTrackAdapter.commit(getContext(), null, IWXUserTrackAdapter.JS_DOWNLOAD, performance, null);
-          }
-        }
-      }
-      WXLogUtils.renderPerformanceLog("networkTime", mWXPerformance.networkTime);
-      if (response!=null && response.originalData!=null && TextUtils.equals("200", response.statusCode)) {
-        String template = new String(response.originalData);
-        render(pageName, template, options, jsonInitData, flag);
-
-        // check content-type
-      } else if (TextUtils.equals(WXErrorCode.WX_DEGRAD_ERR_BUNDLE_CONTENTTYPE_ERROR.getErrorCode(),
-              response.statusCode)) {
-        WXLogUtils.e("user intercept: WX_DEGRAD_ERR_BUNDLE_CONTENTTYPE_ERROR");
-        onRenderError(WXErrorCode.WX_DEGRAD_ERR_BUNDLE_CONTENTTYPE_ERROR.getErrorCode(),
-                "|response.errorMsg==" + response.errorMsg +
-                        "|instance.getTemplateInfo == \n" + instance.getTemplateInfo() +
-                        "|instance bundleUrl = \n" + instance.getBundleUrl() +
-                        "|instance requestUrl = \n" + Uri.decode(WXSDKInstance.requestUrl)
-        );
-
-        // check content-length
-      } else if (response!=null && response.originalData!=null && TextUtils.equals("-206", response.statusCode)) {
-        WXLogUtils.e("user intercept: WX_DEGRAD_ERR_NETWORK_CHECK_CONTENT_LENGTH_FAILED");
-        onRenderError(
-                WXErrorCode.WX_DEGRAD_ERR_NETWORK_CHECK_CONTENT_LENGTH_FAILED.getErrorCode(),
-                WXErrorCode.WX_DEGRAD_ERR_NETWORK_CHECK_CONTENT_LENGTH_FAILED.getErrorCode() +
-                        "|response.errorMsg==" + response.errorMsg +
-                        "|instance.getTemplateInfo == \n" + instance.getTemplateInfo());
-      }
-      else {
-        onRenderError(WXErrorCode.WX_DEGRAD_ERR_NETWORK_BUNDLE_DOWNLOAD_FAILED.getErrorCode(),
-                response.errorMsg);
-      }
     }
   }
 
@@ -1937,7 +1384,7 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   public void OnVSync() {
     boolean forceLayout = WXBridgeManager.getInstance().notifyLayout(getInstanceId());
     if(forceLayout) {
-      WXBridgeManager.getInstance().post(new Runnable() {
+      new Handler(Looper.getMainLooper()).post(new Runnable() {
         @Override
         public void run() {
           WXBridgeManager.getInstance().forceLayout(getInstanceId());

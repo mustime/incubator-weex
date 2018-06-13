@@ -23,7 +23,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -31,15 +30,14 @@ import android.widget.FrameLayout;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.WXSDKManager;
 import com.taobao.weex.common.Constants;
-import com.taobao.weex.common.WXErrorCode;
 import com.taobao.weex.ui.component.WXComponent;
 import com.taobao.weex.ui.component.WXDiv;
 import com.taobao.weex.ui.flat.widget.Widget;
 import com.taobao.weex.ui.view.gesture.WXGesture;
 import com.taobao.weex.ui.view.gesture.WXGestureObservable;
-import com.taobao.weex.utils.WXExceptionUtils;
 import com.taobao.weex.utils.WXLogUtils;
 import com.taobao.weex.utils.WXViewUtils;
+
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
@@ -121,11 +119,7 @@ public class WXFrameLayout extends FrameLayout implements WXGestureObservable,IR
   private int reportLayerOverFlowError() {
     int deep = calLayerDeep(this, 0);
     if (getComponent() != null) {
-      WXExceptionUtils.commitCriticalExceptionRT(getComponent().getInstanceId(),
-              WXErrorCode.WX_RENDER_ERR_LAYER_OVERFLOW,
-              "draw android view",
-              WXErrorCode.WX_RENDER_ERR_LAYER_OVERFLOW.getErrorMsg() + "Layer overflow limit error: " + deep + " layers!",
-              null);
+      WXLogUtils.e("weex", "Layer overflow limit error: " + deep + " layers!");
     }
     return deep;
   }

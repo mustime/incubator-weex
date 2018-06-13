@@ -1,4 +1,3 @@
-com/taobao/weex/bridge/WXJsFunctions.java
 com/taobao/weex/ui/component/list/template/jni/NativeRenderObjectUtils.java
 com/taobao/weex/base/SystemMessageHandler.java
 com/taobao/weex/bridge/WXBridge.java

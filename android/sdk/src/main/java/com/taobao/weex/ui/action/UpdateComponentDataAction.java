@@ -22,7 +22,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.bridge.SimpleJSCallback;
 import com.taobao.weex.ui.component.WXComponent;
 import com.taobao.weex.ui.component.list.template.CellDataManager;
 import com.taobao.weex.ui.component.list.template.WXRecyclerTemplateList;
@@ -59,8 +58,9 @@ public class UpdateComponentDataAction extends BasicGraphicAction{
             WXRecyclerTemplateList templateList = (WXRecyclerTemplateList) component;
             templateList.getCellDataManager().updateVirtualComponentData(virtualComponentId, data);
             templateList.notifyUpdateList();
-            SimpleJSCallback jsCallback = new SimpleJSCallback(component.getInstanceId(), callback);
-            jsCallback.invoke(true);
+            // XXTODO
+//            SimpleJSCallback jsCallback = new SimpleJSCallback(component.getInstanceId(), callback);
+//            jsCallback.invoke(true);
         }else{
             WXLogUtils.e("recycler-list wrong virtualComponentId " + virtualComponentId);
         }
