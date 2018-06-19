@@ -60,7 +60,7 @@ namespace WeexCore {
 
         Bridge *getPlatformBridge();
 
-        WeexCoreManager *setPlatformBridge(Bridge *pBridge);
+        void setPlatformBridge(Bridge *pBridge);
 
         void SetMeasureFunctionAdapter(MeasureFunctionAdapter *measureFunctionAdapter);
 

@@ -23,14 +23,14 @@ namespace WeexCore {
 
     WeexCoreManager *WeexCoreManager::m_pInstance = nullptr;
 
-    WeexCoreManager *WeexCoreManager::setPlatformBridge(Bridge *pBridge) {
+    void WeexCoreManager::setPlatformBridge(Bridge *pBridge) {
         this->platformBridge = pBridge;
     }
 
     Bridge* WeexCoreManager::getPlatformBridge() {
         return this->platformBridge;
     }
-
+    
     void WeexCoreManager::SetMeasureFunctionAdapter(MeasureFunctionAdapter *measureFunctionAdapter) {
       this->measureFunctionAdapter = measureFunctionAdapter;
     }

@@ -91,9 +91,8 @@ static void RegisterCoreEnv(JNIEnv* env, jobject jcaller,
     jstring key,
     jstring value);
 
-static void SetViewPortWidth(JNIEnv* env, jobject jcaller,
-    jstring instanceId,
-    jfloat value);
+static void UpdateGlobalConfig(JNIEnv* env, jobject jcaller,
+    jstring config);
 
 // Step 2: method stubs.
 
@@ -201,12 +200,11 @@ static const JNINativeMethod kMethodsWXBridge[] = {
 "Ljava/lang/String;"
 ")"
 "V", reinterpret_cast<void*>(RegisterCoreEnv) },
-    { "nativeSetViewPortWidth",
+    { "nativeUpdateGlobalConfig",
 "("
 "Ljava/lang/String;"
-"F"
 ")"
-"V", reinterpret_cast<void*>(SetViewPortWidth) },
+"V", reinterpret_cast<void*>(UpdateGlobalConfig) },
 };
 
 static bool CreateRoot(JNIEnv* env, jobject jcaller, jstring instanceId, jstring layoutPath, jstring stylePath);

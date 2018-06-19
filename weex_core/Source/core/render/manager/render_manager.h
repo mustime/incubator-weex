@@ -16,80 +16,101 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#ifndef RenderManager_h
-#define RenderManager_h
+#ifndef CORE_RENDER_MANAGER_RENDER_MANAGER_H_
+#define CORE_RENDER_MANAGER_RENDER_MANAGER_H_
 
 #include <map>
 #include <string>
-#include <stdbool.h>
 #include <core/parser/dom_json.h>
-#include <core/layout/measure_func_adapter.h>
+
+#include "core/css/constants_value.h"
 
 namespace WeexCore {
 
-  class RenderPage;
+class RenderPage;
 
-  class RenderManager {
+class RenderManager {
+ private:
+  RenderManager() {
+    this->viewport_width_ = kDefaultViewPortWidth;
+  }
 
-  private:
-    RenderManager() {}
+  ~RenderManager() {}
 
-    ~RenderManager() {}
-
-    //just to release singleton object
-    class Garbo {
-    public:
-      ~Garbo() {
-        if (RenderManager::m_pInstance) {
-          delete RenderManager::m_pInstance;
-        }
+  // just to release singleton object
+  class Garbo {
+   public:
+    ~Garbo() {
+      if (RenderManager::g_pInstance) {
+        delete RenderManager::g_pInstance;
       }
-    };
+    }
+  };
 
-    static Garbo garbo;
+  static Garbo garbo;
 
-  public:
+ public:
+  void Batch(const std::string &page_id);
 
-    void Batch(const std::string &pageId);
+  // create root node
+  bool CreatePage(std::string page_id, const char *data);
 
-    // create root node
-    bool CreateRenderObject(std::string pageId, const std::string& pathLayout, const std::string& pathStyle);
-    bool CreateRenderObject(std::string pageId, const Json::Value& jsonLayout, const Json::Value& jsonStyle);
+  // create root node
+  bool CreateRenderObject(std::string pageId, const std::string& pathLayout, const std::string& pathStyle);
+  bool CreateRenderObject(std::string pageId, const Json::Value& jsonLayout, const Json::Value& jsonStyle);
 
-    /** use auto constructor is bad idea, it cann't transfer binary, use char* is better */
-    bool AddRenderObject(const std::string &pageId, const std::string &parentRef, int index,
+  /** use auto constructor is bad idea, it cann't transfer binary, use char* is better */
+  bool AddRenderObject(const std::string &pageId, const std::string &parentRef, int index,
                          const Json::Value& jsonLayout, const Json::Value& jsonStyle);
 
-    bool RemoveRenderObject(const std::string &pageId, const std::string &ref);
+  bool RemoveRenderObject(const std::string &page_id, const std::string &ref);
 
-    bool MoveRenderObject(const std::string &pageId, const std::string &ref,
-                     const std::string &parentRef, int index);
+  bool MoveRenderObject(const std::string &page_id, const std::string &ref,
+                        const std::string &parent_ref, int index);
 
-    bool UpdateAttr(const std::string &pageId, const std::string &ref, const Json::Value& json);
+  bool UpdateAttr(const std::string &page_id, const std::string &ref,
+                  const char *data);
 
-    bool UpdateStyle(const std::string &pageId, const std::string &ref, const Json::Value& json);
+  bool UpdateAttr(const std::string &pageId, const std::string &ref, const Json::Value& json);
 
-    bool AddEvent(const std::string &pageId, const std::string &ref, const std::string &event);
+  bool UpdateStyle(const std::string &pageId, const std::string &ref, const Json::Value& json);
 
-    bool RemoveEvent(const std::string &pageId, const std::string &ref, const std::string &event);
+  bool AddEvent(const std::string &page_id, const std::string &ref,
+                const std::string &event);
 
-    bool CreateFinish(const std::string &pageId);
+  bool RemoveEvent(const std::string &page_id, const std::string &ref,
+                   const std::string &event);
 
-    RenderPage *GetPage(const std::string &id);
+  bool CreateFinish(const std::string &page_id);
 
-    bool ClosePage(const std::string &pageId);
+  bool CallNativeModule(const char *pageId, const char *module, const char *method,
+                        const char *arguments, int argumentsLength, const char *options,
+                        int optionsLength);
 
-    static RenderManager *GetInstance() {
-      if (!m_pInstance) {
-        m_pInstance = new RenderManager();
-      }
-      return m_pInstance;
+  bool CallMetaModule(const char *method, const char *arguments);
+
+  RenderPage *GetPage(const std::string &page_id);
+
+  bool ClosePage(const std::string &page_id);
+
+  static RenderManager *GetInstance() {
+    if (!g_pInstance) {
+      g_pInstance = new RenderManager();
     }
+    return g_pInstance;
+  }
 
-  private:
-    static RenderManager *m_pInstance;
-    std::map<std::string, RenderPage *> mPages;
-  };
-}
+  inline float viewport_width() const { return this->viewport_width_; }
 
-#endif //RenderManager_h
+  inline void set_viewport_width(float viewport_width) {
+    this->viewport_width_ = viewport_width;
+  }
+
+ private:
+  static RenderManager *g_pInstance;
+  std::map<std::string, RenderPage *> pages_;
+  float viewport_width_ = -1;
+};
+}  // namespace WeexCore
+
+#endif  // CORE_RENDER_MANAGER_RENDER_MANAGER_H_

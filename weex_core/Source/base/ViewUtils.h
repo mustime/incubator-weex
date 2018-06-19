@@ -62,8 +62,9 @@ namespace WeexCore {
     if (isnan(src))
       return NAN;
 
-    float realPx = (src * WXCoreEnvironment::getInstance()->DeviceWidth() / viewport);
-    float result = realPx > 0.005 && realPx < 1 ? 1 : rint(realPx);
+    float realPx = (src * WXCoreEnvironment::getInstance()->DeviceWidth() /
+                    viewport);
+    float result = realPx > 0.005 && realPx < 1 ? 1.0f : realPx;
     return result;
   }
 
@@ -119,7 +120,7 @@ namespace WeexCore {
       return NAN;
 
     float realPx = (pxValue * customViewport / WXCoreEnvironment::getInstance()->DeviceWidth());
-    float result = realPx > 0.005 && realPx < 1 ? 1 : rint(realPx);
+    float result = realPx > 0.005 && realPx < 1 ? 1.0f : realPx;
     return result;
   }
 }

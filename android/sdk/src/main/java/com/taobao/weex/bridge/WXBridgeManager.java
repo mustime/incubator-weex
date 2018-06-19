@@ -572,10 +572,6 @@ public class WXBridgeManager {
     return mWXBridge.getRenderFinishTime(instanceId);
   }
 
-  public void setViewPortWidth(String instanceId, float value) {
-    mWXBridge.setViewPortWidth(instanceId, value);
-  }
-
   public void setMargin(String instanceId, String ref, CSSShorthand.EDGE edge, float value) {
     mWXBridge.setMargin(instanceId, ref, edge, value);
   }

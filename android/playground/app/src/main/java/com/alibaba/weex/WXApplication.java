@@ -51,8 +51,8 @@ public class WXApplication extends Application {
      * Fresco.initialize(this,config);
      **/
 //    initDebugEnvironment(true, false, "DEBUG_SERVER_HOST");
-    WXEnvironment.setOpenDebugLog(false);
-    WXEnvironment.setApkDebugable(false);
+    WXEnvironment.setOpenDebugLog(true);
+    WXEnvironment.setApkDebugable(true);
     WXSDKEngine.addCustomOptions("appName", "WXSample");
     WXSDKEngine.addCustomOptions("appGroup", "WXApp");
     WXSDKEngine.initialize(this,

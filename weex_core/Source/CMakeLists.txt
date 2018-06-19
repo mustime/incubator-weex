@@ -18,8 +18,15 @@ set(COMMON_SRCS
 
   ./core/render/manager/render_manager.cpp
   ./core/render/page/render_page.cpp
+
   ./core/render/node/render_object.cpp
   ./core/render/node/factory/render_creator.cpp
+  ./core/render/node/render_appbar.cpp
+  ./core/render/node/render_list.cpp
+  ./core/render/node/render_mask.cpp
+  ./core/render/node/render_scroller.cpp
+  ./core/render/node/render_text.cpp
+
   ./core/render/action/render_action_add_event.cpp
   ./core/render/action/render_action_remove_event.cpp
   ./core/render/action/render_action_add_element.cpp
@@ -42,7 +49,7 @@ set(COMMON_SRCS
   ./core/moniter/render_performance.cpp
   ./core/manager/weex_core_manager.cpp
   ./core/parser/dom_json.cpp
-        )
+)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/json)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/json)
 
