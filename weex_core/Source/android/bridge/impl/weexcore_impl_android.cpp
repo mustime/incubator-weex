@@ -288,15 +288,6 @@ static void RegisterCoreEnv(JNIEnv *env, jobject jcaller, jstring key, jstring v
   WXCoreEnvironment::getInstance()->AddOption(jString2StrFast(env, key), jString2StrFast(env, value));
 }
 
-<<<<<<< HEAD
-static void SetViewPortWidth(JNIEnv *env, jobject jcaller, jstring instanceId, jfloat value) {
-  RenderPage *page = RenderManager::GetInstance()->GetPage(jString2StrFast(env, instanceId));
-  if (page == nullptr)
-    return;
-
-  page->SetViewPortWidth(value);
-}
-
 static bool CreateRoot(JNIEnv* env, jobject jcaller, jstring instanceId, jstring layoutPath, jstring stylePath)
 {
   RenderManager* mgr = RenderManager::GetInstance();

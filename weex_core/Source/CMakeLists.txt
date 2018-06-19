@@ -49,6 +49,7 @@ set(COMMON_SRCS
   ./core/moniter/render_performance.cpp
   ./core/manager/weex_core_manager.cpp
   ./core/parser/dom_json.cpp
+  ./core/bridge/bridge.cpp
 )
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/json)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/json)

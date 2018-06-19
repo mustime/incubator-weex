@@ -91,9 +91,6 @@ static void RegisterCoreEnv(JNIEnv* env, jobject jcaller,
     jstring key,
     jstring value);
 
-static void UpdateGlobalConfig(JNIEnv* env, jobject jcaller,
-    jstring config);
-
 // Step 2: method stubs.
 
 // Step 3: RegisterNatives.
@@ -200,11 +197,6 @@ static const JNINativeMethod kMethodsWXBridge[] = {
 "Ljava/lang/String;"
 ")"
 "V", reinterpret_cast<void*>(RegisterCoreEnv) },
-    { "nativeUpdateGlobalConfig",
-"("
-"Ljava/lang/String;"
-")"
-"V", reinterpret_cast<void*>(UpdateGlobalConfig) },
 };
 
 static bool CreateRoot(JNIEnv* env, jobject jcaller, jstring instanceId, jstring layoutPath, jstring stylePath);

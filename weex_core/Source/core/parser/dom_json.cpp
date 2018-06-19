@@ -44,11 +44,11 @@ namespace WeexCore
             if (id.empty())
             {
                 std::stringstream ss;
-                ss << (parent ? parent->Ref() + "@" : "") << "ANON_" << view << index;
+                ss << (parent ? parent->ref() + "@" : "") << "ANON_" << view << index;
                 ss >> id;
             }
             render = (RenderObject*)RenderCreator::GetInstance()->CreateRender(view, id);
-            render->SetPageId(pageId);
+            render->set_page_id(pageId);
             if (parent != nullptr)
                 parent->AddRenderObject(index, render);
 
@@ -85,7 +85,7 @@ namespace WeexCore
                     if (iter.name()[0] != '@')
                         render->AddAttr(iter.name(), jsonLayout[iter.name()].asString());
                     else
-                        render->addEvent(iter.name());
+                        render->AddEvent(iter.name());
                 }
             }
 

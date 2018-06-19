@@ -139,11 +139,6 @@ namespace WeexCore {
         if (page == nullptr) {
             return;
         }
-
-#if RENDER_LOG
-        LOGD("[JNI] SetDefaultHeightAndWidthIntoRootDom >>>> pageId: %s, defaultWidth: %f, defaultHeight: %f",
-       page->PageId().c_str(), defaultWidth,defaultHeight);
-#endif
         page->SetDefaultHeightAndWidthIntoRootRender(defaultWidth, defaultHeight, isWidthWrapContent,
                                                      isHeightWrapContent);
     }

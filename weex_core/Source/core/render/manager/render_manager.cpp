@@ -23,7 +23,6 @@
 #include "core/css/constants_name.h"
 #include "base/TimeUtils.h"
 #include "core/layout/measure_func_adapter.h"
-#include "core/parser/dom_wson.h"
 #include "core/render/manager/render_manager.h"
 #include "core/render/node/render_object.h"
 #include "core/render/page/render_page.h"
@@ -32,40 +31,40 @@ namespace WeexCore {
 
 RenderManager *RenderManager::g_pInstance = nullptr;
 
-bool RenderManager::CreateRenderObject(std::string pageId, const std::string& pathLayout, const std::string& pathStyle)
+bool RenderManager::CreateRenderObject(std::string page_id, const std::string& pathLayout, const std::string& pathStyle)
 {
   RenderPage *page = new RenderPage(page_id);
   this->pages_.insert(std::pair<std::string, RenderPage *>(page_id, page));
 
   int64_t start_time = getCurrentTime();
-  RenderObject *root = JsonFile2RenderObject(pathLayout, pathStyle, pageId);
+  RenderObject *root = JsonFile2RenderObject(pathLayout, pathStyle, page_id);
   page->ParseJsonTime(getCurrentTime() - start_time);
 
   page->set_is_dirty(true);
   return page->CreateRootRender(root);
 }
 
-bool RenderManager::CreateRenderObject(std::string pageId, const Json::Value& jsonLayout, const Json::Value& jsonStyle)
+bool RenderManager::CreateRenderObject(std::string page_id, const Json::Value& jsonLayout, const Json::Value& jsonStyle)
 {
   RenderPage *page = new RenderPage(page_id);
   this->pages_.insert(std::pair<std::string, RenderPage *>(page_id, page));
 
   int64_t start_time = getCurrentTime();
-  RenderObject *root = Json2RenderObject(jsonLayout, jsonStyle, pageId);
+  RenderObject *root = Json2RenderObject(jsonLayout, jsonStyle, page_id);
   page->ParseJsonTime(getCurrentTime() - start_time);
 
   page->set_is_dirty(true);
   return page->CreateRootRender(root);
 }
 
-bool RenderManager::AddRenderObject(const std::string &pageId, const std::string &parentRef,
+bool RenderManager::AddRenderObject(const std::string &page_id, const std::string &parentRef,
                                     int index, const Json::Value& jsonLayout, const Json::Value& jsonStyle)
 {
-  RenderPage *page = GetPage(pageId);
+  RenderPage *page = GetPage(page_id);
   if (page == nullptr) return false;
 
   int64_t start_time = getCurrentTime();
-  RenderObject *child = Json2RenderObject(jsonLayout, jsonStyle, pageId);
+  RenderObject *child = Json2RenderObject(jsonLayout, jsonStyle, page_id);
   page->ParseJsonTime(getCurrentTime() - start_time);
 
   if (child == nullptr) return false;
@@ -74,13 +73,13 @@ bool RenderManager::AddRenderObject(const std::string &pageId, const std::string
   return page->AddRenderObject(parentRef, index, child);
 }
 
-bool RenderManager::RemoveRenderObject(const std::string &pageId, const std::string &ref)
+bool RenderManager::RemoveRenderObject(const std::string &page_id, const std::string &ref)
 {
-  RenderPage *page = this->GetPage(pageId);
+  RenderPage *page = this->GetPage(page_id);
   if (page == nullptr) return false;
 
   page->set_is_dirty(true);
-  return page->AddRenderObject(parent_ref, index, child);
+  return page->RemoveRenderObject(ref);
 }
 
 bool RenderManager::MoveRenderObject(const std::string &page_id,
@@ -147,7 +146,7 @@ bool RenderManager::CreateFinish(const std::string &page_id) {
   return page->CreateFinish();
 }
 
-bool RenderManager::CallNativeModule(const char *pageId, const char *module, const char *method,
+bool RenderManager::CallNativeModule(const char *page_id, const char *module, const char *method,
                                      const char *arguments, int argumentsLength,
                                      const char *options, int optionsLength) {
   if (strcmp(module, "meta") == 0) {
@@ -158,23 +157,23 @@ bool RenderManager::CallNativeModule(const char *pageId, const char *module, con
 bool RenderManager::CallMetaModule(const char *method, const char *arguments) {
 
   if (strcmp(method, "setViewport") == 0) {
-    wson_parser parser(arguments);
-    if (parser.isArray(parser.nextType())) {
-      int size = parser.nextArraySize();
-      for (int i = 0; i < size; i++) {
-        uint8_t value_type = parser.nextType();
-        if (parser.isMap(value_type)) {
-          int map_size = parser.nextMapSize();
-          for (int j = 0; j < map_size; j++) {
-            std::string key = parser.nextMapKeyUTF8();
-            std::string value = parser.nextStringUTF8(parser.nextType());
-            if (strcmp(key.c_str(), WIDTH) == 0) {
-              RenderManager::GetInstance()->set_viewport_width(getFloat(value.c_str()));
-            }
-          }
-        }
-      }
-    }
+//    wson_parser parser(arguments);
+//    if (parser.isArray(parser.nextType())) {
+//      int size = parser.nextArraySize();
+//      for (int i = 0; i < size; i++) {
+//        uint8_t value_type = parser.nextType();
+//        if (parser.isMap(value_type)) {
+//          int map_size = parser.nextMapSize();
+//          for (int j = 0; j < map_size; j++) {
+//            std::string key = parser.nextMapKeyUTF8();
+//            std::string value = parser.nextStringUTF8(parser.nextType());
+//            if (strcmp(key.c_str(), WIDTH) == 0) {
+//              RenderManager::GetInstance()->set_viewport_width(getFloat(value.c_str()));
+//            }
+//          }
+//        }
+//      }
+//    }
   }
 }
 
