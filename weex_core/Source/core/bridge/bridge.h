@@ -35,7 +35,7 @@ namespace WeexCore {
 
   class Bridge {
   public:
-    virtual int callNative(const char* pageId, const char *task, const char *callback) = 0;
+    virtual std::string callCreatePage() = 0;
 
     virtual void* callNativeModule(const char* pageId, const char *module, const char *method,
                                      const char *arguments, int argumentsLength, const char *options, int optionsLength) = 0;

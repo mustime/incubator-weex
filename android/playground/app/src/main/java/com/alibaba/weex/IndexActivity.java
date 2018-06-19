@@ -33,16 +33,10 @@ import android.widget.Toast;
 
 import com.google.zxing.client.android.CaptureActivity;
 import com.taobao.weex.IWXRenderListener;
-import com.taobao.weex.RenderContainer;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.bridge.WXBridgeManager;
-import com.taobao.weex.common.Constants;
 import com.taobao.weex.ui.WXRenderManager;
-import com.taobao.weex.ui.component.WXBasicComponentType;
-
-import java.util.HashMap;
-import java.util.HashSet;
+import com.taobao.weex.utils.WXLogUtils;
 
 public class IndexActivity extends WXBaseActivity implements IWXRenderListener {
 
@@ -105,22 +99,19 @@ public class IndexActivity extends WXBaseActivity implements IWXRenderListener {
     mInstance.setInstanceViewPortWidth(750);
     mInstance.registerRenderListener(this);
 
-    HashMap<String, String> styles = new HashMap<>();
-    styles.put(Constants.Name.WIDTH, "200wx");
-    styles.put(Constants.Name.MAX_HEIGHT, "80wx");
-	styles.put(Constants.Name.COLOR, "#FF0000");
-	styles.put(Constants.Name.BACKGROUND_COLOR, "#00FF00");
     WXRenderManager manager = WXSDKManager.getInstance().getWXRenderManager();
     manager.registerInstance(mInstance);
-    RenderContainer renderContainer = new RenderContainer(this);
-    mInstance.setRenderContainer(renderContainer);
+//    RenderContainer renderContainer = new RenderContainer(this);
+//    mInstance.setRenderContainer(renderContainer);
     mInstance.ensureRenderArchor();
-    mContainer.addView(renderContainer);
+//    mContainer.addView(renderContainer);
     mInstance.mRendered = true;
 
-    WXBridgeManager.getInstance().callCreateBody(mInstance.getInstanceId(), WXBasicComponentType.INPUT, "100", styles, new HashMap<String, String>(), new HashSet<String>(),
-            new float[] {100, 100, 100, 100}, new float[] {100, 100, 100, 100}, null);
+    boolean ret = nativeCreateRoot(mInstance.getInstanceId(), "/sdcard/input.json", "/sdcard/input_style.json");
+    WXLogUtils.e(TAG, "FUCK ret = " + ret);
   }
+
+  private native boolean nativeCreateRoot(String instanceId, String layoutPath, String stylePath);
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -161,6 +152,7 @@ public class IndexActivity extends WXBaseActivity implements IWXRenderListener {
 
   @Override
   public void onViewCreated(WXSDKInstance instance, View view) {
+    WXLogUtils.d(TAG, "onViewCreated");
     if(view.getParent() == null) {
       mContainer.addView(view);
     }

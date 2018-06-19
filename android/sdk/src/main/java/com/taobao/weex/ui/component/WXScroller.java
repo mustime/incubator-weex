@@ -523,7 +523,6 @@ public class WXScroller extends WXVContainer<ViewGroup> implements WXScrollViewL
     return super.setProperty(key, param);
   }
 
-  @WXComponentProp(name = Constants.Name.SHOW_SCROLLBAR)
   public void setShowScrollbar(boolean show) {
     if(getInnerView()==null){
       return;
@@ -535,7 +534,6 @@ public class WXScroller extends WXVContainer<ViewGroup> implements WXScrollViewL
     }
   }
 
-  @WXComponentProp(name = Constants.Name.SCROLLABLE)
   public void setScrollable(boolean scrollable) {
     this.isScrollable = scrollable;
     View hostView = getInnerView();
@@ -546,7 +544,6 @@ public class WXScroller extends WXVContainer<ViewGroup> implements WXScrollViewL
     }
   }
 
-  @WXComponentProp(name = Constants.Name.OFFSET_ACCURACY)
   public void setOffsetAccuracy(int accuracy) {
     float realPx = WXViewUtils.getRealPxByWidth(accuracy, getInstance().getInstanceViewPortWidth());
     this.mOffsetAccuracy = (int) realPx;

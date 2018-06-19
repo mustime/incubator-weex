@@ -20,24 +20,31 @@
 #include <core/render/page/render_page.h>
 #include <core/render/node/render_object.h>
 #include <base/TimeUtils.h>
-#include <core/parser/dom_wson.h>
 
 namespace WeexCore {
 
   RenderManager *RenderManager::m_pInstance = nullptr;
 
-  bool RenderManager::CreatePage(std::string pageId, const  char* data) {
-
-#if RENDER_LOG
-    wson_parser parser(data);
-    LOGD("[RenderManager] CreatePage >>>> pageId: %s, dom data: %s", pageId.c_str(), parser.toStringUTF8().c_str());
-#endif
-
+  bool RenderManager::CreateRenderObject(std::string pageId, const std::string& pathLayout, const std::string& pathStyle)
+  {
     RenderPage *page = new RenderPage(pageId);
     mPages.insert(std::pair<std::string, RenderPage *>(pageId, page));
 
     long long startTime = getCurrentTime();
-    RenderObject *root = Wson2RenderObject(data, pageId);
+    RenderObject *root = JsonFile2RenderObject(pathLayout, pathStyle, pageId);
+    page->ParseJsonTime(getCurrentTime() - startTime);
+
+    page->updateDirty(true);
+    return page->CreateRootRender(root);
+  }
+
+  bool RenderManager::CreateRenderObject(std::string pageId, const Json::Value& jsonLayout, const Json::Value& jsonStyle)
+  {
+    RenderPage *page = new RenderPage(pageId);
+    mPages.insert(std::pair<std::string, RenderPage *>(pageId, page));
+
+    long long startTime = getCurrentTime();
+    RenderObject *root = Json2RenderObject(jsonLayout, jsonStyle, pageId);
     page->ParseJsonTime(getCurrentTime() - startTime);
 
     page->updateDirty(true);
@@ -45,20 +52,14 @@ namespace WeexCore {
   }
 
   bool RenderManager::AddRenderObject(const std::string &pageId, const std::string &parentRef,
-                                      int index, const char* data) {
-
+                                      int index, const Json::Value& jsonLayout, const Json::Value& jsonStyle)
+  {
     RenderPage *page = GetPage(pageId);
     if (page == nullptr)
       return false;
 
-#if RENDER_LOG
-    wson_parser parser(data);
-    LOGD("[RenderManager] AddRenderObject >>>> pageId: %s, parentRef: %s, index: %d, dom data: %s",
-         pageId.c_str(), parentRef.c_str(), index, parser.toStringUTF8().c_str());
-#endif
-
     long long startTime = getCurrentTime();
-    RenderObject *child = Wson2RenderObject(data, pageId);
+    RenderObject *child = Json2RenderObject(jsonLayout, jsonStyle, pageId);
     page->ParseJsonTime(getCurrentTime() - startTime);
 
     if (child == nullptr)
@@ -68,8 +69,8 @@ namespace WeexCore {
     return page->AddRenderObject(parentRef, index, child);
   }
 
-  bool RenderManager::RemoveRenderObject(const std::string &pageId, const std::string &ref) {
-
+  bool RenderManager::RemoveRenderObject(const std::string &pageId, const std::string &ref)
+  {
     RenderPage *page = this->GetPage(pageId);
     if (page == nullptr)
       return false;
@@ -84,7 +85,8 @@ namespace WeexCore {
   }
 
   bool RenderManager::MoveRenderObject(const std::string &pageId, const std::string &ref,
-                                       const std::string &parentRef, int index) {
+                                       const std::string &parentRef, int index)
+  {
     RenderPage *page = this->GetPage(pageId);
     if (page == nullptr)
       return false;
@@ -99,19 +101,14 @@ namespace WeexCore {
   }
 
   bool RenderManager::UpdateAttr(const std::string &pageId, const std::string &ref,
-                                 const char* data) {
+                                 const Json::Value& json)
+  {
     RenderPage *page = this->GetPage(pageId);
     if (page == nullptr)
       return false;
 
-#if RENDER_LOG
-    wson_parser parser(data);
-    LOGD("[RenderManager] UpdateAttr >>>> pageId: %s, ref: %s, data: %s",
-         pageId.c_str(), ref.c_str(), parser.toStringUTF8().c_str());
-#endif
-
     long long startTime = getCurrentTime();
-    std::vector<std::pair<std::string, std::string>> *attrs = Wson2Pairs(data);
+    std::vector<std::pair<std::string, std::string>> *attrs = Json2Pairs(json);
     page->ParseJsonTime(getCurrentTime() - startTime);
 
     page->updateDirty(true);
@@ -119,19 +116,14 @@ namespace WeexCore {
   }
 
   bool RenderManager::UpdateStyle(const std::string &pageId, const std::string &ref,
-                                  const char* data) {
+                                  const Json::Value& json)
+  {
     RenderPage *page = this->GetPage(pageId);
     if (page == nullptr)
       return false;
 
-#if RENDER_LOG
-    wson_parser parser(data);
-    LOGD("[RenderManager] UpdateStyle >>>> pageId: %s, ref: %s, data: %s",
-         pageId.c_str(), ref.c_str(), parser.toStringUTF8().c_str());
-#endif
-
     long long startTime = getCurrentTime();
-    std::vector<std::pair<std::string, std::string>> *styles = Wson2Pairs(data);
+    std::vector<std::pair<std::string, std::string>> *styles = Json2Pairs(json);
     page->ParseJsonTime(getCurrentTime() - startTime);
 
     page->updateDirty(true);
@@ -139,22 +131,19 @@ namespace WeexCore {
   }
 
   bool RenderManager::AddEvent(const std::string &pageId, const std::string &ref,
-                               const std::string &event) {
+                               const std::string &event)
+  {
     RenderPage *page = this->GetPage(pageId);
     if (page == nullptr)
       return false;
-
-#if RENDER_LOG
-    LOGD("[RenderManager] AddEvent >>>> pageId: %s, ref: %s, event: %s",
-         pageId.c_str(), ref.c_str(), event.c_str());
-#endif
 
     page->updateDirty(true);
     return page->AddEvent(ref, event);
   }
 
   bool RenderManager::RemoveEvent(const std::string &pageId, const std::string &ref,
-                                  const std::string &event) {
+                                  const std::string &event)
+  {
     RenderPage *page = this->GetPage(pageId);
     if (page == nullptr)
       return false;
@@ -168,7 +157,8 @@ namespace WeexCore {
     return page->RemoveEvent(ref, event);
   }
 
-  bool RenderManager::CreateFinish(const std::string &pageId) {
+  bool RenderManager::CreateFinish(const std::string &pageId)
+  {
     RenderPage *page = GetPage(pageId);
     if (page == nullptr)
       return false;
@@ -181,7 +171,8 @@ namespace WeexCore {
     return page->CreateFinish();
   }
 
-  RenderPage *RenderManager::GetPage(const std::string &id) {
+  RenderPage *RenderManager::GetPage(const std::string &id)
+  {
     std::map<std::string, RenderPage *>::iterator iter = mPages.find(id);
     if (iter != mPages.end()) {
       return iter->second;
@@ -190,7 +181,8 @@ namespace WeexCore {
     }
   }
 
-  bool RenderManager::ClosePage(const std::string &pageId) {
+  bool RenderManager::ClosePage(const std::string &pageId)
+  {
     RenderPage *page = GetPage(pageId);
     if (page == nullptr)
       return false;
@@ -204,7 +196,8 @@ namespace WeexCore {
     page = nullptr;
   }
 
-  void RenderManager::Batch(const std::string &pageId) {
+  void RenderManager::Batch(const std::string &pageId)
+  {
     RenderPage *page = this->GetPage(pageId);
     if (page == nullptr)
       return;

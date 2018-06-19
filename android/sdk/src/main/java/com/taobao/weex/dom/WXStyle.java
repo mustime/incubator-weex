@@ -290,7 +290,7 @@ public class WXStyle implements Map<String, Object>,Cloneable {
   }
 
   public int getTimeFontSize() {
-    int fontSize = WXUtils.getInt(get("timeFontSize"));
+    int fontSize = WXUtils.getInt(get("time-font-size"));
     if (fontSize <= 0) {
       fontSize = WXText.sDEFAULT_SIZE;
     }

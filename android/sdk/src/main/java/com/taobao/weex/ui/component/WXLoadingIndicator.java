@@ -56,7 +56,6 @@ public class WXLoadingIndicator extends WXComponent<CircleProgressBar> {
         return super.setProperty(key, param);
     }
 
-    @WXComponentProp(name = Constants.Name.COLOR)
     public void setColor(String color) {
         if (color != null && !color.equals("")) {
             int parseColor = WXResourceUtils.getColor(color, Color.RED);

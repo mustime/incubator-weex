@@ -18,6 +18,8 @@
  */
 package com.taobao.weex.common;
 
+import android.content.Context;
+
 import com.taobao.weex.dom.CSSShorthand;
 import com.taobao.weex.layout.ContentBoxMeasurement;
 
@@ -32,6 +34,8 @@ public interface IWXBridge extends IWXObject {
   int DESTROY_INSTANCE = -1;
   int INSTANCE_RENDERING = 1;
   int INSTANCE_RENDERING_ERROR = 0;
+
+  void init(Context context);
 
   int callCreateBody(String instanceId, String componentType, String ref,
                             HashMap<String, String> styles, HashMap<String, String> attributes, HashSet<String> events,

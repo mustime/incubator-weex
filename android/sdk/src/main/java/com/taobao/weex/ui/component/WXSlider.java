@@ -329,7 +329,6 @@ public class WXSlider extends WXVContainer<FrameLayout> {
   }
 
   @Deprecated
-  @WXComponentProp(name = Constants.Name.VALUE)
   public void setValue(String value) {
     if (value == null || getHostView() == null) {
       return;
@@ -345,7 +344,6 @@ public class WXSlider extends WXVContainer<FrameLayout> {
     setIndex(i);
   }
 
-  @WXComponentProp(name = Constants.Name.AUTO_PLAY)
   public void setAutoPlay(String autoPlay) {
     if (TextUtils.isEmpty(autoPlay) || autoPlay.equals("false")) {
       mViewPager.stopAutoScroll();
@@ -355,7 +353,6 @@ public class WXSlider extends WXVContainer<FrameLayout> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.SHOW_INDICATORS)
   public void setShowIndicators(String show) {
     if (TextUtils.isEmpty(show) || show.equals("false")) {
       mShowIndicators = false;
@@ -369,14 +366,12 @@ public class WXSlider extends WXVContainer<FrameLayout> {
     mIndicator.setShowIndicators(mShowIndicators);
   }
 
-  @WXComponentProp(name = Constants.Name.INTERVAL)
   public void setInterval(int intervalMS) {
     if (mViewPager != null && intervalMS > 0) {
       mViewPager.setIntervalTime(intervalMS);
     }
   }
 
-  @WXComponentProp(name = Constants.Name.INDEX)
   public void setIndex(int index) {
     if (mViewPager != null && mAdapter != null) {
       if (index >= mAdapter.getRealCount() || index < 0) {
@@ -397,7 +392,6 @@ public class WXSlider extends WXVContainer<FrameLayout> {
       }
     }
   }
-  @WXComponentProp(name = Constants.Name.SCROLLABLE)
   public void setScrollable(boolean scrollable) {
     if (mViewPager != null && mAdapter != null) {
       if(mAdapter.getRealCount() > 0){
@@ -406,7 +400,6 @@ public class WXSlider extends WXVContainer<FrameLayout> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.OFFSET_X_ACCURACY)
   public void setOffsetXAccuracy(float accuracy) {
     this.offsetXAccuracy = accuracy;
   }

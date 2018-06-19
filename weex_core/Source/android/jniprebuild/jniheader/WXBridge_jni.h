@@ -23,6 +23,8 @@ jclass g_WXBridge_clazz = NULL;
 
 }  // namespace
 
+static void Init(JNIEnv* env, jobject jcaller, jstring, jstring);
+
 static void BindMeasurementToRenderObject(JNIEnv* env, jobject jcaller,
     jlong ptr);
 
@@ -96,8 +98,13 @@ static void SetViewPortWidth(JNIEnv* env, jobject jcaller,
 // Step 2: method stubs.
 
 // Step 3: RegisterNatives.
-
 static const JNINativeMethod kMethodsWXBridge[] = {
+    { "nativeInit",
+"("
+"Ljava/lang/String;"
+"Ljava/lang/String;"
+")"
+"V", reinterpret_cast<void*>(Init) },
     { "nativeBindMeasurementToRenderObject",
 "("
 "J"
@@ -202,8 +209,19 @@ static const JNINativeMethod kMethodsWXBridge[] = {
 "V", reinterpret_cast<void*>(SetViewPortWidth) },
 };
 
-static bool RegisterNativesImpl(JNIEnv* env) {
+static bool CreateRoot(JNIEnv* env, jobject jcaller, jstring instanceId, jstring layoutPath, jstring stylePath);
 
+static const JNINativeMethod kMethodsWXBridge2[] = {
+    { "nativeCreateRoot",
+"("
+"Ljava/lang/String;"
+"Ljava/lang/String;"
+"Ljava/lang/String;"
+")"
+"Z", reinterpret_cast<void*>(CreateRoot) }
+};
+
+static bool RegisterNativesImpl(JNIEnv* env) {
   g_WXBridge_clazz = reinterpret_cast<jclass>(env->NewGlobalRef(
       base::android::GetClass(env, kWXBridgeClassPath).Get()));
 
@@ -217,6 +235,16 @@ static bool RegisterNativesImpl(JNIEnv* env) {
     //    env, WXBridge_clazz(env), __FILE__);
     return false;
   }
+
+  jclass jtest = env->FindClass("com/alibaba/weex/IndexActivity");
+  const int kMethodsWXBridgeSize2 =
+      sizeof(kMethodsWXBridge2)/sizeof(kMethodsWXBridge2[0]);
+
+  if (env->RegisterNatives(jtest,
+                           kMethodsWXBridge2,
+                           kMethodsWXBridgeSize2) < 0) {
+    return false;
+  }  
 
   return true;
 }

@@ -148,12 +148,10 @@ public class WXWeb extends WXComponent {
         return super.setProperty(key,param);
     }
 
-    @WXComponentProp(name = Constants.Name.SHOW_LOADING)
     public void setShowLoading(boolean showLoading) {
         getWebView().setShowLoading(showLoading);
     }
 
-    @WXComponentProp(name = Constants.Name.SRC)
     public void setUrl(String url) {
         if (TextUtils.isEmpty(url) || getHostView() == null) {
             return;
@@ -163,7 +161,6 @@ public class WXWeb extends WXComponent {
         }
     }
 
-    @WXComponentProp(name = Constants.Name.SOURCE)
     public void setSource(String source) {
         if (!TextUtils.isEmpty(source) && getHostView() != null) {
             loadDataWithBaseURL(source);

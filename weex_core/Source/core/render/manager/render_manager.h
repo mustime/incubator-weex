@@ -22,6 +22,7 @@
 #include <map>
 #include <string>
 #include <stdbool.h>
+#include <core/parser/dom_json.h>
 #include <core/layout/measure_func_adapter.h>
 
 namespace WeexCore {
@@ -52,20 +53,21 @@ namespace WeexCore {
     void Batch(const std::string &pageId);
 
     // create root node
-    bool CreatePage(std::string pageId, const char* data);
+    bool CreateRenderObject(std::string pageId, const std::string& pathLayout, const std::string& pathStyle);
+    bool CreateRenderObject(std::string pageId, const Json::Value& jsonLayout, const Json::Value& jsonStyle);
 
     /** use auto constructor is bad idea, it cann't transfer binary, use char* is better */
     bool AddRenderObject(const std::string &pageId, const std::string &parentRef, int index,
-                         const char* data);
+                         const Json::Value& jsonLayout, const Json::Value& jsonStyle);
 
     bool RemoveRenderObject(const std::string &pageId, const std::string &ref);
 
     bool MoveRenderObject(const std::string &pageId, const std::string &ref,
                      const std::string &parentRef, int index);
 
-    bool UpdateAttr(const std::string &pageId, const std::string &ref, const char* data);
+    bool UpdateAttr(const std::string &pageId, const std::string &ref, const Json::Value& json);
 
-    bool UpdateStyle(const std::string &pageId, const std::string &ref, const char* data);
+    bool UpdateStyle(const std::string &pageId, const std::string &ref, const Json::Value& json);
 
     bool AddEvent(const std::string &pageId, const std::string &ref, const std::string &event);
 

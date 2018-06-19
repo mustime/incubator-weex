@@ -24,6 +24,10 @@
 #include <core/render/page/render_page.h>
 #include <core/render/node/render_object.h>
 #include <core/config/core_environment.h>
+#include <android/bridge/impl/bridge_impl_android.h>
+#include <core/layout/measure_func_adapter_impl_android.h>
+#include <core/manager/weex_core_manager.h>
+#include <base/CoreConstants.h>
 #include <map>
 
 using namespace WeexCore;
@@ -92,6 +96,17 @@ jfloatArray c2jFloatArray(JNIEnv *env, const float c_array[]) {
   jfloatArray jArray = env->NewFloatArray(4);
   env->SetFloatArrayRegion(jArray, 0, 4, c_array);
   return jArray;
+}
+
+static void Init(JNIEnv* env, jobject jcaller, jstring jwidth, jstring jheight) {
+  jobject jbridge = env->NewGlobalRef(jcaller);
+  Bridge_Impl_Android::getInstance()->setGlobalRef(jbridge);
+  WeexCoreManager::getInstance()->setPlatformBridge(Bridge_Impl_Android::getInstance());
+  WeexCoreManager::getInstance()->SetMeasureFunctionAdapter(new MeasureFunctionAdapterImplAndroid());
+
+  WXCoreEnvironment::getInstance()->SetPlatform("android");
+  WXCoreEnvironment::getInstance()->SetDeviceWidth(jString2StrFast(env, jwidth));
+  WXCoreEnvironment::getInstance()->SetDeviceHeight(jString2StrFast(env, jheight));
 }
 
 static void BindMeasurementToRenderObject(JNIEnv* env, jobject jcaller,
@@ -356,6 +371,15 @@ static void SetViewPortWidth(JNIEnv *env, jobject jcaller, jstring instanceId, j
     return;
 
   page->SetViewPortWidth(value);
+}
+
+static bool CreateRoot(JNIEnv* env, jobject jcaller, jstring instanceId, jstring layoutPath, jstring stylePath)
+{
+  RenderManager* mgr = RenderManager::GetInstance();
+  bool ok = mgr->CreateRenderObject(jString2StrFast(env, instanceId), jString2StrFast(env, layoutPath), jString2StrFast(env, stylePath));
+  ok &= mgr->CreateFinish(jString2StrFast(env, instanceId));
+  mgr->GetPage(jString2StrFast(env, instanceId))->LayoutImmediately();
+  return ok;
 }
 
 namespace WeexCore {

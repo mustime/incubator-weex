@@ -56,7 +56,6 @@ import com.taobao.weex.common.WXRenderStrategy;
 import com.taobao.weex.dom.WXEvent;
 import com.taobao.weex.layout.ContentBoxMeasurement;
 import com.taobao.weex.performance.WXAnalyzerDataTransfer;
-import com.taobao.weex.tracing.WXTracing;
 import com.taobao.weex.ui.action.GraphicActionAddElement;
 import com.taobao.weex.ui.component.NestedContainer;
 import com.taobao.weex.ui.component.WXBasicComponentType;
@@ -104,7 +103,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   private WXRefreshData mLastRefreshData;
   private NestedInstanceInterceptor mNestedInstanceInterceptor;
   private String mBundleUrl = "";
-  public static String requestUrl = "requestUrl";
   private boolean isDestroy=false;
   private Map<String,Serializable> mUserTrackParams;
   private boolean isCommit=false;
@@ -116,9 +114,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   private int mInstanceViewPortWidth = 750;
   private @NonNull
   FlatGUIContext mFlatGUIContext =new FlatGUIContext();
-
-  public long mRenderStartNanos;
-  public int mExecJSTraceId = WXTracing.nextId();
 
   /**
    *for network tracker
@@ -132,7 +127,7 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   /**
    * Render strategy.
    */
-  private WXRenderStrategy mRenderStrategy = WXRenderStrategy.APPEND_ASYNC;
+  private WXRenderStrategy mRenderStrategy = WXRenderStrategy.APPEND_ONCE;
 
   /**
    * Render start time
@@ -884,24 +879,6 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
     }
   }
 
-  public void onJSException(final String errCode, final String function, final String exception) {
-    if (mRenderListener != null && mContext != null) {
-      runOnUiThread(new Runnable() {
-
-        @Override
-        public void run() {
-          if (mRenderListener != null && mContext != null) {
-            StringBuilder builder = new StringBuilder();
-            builder.append(function);
-            builder.append(exception);
-            mRenderListener.onException(WXSDKInstance.this, errCode, builder.toString());
-          }
-        }
-      });
-    }
-  }
-
-
   @Override
   public final void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int
           oldTop, int oldRight, int oldBottom) {
@@ -1184,6 +1161,7 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
       for(String callback:callbacks){
 //        WXSDKManager.getInstance().callback(mInstanceId,callback,params,true);
         // XXTODO
+        WXLogUtils.e("weex", "fireGlobalEventCallback eventName = " + eventName);
       }
     }
   }

@@ -1,32 +1,28 @@
 {
-    "cls-div" :
-    {
-        "background-color" : "#286090"
-    },
     "cls-text" :
     {
-        "height" : 80,
-        "padding" : 20,
-        "color" : "#FFFFFF"
+        "font-size" : 40,
+        "color" : "black"
     },
     "cls-input" :
     {
-        "font-size" : "60px",
-        "height" : "80px",
-        "width" : "750px"
+        "font-size" : "40px",
+        "height" : "60px"
     },
     "cls-button" :
     {
         "font-size" : 36,
-        "width" : 200,
+        "width" : 351,
+        "height" : 88,
         "color" : "#41B883",
-        "text-align" : "center",
-        "padding-top" : 10,
-        "padding-bottom" : 10,
-        "border-width" : 2,
-        "border-style" : "solid",
-        "margin-right" : 20,
-        "border-color" : "rgb(162, 217, 192)",
-        "background-color" : "rgba(162, 217, 192, 0.2)"
+        "align-items" : "center",
+        "justify-content" : "center",
+        "background-color" : "#FFFFFF"
+    },
+    "cls-border" :
+    {
+        "border-width" : 1,
+        "border-radius" : 12,
+        "border-color" : "#A5A5A5"
     }
 }

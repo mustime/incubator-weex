@@ -41,15 +41,15 @@ set(COMMON_SRCS
 
   ./core/moniter/render_performance.cpp
   ./core/manager/weex_core_manager.cpp
-  ./core/parser/dom_wson.cpp
+  ./core/parser/dom_json.cpp
         )
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/wson)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/wson)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/json)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/json)
 
 SET(FINAL_ADD_LIBRARY
         ${COMMON_SRCS}
 )
-SET(FINAL_TARGET_LINK_LIBRARIES wson)
+SET(FINAL_TARGET_LINK_LIBRARIES json)
 
 if (ANDROID)
   set (ANDROID_SRCS
@@ -75,7 +75,7 @@ if (ANDROID)
 
   SET(FINAL_TARGET_LINK_LIBRARIES
           ${FINAL_TARGET_LINK_LIBRARIES}
-          wson
+          json
           android
           log
           z

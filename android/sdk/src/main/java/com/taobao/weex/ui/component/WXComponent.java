@@ -126,7 +126,7 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class WXComponent<T extends View> extends WXBasicComponent implements IWXObject, IWXActivityStateListener, OnActivePseudoListner {
 
-  public static final String PROP_FIXED_SIZE = "fixedSize";
+  public static final String PROP_FIXED_SIZE = "fixed-size";
   public static final String PROP_FS_MATCH_PARENT = "m";
   public static final String PROP_FS_WRAP_CONTENT = "w";
   public static final String TYPE = "type";

@@ -102,7 +102,6 @@ public class WXIndicator extends WXComponent<WXCircleIndicator> {
   }
 
 
-  @WXComponentProp(name = Constants.Name.ITEM_COLOR)
   public void setItemColor(String itemColor) {
     if (!TextUtils.isEmpty(itemColor)) {
       int colorInt = WXResourceUtils.getColor(itemColor);
@@ -114,7 +113,6 @@ public class WXIndicator extends WXComponent<WXCircleIndicator> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.ITEM_SELECTED_COLOR)
   public void setItemSelectedColor(String itemSelectedColor) {
     if (!TextUtils.isEmpty(itemSelectedColor)) {
       int colorInt = WXResourceUtils.getColor(itemSelectedColor);
@@ -126,7 +124,6 @@ public class WXIndicator extends WXComponent<WXCircleIndicator> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.ITEM_SIZE)
   public void setItemSize(int itemSize) {
     if (itemSize < 0) {
       return;

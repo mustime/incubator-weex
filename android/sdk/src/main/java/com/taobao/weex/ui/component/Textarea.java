@@ -81,7 +81,6 @@ public class Textarea extends AbstractEditComponent {
     return super.setProperty(key, param);
   }
 
-  @WXComponentProp(name = Constants.Name.ROWS)
   public void setRows(int rows){
     WXEditText text = getHostView();
     if(text == null||rows <=0 ){

@@ -26,23 +26,23 @@ namespace WeexCore {
 
   constexpr char FLEX[] = "flex";
   constexpr char HORIZONTAL[] = "horizontal";
-  constexpr char ALIGN_ITEMS[] = "alignItems";
-  constexpr char ALIGN_SELF[] = "alignSelf";
-  constexpr char FLEX_DIRECTION[] = "flexDirection";
-  constexpr char JUSTIFY_CONTENT[] = "justifyContent";
-  constexpr char FLEX_WRAP[] = "flexWrap";
+  constexpr char ALIGN_ITEMS[] = "align-items";
+  constexpr char ALIGN_SELF[] = "align-self";
+  constexpr char FLEX_DIRECTION[] = "flex-direction";
+  constexpr char JUSTIFY_CONTENT[] = "justify-content";
+  constexpr char FLEX_WRAP[] = "flex-wrap";
 
-  constexpr char MIN_WIDTH[] = "minWidth";
-  constexpr char MIN_HEIGHT[] = "minHeight";
-  constexpr char MAX_WIDTH[] = "maxWidth";
-  constexpr char MAX_HEIGHT[] = "maxHeight";
+  constexpr char MIN_WIDTH[] = "min-width";
+  constexpr char MIN_HEIGHT[] = "min-height";
+  constexpr char MAX_WIDTH[] = "max-width";
+  constexpr char MAX_HEIGHT[] = "max-height";
 
-  constexpr char DEFAULT_HEIGHT[] = "defaultHeight";
+  constexpr char DEFAULT_HEIGHT[] = "default-height";
   constexpr char HEIGHT[] = "height";
 
-  constexpr char DEFAULT_WIDTH[] = "defaultWidth";
+  constexpr char DEFAULT_WIDTH[] = "default-width";
   constexpr char WIDTH[] = "width";
-  constexpr char SCROLL_DIRECTION[] = "scrollDirection";
+  constexpr char SCROLL_DIRECTION[] = "scroll-direction";
 
   constexpr char POSITION[] = "position";
 
@@ -52,33 +52,33 @@ namespace WeexCore {
   constexpr char BOTTOM[] = "bottom";
 
   constexpr char MARGIN[] = "margin";
-  constexpr char MARGIN_LEFT[] = "marginLeft";
-  constexpr char MARGIN_TOP[] = "marginTop";
-  constexpr char MARGIN_RIGHT[] = "marginRight";
-  constexpr char MARGIN_BOTTOM[] = "marginBottom";
+  constexpr char MARGIN_LEFT[] = "margin-left";
+  constexpr char MARGIN_TOP[] = "margin-top";
+  constexpr char MARGIN_RIGHT[] = "margin-right";
+  constexpr char MARGIN_BOTTOM[] = "margin-bottom";
 
-  constexpr char BORDER_WIDTH[] = "borderWidth";
-  constexpr char BORDER_TOP_WIDTH[] = "borderTopWidth";
-  constexpr char BORDER_RIGHT_WIDTH[] = "borderRightWidth";
-  constexpr char BORDER_BOTTOM_WIDTH[] = "borderBottomWidth";
-  constexpr char BORDER_LEFT_WIDTH[] = "borderLeftWidth";
+  constexpr char BORDER_WIDTH[] = "border-width";
+  constexpr char BORDER_TOP_WIDTH[] = "border-top-width";
+  constexpr char BORDER_RIGHT_WIDTH[] = "border-right-width";
+  constexpr char BORDER_BOTTOM_WIDTH[] = "border-bottom-width";
+  constexpr char BORDER_LEFT_WIDTH[] = "border-left-width";
 
   constexpr char PADDING[] = "padding";
-  constexpr char PADDING_LEFT[] = "paddingLeft";
-  constexpr char PADDING_TOP[] = "paddingTop";
-  constexpr char PADDING_RIGHT[] = "paddingRight";
-  constexpr char PADDING_BOTTOM[] = "paddingBottom";
+  constexpr char PADDING_LEFT[] = "padding-left";
+  constexpr char PADDING_TOP[] = "padding-top";
+  constexpr char PADDING_RIGHT[] = "padding-right";
+  constexpr char PADDING_BOTTOM[] = "padding-bottom";
 
-  constexpr char FONT_STYLE[] = "fontStyle";
-  constexpr char COLUMN_WIDTH[] = "columnWidth";
-  constexpr char COLUMN_COUNT[] = "columnCount";
-  constexpr char COLUMN_GAP[] = "columnGap";
-  constexpr char LEFT_GAP[] = "leftGap";
-  constexpr char RIGHT_GAP[] = "rightGap";
-  constexpr char SPAN_OFFSETS[] = "spanOffsets";
+  constexpr char FONT_STYLE[] = "font-style";
+  constexpr char COLUMN_WIDTH[] = "column-width";
+  constexpr char COLUMN_COUNT[] = "column-count";
+  constexpr char COLUMN_GAP[] = "column-gap";
+  constexpr char LEFT_GAP[] = "left-gap";
+  constexpr char RIGHT_GAP[] = "right-gap";
+  constexpr char SPAN_OFFSETS[] = "span-offsets";
 
   constexpr char COLOR[] = "color";
-  constexpr char BACKGROUND_COLOR[] = "backgroundColor";
+  constexpr char BACKGROUND_COLOR[] = "background-color";
   constexpr char APPEND[] = "append";
 }
 

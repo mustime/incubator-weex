@@ -54,7 +54,6 @@ import com.taobao.weex.ui.component.AppearanceHelper;
 import com.taobao.weex.ui.component.Scrollable;
 import com.taobao.weex.ui.component.WXBaseRefresh;
 import com.taobao.weex.ui.component.WXComponent;
-import com.taobao.weex.ui.component.WXComponentProp;
 import com.taobao.weex.ui.component.WXHeader;
 import com.taobao.weex.ui.component.WXLoading;
 import com.taobao.weex.ui.component.WXRefresh;
@@ -401,7 +400,6 @@ public abstract class BasicListComponent<T extends ViewGroup & ListComponentView
     return super.setProperty(key, param);
   }
 
-  @WXComponentProp(name = Constants.Name.SCROLLABLE)
   public void setScrollable(boolean scrollable) {
     this.isScrollable = scrollable;
     WXRecyclerView inner = getHostView().getInnerView();
@@ -410,13 +408,11 @@ public abstract class BasicListComponent<T extends ViewGroup & ListComponentView
     }
   }
 
-  @WXComponentProp(name = Constants.Name.OFFSET_ACCURACY)
   public void setOffsetAccuracy(int accuracy) {
     float real = WXViewUtils.getRealPxByWidth(accuracy, getInstance().getInstanceViewPortWidth());
     this.mOffsetAccuracy = (int) real;
   }
 
-  @WXComponentProp(name = Constants.Name.DRAGGABLE)
   public void setDraggable(boolean isDraggable) {
     if (mDragHelper != null) {
       mDragHelper.setDraggable(isDraggable);
@@ -426,7 +422,6 @@ public abstract class BasicListComponent<T extends ViewGroup & ListComponentView
     }
   }
 
-  @WXComponentProp(name = Constants.Name.SHOW_SCROLLBAR)
   public void setShowScrollbar(boolean show) {
     if(getHostView() == null || getHostView().getInnerView() == null){
       return;

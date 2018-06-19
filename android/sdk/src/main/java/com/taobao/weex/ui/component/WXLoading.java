@@ -88,7 +88,6 @@ public class WXLoading extends WXBaseRefresh implements WXSwipeLayout.WXOnLoadin
     return super.setProperty(key, param);
   }
 
-  @WXComponentProp(name = Constants.Name.DISPLAY)
   public void setDisplay(String display) {
     if (!TextUtils.isEmpty(display)) {
       if (display.equals(HIDE)) {

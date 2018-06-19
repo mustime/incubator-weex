@@ -1,7 +1,16 @@
 {
+    "div" :
+    {
+        "justify-content" : "center",
+        "margin-bottom" : 20,
+        "background-color" : "#fff",
+        "border-color" : "#dddddd",
+        "border-width": 1
+    },
     "txt" :
     {
-        "margin-bottom" : "12px",
-        "font-size" : "40px"
+        "color" : "#41b883",
+        "padding" : 20,
+        "font-size" : 40
     }
 }

@@ -18,12 +18,6 @@
  */
 package com.taobao.weex.ui.component;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -40,6 +34,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.adapter.IWXImgLoaderAdapter;
@@ -63,6 +58,12 @@ import com.taobao.weex.utils.WXLogUtils;
 import com.taobao.weex.utils.WXUtils;
 import com.taobao.weex.utils.WXViewToImageUtil;
 import com.taobao.weex.utils.WXViewUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Image component
@@ -154,7 +155,6 @@ public class WXImage extends WXComponent<ImageView> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.RESIZE_MODE)
   public void setResizeMode(String resizeMode) {
     (getHostView()).setScaleType(getResizeMode(resizeMode));
   }
@@ -181,7 +181,6 @@ public class WXImage extends WXComponent<ImageView> {
     return scaleType;
   }
 
-  @WXComponentProp(name = Constants.Name.RESIZE)
   public void setResize(String resize) {
     (getHostView()).setScaleType(getResizeMode(resize));
   }
@@ -198,7 +197,6 @@ public class WXImage extends WXComponent<ImageView> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.SRC)
   public void setSrc(String src) {
     if (src == null) {
       return;

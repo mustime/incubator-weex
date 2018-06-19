@@ -18,15 +18,10 @@
  */
 package com.taobao.weex.ui.component.list;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSON;
-
 import android.content.Context;
 import android.text.TextUtils;
+
+import com.alibaba.fastjson.JSON;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.annotation.Component;
 import com.taobao.weex.common.Constants;
@@ -35,7 +30,6 @@ import com.taobao.weex.ui.action.BasicComponentData;
 import com.taobao.weex.ui.component.WXBaseRefresh;
 import com.taobao.weex.ui.component.WXBasicComponentType;
 import com.taobao.weex.ui.component.WXComponent;
-import com.taobao.weex.ui.component.WXComponentProp;
 import com.taobao.weex.ui.component.WXLoading;
 import com.taobao.weex.ui.component.WXRefresh;
 import com.taobao.weex.ui.component.WXVContainer;
@@ -44,6 +38,9 @@ import com.taobao.weex.ui.view.listview.adapter.ListBaseViewHolder;
 import com.taobao.weex.ui.view.refresh.wrapper.BounceRecyclerView;
 import com.taobao.weex.utils.WXLogUtils;
 import com.taobao.weex.utils.WXUtils;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Unlike other components, there is immutable bi-directional association between View and
@@ -169,7 +166,6 @@ public class WXListComponent extends BasicListComponent<BounceRecyclerView> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.SPAN_OFFSETS)
   public void setSpanOffsets(String spanOffsets)  {
     if (!TextUtils.equals(spanOffsets, mSpanOffsetsStr)) {
       markComponentUsable();
@@ -179,7 +175,6 @@ public class WXListComponent extends BasicListComponent<BounceRecyclerView> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.COLUMN_WIDTH)
   public void setColumnWidth(float columnWidth)  {
     if(columnWidth != mColumnWidth){
       markComponentUsable();
@@ -189,7 +184,6 @@ public class WXListComponent extends BasicListComponent<BounceRecyclerView> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.COLUMN_COUNT)
   public void setColumnCount(int columnCount){
     if(columnCount != mColumnCount) {
       markComponentUsable();
@@ -199,7 +193,6 @@ public class WXListComponent extends BasicListComponent<BounceRecyclerView> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.COLUMN_GAP)
   public void setColumnGap(float columnGap) throws InterruptedException {
     if(columnGap != mColumnGap) {
       markComponentUsable();
@@ -209,10 +202,22 @@ public class WXListComponent extends BasicListComponent<BounceRecyclerView> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.SCROLLABLE)
   public void setScrollable(boolean scrollable) {
     WXRecyclerView inner = getHostView().getInnerView();
     inner.setScrollable(scrollable);
+  }
+
+  @Override
+  protected boolean setProperty(String key, Object param) {
+    if(key == null){
+      return true;
+    }
+    switch (key) {
+      case Constants.Name.SPAN_OFFSETS:
+        setSpanOffsets(WXUtils.getString(param, null));
+        return true;
+    }
+    return false;
   }
 
   @Override

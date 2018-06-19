@@ -200,6 +200,7 @@ public class WXSDKEngine implements Serializable {
           WXLogUtils.e(TAG, "doInitInternal isSoInit false");
           return;
         }
+        sm.getWXBridgeManager().initBridge(application);
 
         WXEnvironment.sSDKInitExecuteTime = System.currentTimeMillis() - start;
         WXLogUtils.renderPerformanceLog("SDKInitExecuteTime", WXEnvironment.sSDKInitExecuteTime);

@@ -155,7 +155,6 @@ public class WXModuleManager {
           HashMap<String, Serializable> data = new HashMap<String, Serializable>();
           data.put(IWXUserTrackAdapter.MONITOR_ERROR_CODE, "101");
           data.put(IWXUserTrackAdapter.MONITOR_ARG, moduleStr + "." + methodStr);
-          data.put(IWXUserTrackAdapter.MONITOR_ERROR_MSG, instance.getBundleUrl());
           userTrackAdapter.commit(instance.getContext(), null, IWXUserTrackAdapter.INVOKE_MODULE, null, data);
         }
         return dispatchCallModuleMethod(instance,wxModule,args,invoker);

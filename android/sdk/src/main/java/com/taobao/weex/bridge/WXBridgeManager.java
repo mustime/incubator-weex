@@ -18,6 +18,7 @@
  */
 package com.taobao.weex.bridge;
 
+import android.app.Application;
 import android.os.Looper;
 import android.support.annotation.UiThread;
 import android.text.TextUtils;
@@ -79,6 +80,10 @@ public class WXBridgeManager {
     return mBridgeManager;
   }
 
+  public void initBridge(Application app) {
+    mWXBridge.init(app.getApplicationContext());
+  }
+
   @Deprecated
   public void fireEvent(final String instanceId, final String ref,
                         final String type, final Map<String, Object> data) {
@@ -127,6 +132,7 @@ public class WXBridgeManager {
       throw new WXRuntimeException(
               "fireEvent must be called by main thread");
     }
+    WXLogUtils.e("weex", "fireEventOnNode ref = " + ref + ", type = " + type);
     if(callback == null) {
       // XXTODO
     }else{

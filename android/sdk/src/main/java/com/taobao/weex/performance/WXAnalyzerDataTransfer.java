@@ -66,7 +66,6 @@ public class WXAnalyzerDataTransfer {
 
       data = new JSONObject()
               .put("instanceId", instanceId)
-              .put("url", instance.getBundleUrl())
               .put("dimensionMap", dimensionMap)
               .put("measureMap", measureMap)
               .toString();

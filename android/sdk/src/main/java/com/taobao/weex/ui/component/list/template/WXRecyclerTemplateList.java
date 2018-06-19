@@ -57,7 +57,6 @@ import com.taobao.weex.ui.component.AppearanceHelper;
 import com.taobao.weex.ui.component.Scrollable;
 import com.taobao.weex.ui.component.WXBaseRefresh;
 import com.taobao.weex.ui.component.WXComponent;
-import com.taobao.weex.ui.component.WXComponentProp;
 import com.taobao.weex.ui.component.WXLoading;
 import com.taobao.weex.ui.component.WXRefresh;
 import com.taobao.weex.ui.component.WXVContainer;
@@ -809,7 +808,6 @@ public class WXRecyclerTemplateList extends WXVContainer<BounceRecyclerView> imp
     }
 
 
-    @WXComponentProp(name = Constants.Name.OFFSET_ACCURACY)
     public void setOffsetAccuracy(int accuracy) {
         float real = WXViewUtils.getRealPxByWidth(accuracy, getInstance().getInstanceViewPortWidth());
         this.mOffsetAccuracy = (int) real;
@@ -827,7 +825,6 @@ public class WXRecyclerTemplateList extends WXVContainer<BounceRecyclerView> imp
     }
 
 
-    @WXComponentProp(name = Constants.Name.SCROLL_DIRECTION)
     public void setScrollDirection(String direction){
         if(orientation != getAttrs().getOrientation()) {
             orientation = getAttrs().getOrientation();
@@ -838,7 +835,6 @@ public class WXRecyclerTemplateList extends WXVContainer<BounceRecyclerView> imp
         }
     }
 
-    @WXComponentProp(name = Constants.Name.COLUMN_WIDTH)
     public void setColumnWidth(int columnCount)  {
         if(getAttrs().getColumnWidth() != mColumnWidth){
             updateRecyclerAttr();
@@ -847,7 +843,6 @@ public class WXRecyclerTemplateList extends WXVContainer<BounceRecyclerView> imp
         }
     }
 
-    @WXComponentProp(name = Constants.Name.SHOW_SCROLLBAR)
     public void setShowScrollbar(boolean show) {
         if(getHostView() == null || getHostView().getInnerView() == null){
             return;
@@ -859,7 +854,6 @@ public class WXRecyclerTemplateList extends WXVContainer<BounceRecyclerView> imp
         }
     }
 
-    @WXComponentProp(name = Constants.Name.COLUMN_COUNT)
     public void setColumnCount(int columnCount){
         if(getAttrs().getColumnCount() != mColumnCount){
             updateRecyclerAttr();
@@ -868,7 +862,6 @@ public class WXRecyclerTemplateList extends WXVContainer<BounceRecyclerView> imp
         }
     }
 
-    @WXComponentProp(name = Constants.Name.COLUMN_GAP)
     public void setColumnGap(float columnGap) throws InterruptedException {
         if(getAttrs().getColumnGap() != mColumnGap) {
             updateRecyclerAttr();
@@ -877,7 +870,6 @@ public class WXRecyclerTemplateList extends WXVContainer<BounceRecyclerView> imp
         }
     }
 
-    @WXComponentProp(name = Constants.Name.SCROLLABLE)
     public void setScrollable(boolean scrollable) {
         WXRecyclerView inner = getHostView().getInnerView();
         inner.setScrollable(scrollable);

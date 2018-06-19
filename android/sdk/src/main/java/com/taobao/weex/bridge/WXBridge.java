@@ -18,6 +18,7 @@
  */
 package com.taobao.weex.bridge;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.taobao.weex.WXEnvironment;
@@ -28,6 +29,7 @@ import com.taobao.weex.common.WXErrorCode;
 import com.taobao.weex.dom.CSSShorthand;
 import com.taobao.weex.layout.ContentBoxMeasurement;
 import com.taobao.weex.utils.WXLogUtils;
+import com.taobao.weex.utils.WXViewUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -39,6 +41,8 @@ import java.util.Map;
  */
 
 public class WXBridge implements IWXBridge {
+
+  private native void nativeInit(String width, String height);
 
   private native void nativeBindMeasurementToRenderObject(long ptr);
 
@@ -73,6 +77,11 @@ public class WXBridge implements IWXBridge {
   private native void nativeSetViewPortWidth(String instanceId, float value);
 
   public static final String TAG = "WXBridge";
+
+  @Override
+  public void init(Context context) {
+    nativeInit(String.valueOf(WXViewUtils.getScreenWidth(context)), String.valueOf(WXViewUtils.getScreenHeight(context)));
+  }
 
   @Override
   public int callCreateBody(String instanceId, String componentType, String ref,

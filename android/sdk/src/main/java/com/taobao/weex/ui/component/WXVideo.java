@@ -208,7 +208,6 @@ public class WXVideo extends WXComponent<FrameLayout> {
     return super.setProperty(key, param);
   }
 
-  @WXComponentProp(name = Constants.Name.SRC)
   public void setSrc(String src) {
     if (TextUtils.isEmpty(src) || getHostView() == null) {
       return;
@@ -221,7 +220,6 @@ public class WXVideo extends WXComponent<FrameLayout> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.AUTO_PLAY)
   public void setAutoPlay(boolean autoPlay) {
     mAutoPlay = autoPlay;
     if(autoPlay){
@@ -232,7 +230,6 @@ public class WXVideo extends WXComponent<FrameLayout> {
 
   private boolean mStopped;
 
-  @WXComponentProp(name = Constants.Name.PLAY_STATUS)
   public void setPlaystatus(String playstatus) {
 
     if (mPrepared && !mError && !mStopped) {

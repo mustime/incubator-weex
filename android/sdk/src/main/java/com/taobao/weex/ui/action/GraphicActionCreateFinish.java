@@ -43,7 +43,7 @@ public class GraphicActionCreateFinish extends BasicGraphicAction {
         this.mLayoutHeight = (int) component.getLayoutHeight();
     }
 
-    // todo add LayoutFinishListener
+//    // todo add LayoutFinishListener
 //    final LayoutFinishListener listener;
 //    if(instance != null && (listener = instance.getLayoutFinishListener()) != null) {
 //      WXSDKManager.getInstance().getWXRenderManager().postOnUiThread(WXThread.secure(new Runnable() {

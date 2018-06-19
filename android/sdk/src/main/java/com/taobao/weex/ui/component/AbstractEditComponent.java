@@ -28,7 +28,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -488,7 +487,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     return super.setProperty(key, param);
   }
 
-  @WXComponentProp(name = Constants.Name.RETURN_KEY_TYPE)
   public void setReturnKeyType(String type) {
     if (getHostView() == null) {
       return;
@@ -522,7 +520,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     getHostView().setImeOptions(mEditorAction);
   }
 
-  @WXComponentProp(name = Constants.Name.PLACEHOLDER)
   public void setPlaceholder(String placeholder) {
     if (placeholder == null || getHostView() == null) {
       return;
@@ -530,7 +527,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     ((WXEditText) getHostView()).setHint(placeholder);
   }
 
-  @WXComponentProp(name = Constants.Name.PLACEHOLDER_COLOR)
   public void setPlaceholderColor(String color) {
     if (getHostView() != null && !TextUtils.isEmpty(color)) {
       int colorInt = WXResourceUtils.getColor(color);
@@ -540,9 +536,7 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.TYPE)
   public void setType(String type) {
-    Log.e("weex", "setType=" + type);
     if (type == null || getHostView() == null) {
       return;
     }
@@ -556,7 +550,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.AUTOFOCUS)
   public void setAutofocus(boolean autofocus) {
     if (getHostView() == null) {
       return;
@@ -573,7 +566,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.VALUE)
   public void setValue(String value) {
     WXEditText view;
     if ((view = getHostView()) == null) {
@@ -587,7 +579,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     view.setSelection(value == null ? 0 : index);
   }
 
-  @WXComponentProp(name = Constants.Name.COLOR)
   public void setColor(String color) {
     if (getHostView() != null && !TextUtils.isEmpty(color)) {
       int colorInt = WXResourceUtils.getColor(color);
@@ -597,7 +588,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.FONT_SIZE)
   public void setFontSize(String fontSize) {
     if (getHostView() != null && fontSize != null ) {
       Map<String, Object> map = new HashMap<>(1);
@@ -606,7 +596,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.TEXT_ALIGN)
   public void setTextAlign(String textAlign) {
     int align = getTextAlign(textAlign);
     if (align > 0) {
@@ -614,7 +603,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     }
   }
 
-  @WXComponentProp(name = Constants.Name.SINGLELINE)
   public void setSingleLine(boolean singleLine) {
     if (getHostView() == null) {
       return;
@@ -622,7 +610,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     getHostView().setSingleLine(singleLine);
   }
 
-  @WXComponentProp(name = Constants.Name.LINES)
   public void setLines(int lines) {
     if (getHostView() == null) {
       return;
@@ -634,7 +621,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
    * Compatible with both 'max-length' and 'maxlength'
    * @param maxLength
    */
-  @WXComponentProp(name = Constants.Name.MAX_LENGTH)
   public void setMaxLength(int maxLength) {
     if (getHostView() == null) {
       return;
@@ -646,7 +632,6 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
    * Compatible with both 'max-length' and 'maxlength'
    * @param maxLength
    */
-  @WXComponentProp(name = Constants.Name.MAXLENGTH)
   @Deprecated
   public void setMaxlength(int maxLength) {
     setMaxLength(maxLength);
@@ -691,12 +676,10 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
     return inputType;
   }
 
-  @WXComponentProp(name = Constants.Name.MAX)
   public void setMax(String max) {
     mMax = max;
   }
 
-  @WXComponentProp(name = Constants.Name.MIN)
   public void setMin(String min) {
     mMin = min;
   }

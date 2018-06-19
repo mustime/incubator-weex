@@ -62,7 +62,7 @@ namespace WeexCore {
       jWMThis = jRef;
     }
 
-    int callNative(const char* pageId, const char *task, const char *callback);
+    std::string callCreatePage();
 
     void* callNativeModule(const char* pageId, const char *module, const char *method,
                              const char *arguments, int argumentsLength, const char *options, int optionsLength);

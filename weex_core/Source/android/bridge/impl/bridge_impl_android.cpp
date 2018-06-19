@@ -26,7 +26,7 @@
 #include <map>
 #include <android/base/string/jstring_cache.h>
 
-static jmethodID jCallNativeMethodId;
+static jmethodID jCallCreatePageMethodId;
 static jmethodID jCallNativeModuleMethodId;
 static jmethodID jCallNativeComponentMethodId;
 
@@ -62,7 +62,7 @@ namespace WeexCore {
 
   void Bridge_Impl_Android::setGlobalRef(jobject &jRef) {
     jThis = jRef;
-    jCallNativeMethodId = NULL;
+    jCallCreatePageMethodId = NULL;
     jCallNativeModuleMethodId = NULL;
     jCallNativeComponentMethodId = NULL;
 
@@ -129,40 +129,18 @@ namespace WeexCore {
     }
   }
 
-  int Bridge_Impl_Android::callNative(const char* pageId, const char *task, const char *callback) {
-
-    RenderPage *page = RenderManager::GetInstance()->GetPage(pageId);
-    long long startTime = getCurrentTime();
-
+  std::string Bridge_Impl_Android::callCreatePage() {
     JNIEnv *env = getJNIEnv();
-    jbyteArray jTask = newJByteArray(env, task);
-    jstring jCallback = env->NewStringUTF(callback);
-    jstring jPageId = getKeyFromCache(env, pageId);
-
-    int flag = -1;
-
-    if (jTask != nullptr) {
-      if (jCallNativeMethodId == NULL) {
-        jCallNativeMethodId = env->GetMethodID(jBridgeClazz,
-                                               "callNative",
-                                               "(Ljava/lang/String;[BLjava/lang/String;)I");
-      }
-
-      flag = env->CallIntMethod(jThis, jCallNativeMethodId, jPageId, jTask, jCallback);
+    if (jCallCreatePageMethodId == NULL) {
+      jCallCreatePageMethodId = env->GetMethodID(jBridgeClazz,
+                                                   "callCreatePage",
+                                                   "()Ljava/lang/String;");
     }
-
-    if (flag == -1) {
-      LOGE("instance destroy JFM must stop callNative");
-    }
-
-    if (jTask != nullptr)
-      env->DeleteLocalRef(jTask);
-    if (jCallback != nullptr)
-      env->DeleteLocalRef(jCallback);
-
-    if (page != nullptr)
-      page->CallBridgeTime(getCurrentTime() - startTime);
-    return flag;
+    jstring jstr = (jstring)env->CallObjectMethod(jThis, jCallCreatePageMethodId);
+    const char* chars = env->GetStringUTFChars(jstr, nullptr);
+    std::string ret(chars);
+    env->ReleaseStringUTFChars(jstr, chars);
+    return ret;
   }
 
   void* Bridge_Impl_Android::callNativeModule(const char* pageId, const char *module, const char *method,

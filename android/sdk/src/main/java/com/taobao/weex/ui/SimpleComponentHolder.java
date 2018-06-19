@@ -29,7 +29,6 @@ import com.taobao.weex.annotation.Component;
 import com.taobao.weex.common.WXRuntimeException;
 import com.taobao.weex.ui.action.BasicComponentData;
 import com.taobao.weex.ui.component.WXComponent;
-import com.taobao.weex.ui.component.WXComponentProp;
 import com.taobao.weex.ui.component.WXVContainer;
 import com.taobao.weex.utils.WXLogUtils;
 
@@ -151,11 +150,7 @@ public class SimpleComponentHolder implements IFComponentHolder{
             if(anno == null){
               continue;
             }
-            if (anno instanceof WXComponentProp) {
-              String name = ((WXComponentProp) anno).name();
-              methods.put(name, new MethodInvoker(method,true));
-              break;
-            }else if(anno instanceof JSMethod){
+            if(anno instanceof JSMethod){
               JSMethod methodAnno = (JSMethod)anno;
               String name = methodAnno.alias();
               if(JSMethod.NOT_SET.equals(name)){

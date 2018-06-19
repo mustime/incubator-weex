@@ -229,7 +229,6 @@ public class WXSliderNeighbor extends WXSlider {
         moveLeft(page, -translation, alpha, scale);
     }
 
-    @WXComponentProp(name = NEIGHBOR_SCALE)
     public void setNeighborScale(String input) {
         float neighborScale = DEFAULT_NEIGHBOR_SCALE;
         if (!TextUtils.isEmpty(input)) {
@@ -246,7 +245,6 @@ public class WXSliderNeighbor extends WXSlider {
         }
     }
 
-    @WXComponentProp(name = NEIGHBOR_ALPHA)
     public void setNeighborAlpha(String input) {
         float neighborAlpha = DEFAULT_NEIGHBOR_ALPHA;
         if (!TextUtils.isEmpty(input)) {
@@ -263,7 +261,6 @@ public class WXSliderNeighbor extends WXSlider {
         }
     }
 
-    @WXComponentProp(name = NEIGHBOR_SPACE)
     @SuppressWarnings("unused")
     public void setNeighborSpace(String input) {
         float neighborSpace = DEFAULT_NEIGHBOR_SPACE;
@@ -279,7 +276,6 @@ public class WXSliderNeighbor extends WXSlider {
         }
     }
 
-    @WXComponentProp(name = CURRENT_ITEM_SCALE)
     @SuppressWarnings("unused")
     public void setCurrentItemScale(String input) {
         float currentItemScale = DEFAULT_CURRENT_ITEM_SCALE;
