@@ -22,7 +22,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.taobao.weex.utils.WXLogUtils;
+import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -29,12 +29,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.weex.R;
-import com.taobao.weex.WXEnvironment;
-import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.adapter.IWXHttpAdapter;
-import com.taobao.weex.common.WXRequest;
-import com.taobao.weex.common.WXResponse;
-import com.taobao.weex.utils.WXLogUtils;
+import cn.xxzhushou.xmod.wxui.WXEnvironment;
+import cn.xxzhushou.xmod.wxui.WXSDKManager;
+import cn.xxzhushou.xmod.wxui.adapter.IWXHttpAdapter;
+import cn.xxzhushou.xmod.wxui.common.WXRequest;
+import cn.xxzhushou.xmod.wxui.common.WXResponse;
+import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

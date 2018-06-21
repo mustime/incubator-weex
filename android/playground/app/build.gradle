@@ -9,7 +9,7 @@ android {
     buildToolsVersion project.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.alibaba.weex"
+        applicationId "cn.xxzhushou.xmod.wxui.playground"
         minSdkVersion project.appMinSdkVersion
         targetSdkVersion project.targetSdkVersion
         versionCode 17

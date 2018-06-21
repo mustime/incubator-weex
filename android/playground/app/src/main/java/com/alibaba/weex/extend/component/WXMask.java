@@ -31,12 +31,12 @@ import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 
 import com.alibaba.weex.extend.view.WXMaskView;
-import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.dom.CSSShorthand;
-import com.taobao.weex.dom.WXStyle;
-import com.taobao.weex.ui.action.BasicComponentData;
-import com.taobao.weex.ui.component.WXComponent;
-import com.taobao.weex.ui.component.WXVContainer;
+import cn.xxzhushou.xmod.wxui.WXSDKInstance;
+import cn.xxzhushou.xmod.wxui.dom.CSSShorthand;
+import cn.xxzhushou.xmod.wxui.dom.WXStyle;
+import cn.xxzhushou.xmod.wxui.ui.action.BasicComponentData;
+import cn.xxzhushou.xmod.wxui.ui.component.WXComponent;
+import cn.xxzhushou.xmod.wxui.ui.component.WXVContainer;
 
 import java.util.HashMap;
 import java.util.Map;

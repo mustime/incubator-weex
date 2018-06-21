@@ -32,22 +32,22 @@ import android.view.animation.TranslateAnimation;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.taobao.weex.WXEnvironment;
-import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.common.Constants;
-import com.taobao.weex.common.ICheckBindingScroller;
-import com.taobao.weex.common.OnWXScrollListener;
-import com.taobao.weex.ui.action.BasicComponentData;
-import com.taobao.weex.ui.animation.WXAnimationBean;
-import com.taobao.weex.ui.component.Scrollable;
-import com.taobao.weex.ui.component.WXComponent;
-import com.taobao.weex.ui.component.WXDiv;
-import com.taobao.weex.ui.component.WXVContainer;
-import com.taobao.weex.ui.component.list.BasicListComponent;
-import com.taobao.weex.ui.component.list.template.WXRecyclerTemplateList;
-import com.taobao.weex.ui.view.listview.WXRecyclerView;
-import com.taobao.weex.utils.WXLogUtils;
-import com.taobao.weex.utils.WXResourceUtils;
+import cn.xxzhushou.xmod.wxui.WXEnvironment;
+import cn.xxzhushou.xmod.wxui.WXSDKInstance;
+import cn.xxzhushou.xmod.wxui.common.Constants;
+import cn.xxzhushou.xmod.wxui.common.ICheckBindingScroller;
+import cn.xxzhushou.xmod.wxui.common.OnWXScrollListener;
+import cn.xxzhushou.xmod.wxui.ui.action.BasicComponentData;
+import cn.xxzhushou.xmod.wxui.ui.animation.WXAnimationBean;
+import cn.xxzhushou.xmod.wxui.ui.component.Scrollable;
+import cn.xxzhushou.xmod.wxui.ui.component.WXComponent;
+import cn.xxzhushou.xmod.wxui.ui.component.WXDiv;
+import cn.xxzhushou.xmod.wxui.ui.component.WXVContainer;
+import cn.xxzhushou.xmod.wxui.ui.component.list.BasicListComponent;
+import cn.xxzhushou.xmod.wxui.ui.component.list.template.WXRecyclerTemplateList;
+import cn.xxzhushou.xmod.wxui.ui.view.listview.WXRecyclerView;
+import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
+import cn.xxzhushou.xmod.wxui.utils.WXResourceUtils;
 
 import java.util.ArrayList;
 

@@ -26,10 +26,10 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.widget.TextView;
 
-import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.ui.action.BasicComponentData;
-import com.taobao.weex.ui.component.WXComponent;
-import com.taobao.weex.ui.component.WXVContainer;
+import cn.xxzhushou.xmod.wxui.WXSDKInstance;
+import cn.xxzhushou.xmod.wxui.ui.action.BasicComponentData;
+import cn.xxzhushou.xmod.wxui.ui.component.WXComponent;
+import cn.xxzhushou.xmod.wxui.ui.component.WXVContainer;
 
 public class RichText extends WXComponent<TextView> {
 

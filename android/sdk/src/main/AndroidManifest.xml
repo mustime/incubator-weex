@@ -18,7 +18,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.taobao.weex"
+          package="cn.xxzhushou.xmod.wxui"
           android:versionCode="1"
           android:versionName="1.0">
 
@@ -28,7 +28,7 @@ under the License.
 
     <application>
         <receiver
-                android:name="com.taobao.weex.WXGlobalEventReceiver"
+                android:name="cn.xxzhushou.xmod.wxui.WXGlobalEventReceiver"
                 android:enabled="true"
                 android:exported="false">
         </receiver>

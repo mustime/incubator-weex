@@ -16,17 +16,17 @@
 #   public *;
 #}
 ##weex
--keep class com.taobao.weex.bridge.**{*;}
--keep class com.taobao.weex.dom.**{*;}
--keep class com.taobao.weex.adapter.**{*;}
--keep class com.taobao.weex.common.**{*;}
--keep class * implements com.taobao.weex.IWXObject{*;}
--keep class com.taobao.weex.ui.**{*;}
--keep class com.taobao.weex.ui.component.**{*;}
--keep class com.taobao.weex.utils.**{
+-keep class cn.xxzhushou.xmod.wxui.bridge.**{*;}
+-keep class cn.xxzhushou.xmod.wxui.dom.**{*;}
+-keep class cn.xxzhushou.xmod.wxui.adapter.**{*;}
+-keep class cn.xxzhushou.xmod.wxui.common.**{*;}
+-keep class * implements cn.xxzhushou.xmod.wxui.IWXObject{*;}
+-keep class cn.xxzhushou.xmod.wxui.ui.**{*;}
+-keep class cn.xxzhushou.xmod.wxui.ui.component.**{*;}
+-keep class cn.xxzhushou.xmod.wxui.utils.**{
     public <fields>;
     public <methods>;
     }
--keep class com.taobao.weex.view.**{*;}
--keep class com.taobao.weex.module.**{*;}
--keep public class * extends com.taobao.weex.common.WXModule{*;}
+-keep class cn.xxzhushou.xmod.wxui.view.**{*;}
+-keep class cn.xxzhushou.xmod.wxui.module.**{*;}
+-keep public class * extends cn.xxzhushou.xmod.wxui.common.WXModule{*;}

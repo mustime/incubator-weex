@@ -20,7 +20,7 @@ package com.alibaba.weex.extend.adapter;
 
 import android.text.TextUtils;
 
-import com.taobao.weex.adapter.IWXAccessibilityRoleAdapter;
+import cn.xxzhushou.xmod.wxui.adapter.IWXAccessibilityRoleAdapter;
 
 import java.util.HashMap;
 import java.util.Locale;

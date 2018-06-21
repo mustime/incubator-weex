@@ -27,10 +27,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.facebook.drawee.view.DraweeView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.taobao.weex.ui.view.border.BorderDrawable;
-import com.taobao.weex.ui.view.gesture.WXGesture;
-import com.taobao.weex.ui.view.gesture.WXGestureObservable;
-import com.taobao.weex.utils.WXViewUtils;
+import cn.xxzhushou.xmod.wxui.ui.view.border.BorderDrawable;
+import cn.xxzhushou.xmod.wxui.ui.view.gesture.WXGesture;
+import cn.xxzhushou.xmod.wxui.ui.view.gesture.WXGestureObservable;
+import cn.xxzhushou.xmod.wxui.utils.WXViewUtils;
 
 /**
  * Created by sospartan on 8/19/16.

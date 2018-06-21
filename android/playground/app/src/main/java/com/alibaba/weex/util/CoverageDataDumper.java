@@ -23,7 +23,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.taobao.weex.utils.WXLogUtils;
+import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 
 import java.io.File;
 

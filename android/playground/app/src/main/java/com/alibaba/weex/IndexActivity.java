@@ -32,11 +32,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.client.android.CaptureActivity;
-import com.taobao.weex.IWXRenderListener;
-import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.ui.WXRenderManager;
-import com.taobao.weex.utils.WXLogUtils;
+import cn.xxzhushou.xmod.wxui.IWXRenderListener;
+import cn.xxzhushou.xmod.wxui.WXSDKInstance;
+import cn.xxzhushou.xmod.wxui.WXSDKManager;
+import cn.xxzhushou.xmod.wxui.ui.WXRenderManager;
+import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 
 public class IndexActivity extends WXBaseActivity implements IWXRenderListener {
 
@@ -107,7 +107,7 @@ public class IndexActivity extends WXBaseActivity implements IWXRenderListener {
 //    mContainer.addView(renderContainer);
     mInstance.mRendered = true;
 
-    boolean ret = nativeCreateRoot(mInstance.getInstanceId(), "/sdcard/input.json", "/sdcard/input_style.json");
+    boolean ret = nativeCreateRoot(mInstance.getInstanceId(), "/sdcard/text.json", "/sdcard/text_style.json");
     WXLogUtils.e(TAG, "FUCK ret = " + ret);
   }
 

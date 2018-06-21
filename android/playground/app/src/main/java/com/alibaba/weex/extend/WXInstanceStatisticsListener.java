@@ -18,9 +18,9 @@
  */
 package com.alibaba.weex.extend;
 
-import com.taobao.weex.IWXStatisticsListener;
+import cn.xxzhushou.xmod.wxui.IWXStatisticsListener;
 
-import com.taobao.weex.utils.Trace;
+import cn.xxzhushou.xmod.wxui.utils.Trace;
 
 public class WXInstanceStatisticsListener implements IWXStatisticsListener {
   /**

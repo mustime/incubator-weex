@@ -24,7 +24,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.taobao.weex.WXSDKInstance;
+import cn.xxzhushou.xmod.wxui.WXSDKInstance;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -51,7 +51,7 @@ public final class WXAnalyzerDelegate {
             return;
         }
         try {
-            Class clazz = Class.forName("com.taobao.weex.analyzer.WeexDevOptions");
+            Class clazz = Class.forName("cn.xxzhushou.xmod.wxui.analyzer.WeexDevOptions");
             Constructor constructor = clazz.getDeclaredConstructor(Context.class);
             mWXAnalyzer = constructor.newInstance(context);
         } catch (Exception e) {

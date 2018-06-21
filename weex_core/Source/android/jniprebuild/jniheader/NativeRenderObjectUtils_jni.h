@@ -8,8 +8,8 @@
 // For
 //     com/taobao/weex/ui/component/list/template/jni/NativeRenderObjectUtils
 
-#ifndef com_taobao_weex_ui_component_list_template_jni_NativeRenderObjectUtils_JNI
-#define com_taobao_weex_ui_component_list_template_jni_NativeRenderObjectUtils_JNI
+#ifndef cn_xxzhushou_xmod_wxui_ui_component_list_template_jni_NativeRenderObjectUtils_JNI
+#define cn_xxzhushou_xmod_wxui_ui_component_list_template_jni_NativeRenderObjectUtils_JNI
 
 #include <jni.h>
 
@@ -18,7 +18,7 @@
 // Step 1: forward declarations.
 namespace {
 const char kNativeRenderObjectUtilsClassPath[] =
-    "com/taobao/weex/ui/component/list/template/jni/NativeRenderObjectUtils";
+    "cn/xxzhushou/xmod/wxui/ui/component/list/template/jni/NativeRenderObjectUtils";
 // Leaking this jclass as we cannot use LazyInstance from some threads.
 jclass g_NativeRenderObjectUtils_clazz = NULL;
 #define NativeRenderObjectUtils_clazz(env) g_NativeRenderObjectUtils_clazz
@@ -90,7 +90,7 @@ static void Java_NativeRenderObjectUtils_updateComponentSize(JNIEnv* env,
       "updateComponentSize",
 
 "("
-"Lcom/taobao/weex/ui/component/WXComponent;"
+"Lcn/xxzhushou/xmod/wxui/ui/component/WXComponent;"
 "F"
 "F"
 "F"
@@ -167,7 +167,7 @@ static const JNINativeMethod kMethodsNativeRenderObjectUtils[] = {
     { "nativeRenderObjectUpdateComponent",
 "("
 "J"
-"Lcom/taobao/weex/ui/component/WXComponent;"
+"Lcn/xxzhushou/xmod/wxui/ui/component/WXComponent;"
 ")"
 "J", reinterpret_cast<void*>(RenderObjectUpdateComponent) },
     { "nativeRenderObjectChildWaste",
@@ -197,4 +197,4 @@ static bool RegisterNativesImpl(JNIEnv* env) {
   return true;
 }
 
-#endif  // com_taobao_weex_ui_component_list_template_jni_NativeRenderObjectUtils_JNI
+#endif  // cn_xxzhushou_xmod_wxui_ui_component_list_template_jni_NativeRenderObjectUtils_JNI

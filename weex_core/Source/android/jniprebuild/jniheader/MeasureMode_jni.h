@@ -7,8 +7,8 @@
 // For
 //     com/taobao/weex/layout/MeasureMode
 
-#ifndef com_taobao_weex_layout_MeasureMode_JNI
-#define com_taobao_weex_layout_MeasureMode_JNI
+#ifndef cn_xxzhushou_xmod_wxui_layout_MeasureMode_JNI
+#define cn_xxzhushou_xmod_wxui_layout_MeasureMode_JNI
 
 #include <jni.h>
 
@@ -16,7 +16,7 @@
 
 // Step 1: forward declarations.
 namespace {
-const char kMeasureModeClassPath[] = "com/taobao/weex/layout/MeasureMode";
+const char kMeasureModeClassPath[] = "cn/xxzhushou/xmod/wxui/layout/MeasureMode";
 // Leaking this jclass as we cannot use LazyInstance from some threads.
 jclass g_MeasureMode_clazz = NULL;
 #define MeasureMode_clazz(env) g_MeasureMode_clazz
@@ -81,4 +81,4 @@ static bool RegisterNativesImpl(JNIEnv* env) {
   return true;
 }
 
-#endif  // com_taobao_weex_layout_MeasureMode_JNI
+#endif  // cn_xxzhushou_xmod_wxui_layout_MeasureMode_JNI

@@ -29,11 +29,11 @@ import com.alibaba.weex.extend.component.RichText;
 import com.alibaba.weex.extend.component.WXComponentSyncTest;
 import com.alibaba.weex.extend.component.WXParallax;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.taobao.weex.InitConfig;
-import com.taobao.weex.WXEnvironment;
-import com.taobao.weex.WXSDKEngine;
-import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.common.WXException;
+import cn.xxzhushou.xmod.wxui.InitConfig;
+import cn.xxzhushou.xmod.wxui.WXEnvironment;
+import cn.xxzhushou.xmod.wxui.WXSDKEngine;
+import cn.xxzhushou.xmod.wxui.WXSDKManager;
+import cn.xxzhushou.xmod.wxui.common.WXException;
 
 public class WXApplication extends Application {
 

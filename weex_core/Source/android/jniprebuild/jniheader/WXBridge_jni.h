@@ -7,8 +7,8 @@
 // For
 //     com/taobao/weex/bridge/WXBridge
 
-#ifndef com_taobao_weex_bridge_WXBridge_JNI
-#define com_taobao_weex_bridge_WXBridge_JNI
+#ifndef cn_xxzhushou_xmod_wxui_bridge_WXBridge_JNI
+#define cn_xxzhushou_xmod_wxui_bridge_WXBridge_JNI
 
 #include <jni.h>
 
@@ -16,7 +16,7 @@
 
 // Step 1: forward declarations.
 namespace {
-const char kWXBridgeClassPath[] = "com/taobao/weex/bridge/WXBridge";
+const char kWXBridgeClassPath[] = "cn/xxzhushou/xmod/wxui/bridge/WXBridge";
 // Leaking this jclass as we cannot use LazyInstance from some threads.
 jclass g_WXBridge_clazz = NULL;
 #define WXBridge_clazz(env) g_WXBridge_clazz
@@ -239,4 +239,4 @@ static bool RegisterNativesImpl(JNIEnv* env) {
   return true;
 }
 
-#endif  // com_taobao_weex_bridge_WXBridge_JNI
+#endif  // cn_xxzhushou_xmod_wxui_bridge_WXBridge_JNI

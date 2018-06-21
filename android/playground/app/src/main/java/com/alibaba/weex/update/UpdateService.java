@@ -31,16 +31,16 @@ import android.widget.Toast;
 
 import com.alibaba.weex.BuildConfig;
 import com.alibaba.weex.R;
-import com.taobao.weex.WXEnvironment;
-import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.utils.WXLogUtils;
+import cn.xxzhushou.xmod.wxui.WXEnvironment;
+import cn.xxzhushou.xmod.wxui.WXSDKManager;
+import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 
 import java.io.File;
 
 public class UpdateService extends IntentService {
 
-  private static final String ACTION_UPDATE = "com.taobao.weex.service.action.UPDATE";
-  private static final String EXTRA_URL = "com.taobao.weex.service.extra.URL";
+  private static final String ACTION_UPDATE = "cn.xxzhushou.xmod.wxui.service.action.UPDATE";
+  private static final String EXTRA_URL = "cn.xxzhushou.xmod.wxui.service.extra.URL";
   private final int NOTIFY_ID = 10006024;
 
   private NotificationManager manager;

@@ -315,13 +315,13 @@ namespace WeexCore {
     }
     sVm = vm;
     jclass tempClass = env->FindClass(
-        "com/taobao/weex/bridge/WXBridge");
+        "cn/xxzhushou/xmod/wxui/bridge/WXBridge");
     jBridgeClazz = (jclass) env->NewGlobalRef(tempClass);
 
-    tempClass = env->FindClass("com/taobao/weex/utils/WXLogUtils");
+    tempClass = env->FindClass("cn/xxzhushou/xmod/wxui/utils/WXLogUtils");
     jWXLogUtils = (jclass) env->NewGlobalRef(tempClass);
 
-    tempClass = env->FindClass("com/taobao/weex/utils/WXMap");
+    tempClass = env->FindClass("cn/xxzhushou/xmod/wxui/utils/WXMap");
     jMapClazz = (jclass) env->NewGlobalRef(tempClass);
 
     tempClass = env->FindClass("java/util/HashSet");

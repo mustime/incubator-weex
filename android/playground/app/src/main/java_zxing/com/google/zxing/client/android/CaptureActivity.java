@@ -59,13 +59,13 @@ import com.google.zxing.client.android.history.HistoryItem;
 import com.google.zxing.client.android.history.HistoryManager;
 import com.google.zxing.client.android.result.ResultHandler;
 import com.google.zxing.client.android.result.ResultHandlerFactory;
-import com.taobao.weex.WXEnvironment;
-import com.taobao.weex.WXSDKEngine;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Map;
+
+import cn.xxzhushou.xmod.wxui.WXEnvironment;
 
 
 /**

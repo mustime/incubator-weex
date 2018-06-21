@@ -25,11 +25,11 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.taobao.weex.WXEnvironment;
-import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.adapter.IWXImgLoaderAdapter;
-import com.taobao.weex.common.WXImageStrategy;
-import com.taobao.weex.dom.WXImageQuality;
+import cn.xxzhushou.xmod.wxui.WXEnvironment;
+import cn.xxzhushou.xmod.wxui.WXSDKManager;
+import cn.xxzhushou.xmod.wxui.adapter.IWXImgLoaderAdapter;
+import cn.xxzhushou.xmod.wxui.common.WXImageStrategy;
+import cn.xxzhushou.xmod.wxui.dom.WXImageQuality;
 
 public class ImageAdapter implements IWXImgLoaderAdapter {
 

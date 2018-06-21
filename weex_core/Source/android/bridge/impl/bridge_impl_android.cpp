@@ -784,7 +784,7 @@ namespace WeexCore {
     if (jCallGetMeasurementMethodId == NULL) {
       jCallGetMeasurementMethodId = env->GetMethodID(jBridgeClazz,
                                                      "getMeasurementFunc",
-                                                     "(Ljava/lang/String;J)Lcom/taobao/weex/layout/ContentBoxMeasurement;");
+                                                     "(Ljava/lang/String;J)Lcn/xxzhushou/xmod/wxui/layout/ContentBoxMeasurement;");
     }
     return env->CallObjectMethod(jThis, jCallGetMeasurementMethodId, jPageId, renderObjectPtr);
   }

@@ -7,8 +7,8 @@
 // For
 //     com/taobao/weex/layout/ContentBoxMeasurement
 
-#ifndef com_taobao_weex_layout_ContentBoxMeasurement_JNI
-#define com_taobao_weex_layout_ContentBoxMeasurement_JNI
+#ifndef cn_xxzhushou_xmod_wxui_layout_ContentBoxMeasurement_JNI
+#define cn_xxzhushou_xmod_wxui_layout_ContentBoxMeasurement_JNI
 
 #include <jni.h>
 
@@ -17,7 +17,7 @@
 // Step 1: forward declarations.
 namespace {
 const char kContentBoxMeasurementClassPath[] =
-    "com/taobao/weex/layout/ContentBoxMeasurement";
+    "cn/xxzhushou/xmod/wxui/layout/ContentBoxMeasurement";
 // Leaking this jclass as we cannot use LazyInstance from some threads.
 jclass g_ContentBoxMeasurement_clazz = NULL;
 #define ContentBoxMeasurement_clazz(env) g_ContentBoxMeasurement_clazz
@@ -161,4 +161,4 @@ static bool RegisterNativesImpl(JNIEnv* env) {
   return true;
 }
 
-#endif  // com_taobao_weex_layout_ContentBoxMeasurement_JNI
+#endif  // cn_xxzhushou_xmod_wxui_layout_ContentBoxMeasurement_JNI

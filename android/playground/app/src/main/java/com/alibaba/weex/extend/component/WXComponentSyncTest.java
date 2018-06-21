@@ -18,12 +18,12 @@
  */
 package com.alibaba.weex.extend.component;
 
-import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.annotation.JSMethod;
-import com.taobao.weex.ui.action.BasicComponentData;
-import com.taobao.weex.ui.component.WXDiv;
-import com.taobao.weex.ui.component.WXVContainer;
-import com.taobao.weex.utils.WXLogUtils;
+import cn.xxzhushou.xmod.wxui.WXSDKInstance;
+import cn.xxzhushou.xmod.wxui.annotation.JSMethod;
+import cn.xxzhushou.xmod.wxui.ui.action.BasicComponentData;
+import cn.xxzhushou.xmod.wxui.ui.component.WXDiv;
+import cn.xxzhushou.xmod.wxui.ui.component.WXVContainer;
+import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 
 /**
  * Created by zhengshihan on 2016/12/30.

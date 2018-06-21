@@ -21,10 +21,10 @@ package com.alibaba.weex.commons.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
-import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.ui.action.BasicComponentData;
-import com.taobao.weex.ui.component.WXImage;
-import com.taobao.weex.ui.component.WXVContainer;
+import cn.xxzhushou.xmod.wxui.WXSDKInstance;
+import cn.xxzhushou.xmod.wxui.ui.action.BasicComponentData;
+import cn.xxzhushou.xmod.wxui.ui.component.WXImage;
+import cn.xxzhushou.xmod.wxui.ui.component.WXVContainer;
 
 /**
  * Created by sospartan on 8/19/16.

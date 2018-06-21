@@ -22,7 +22,7 @@ package com.alibaba.weex.util;
 import android.content.Context;
 import android.util.Log;
 
-import com.taobao.weex.utils.WXLogUtils;
+import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

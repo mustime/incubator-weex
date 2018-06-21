@@ -22,8 +22,8 @@ import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.taobao.weex.WXSDKManager;
-import com.taobao.weex.utils.WXLogUtils;
+import cn.xxzhushou.xmod.wxui.WXSDKManager;
+import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

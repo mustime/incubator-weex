@@ -7,8 +7,8 @@
 // For
 //     com/taobao/weex/base/SystemMessageHandler
 
-#ifndef com_taobao_weex_base_SystemMessageHandler_JNI
-#define com_taobao_weex_base_SystemMessageHandler_JNI
+#ifndef cn_xxzhushou_xmod_wxui_base_SystemMessageHandler_JNI
+#define cn_xxzhushou_xmod_wxui_base_SystemMessageHandler_JNI
 
 #include <jni.h>
 
@@ -17,7 +17,7 @@
 // Step 1: forward declarations.
 namespace {
 const char kSystemMessageHandlerClassPath[] =
-    "com/taobao/weex/base/SystemMessageHandler";
+    "cn/xxzhushou/xmod/wxui/base/SystemMessageHandler";
 // Leaking this jclass as we cannot use LazyInstance from some threads.
 jclass g_SystemMessageHandler_clazz = NULL;
 #define SystemMessageHandler_clazz(env) g_SystemMessageHandler_clazz
@@ -45,7 +45,7 @@ static base::android::ScopedLocalJavaRef<jobject>
 "("
 "J"
 ")"
-"Lcom/taobao/weex/base/SystemMessageHandler;",
+"Lcn/xxzhushou/xmod/wxui/base/SystemMessageHandler;",
       &g_SystemMessageHandler_create);
 
   jobject ret =
@@ -128,4 +128,4 @@ static bool RegisterNativesImpl(JNIEnv* env) {
   return true;
 }
 
-#endif  // com_taobao_weex_base_SystemMessageHandler_JNI
+#endif  // cn_xxzhushou_xmod_wxui_base_SystemMessageHandler_JNI

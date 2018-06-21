@@ -20,7 +20,7 @@ package com.alibaba.weex.extend.view;
 
 import android.content.Context;
 
-import com.taobao.weex.ui.view.WXFrameLayout;
+import cn.xxzhushou.xmod.wxui.ui.view.WXFrameLayout;
 
 /**
  * Created by lixinke on 2016/12/26.

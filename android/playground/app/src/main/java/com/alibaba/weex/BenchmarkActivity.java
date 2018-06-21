@@ -28,11 +28,11 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
 import com.alibaba.weex.commons.adapter.ImageAdapter;
-import com.taobao.weex.IWXRenderListener;
-import com.taobao.weex.InitConfig;
-import com.taobao.weex.WXEnvironment;
-import com.taobao.weex.WXSDKEngine;
-import com.taobao.weex.WXSDKInstance;
+import cn.xxzhushou.xmod.wxui.IWXRenderListener;
+import cn.xxzhushou.xmod.wxui.InitConfig;
+import cn.xxzhushou.xmod.wxui.WXEnvironment;
+import cn.xxzhushou.xmod.wxui.WXSDKEngine;
+import cn.xxzhushou.xmod.wxui.WXSDKInstance;
 
 import java.util.HashMap;
 import java.util.Map;
