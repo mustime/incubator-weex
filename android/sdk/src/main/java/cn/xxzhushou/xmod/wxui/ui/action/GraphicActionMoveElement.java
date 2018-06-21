@@ -18,7 +18,6 @@
  */
 package cn.xxzhushou.xmod.wxui.ui.action;
 
-import cn.xxzhushou.xmod.wxui.WXSDKInstance;
 import cn.xxzhushou.xmod.wxui.WXSDKManager;
 import cn.xxzhushou.xmod.wxui.ui.component.WXComponent;
 import cn.xxzhushou.xmod.wxui.ui.component.WXVContainer;
@@ -48,10 +47,6 @@ public class GraphicActionMoveElement extends BasicGraphicAction {
     ((WXVContainer) newParent).addChild(component, mIndex);
     if (!component.isVirtualComponent()) {
       ((WXVContainer) newParent).addSubView(component.getHostView(), mIndex);
-    }
-    WXSDKInstance instance = WXSDKManager.getInstance().getWXRenderManager().getWXSDKInstance(getPageId());
-    if (null!=instance){
-      instance.onElementChange();
     }
   }
 }

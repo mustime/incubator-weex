@@ -53,6 +53,23 @@ import android.view.ViewOverlay;
 import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSONArray;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import cn.xxzhushou.xmod.wxui.ComponentObserver;
 import cn.xxzhushou.xmod.wxui.IWXActivityStateListener;
 import cn.xxzhushou.xmod.wxui.WXEnvironment;
@@ -84,6 +101,7 @@ import cn.xxzhushou.xmod.wxui.ui.animation.WXAnimationBean;
 import cn.xxzhushou.xmod.wxui.ui.animation.WXAnimationModule;
 import cn.xxzhushou.xmod.wxui.ui.component.basic.WXBasicComponent;
 import cn.xxzhushou.xmod.wxui.ui.component.binding.Statements;
+import cn.xxzhushou.xmod.wxui.ui.component.list.WXCell;
 import cn.xxzhushou.xmod.wxui.ui.component.list.template.jni.NativeRenderObjectUtils;
 import cn.xxzhushou.xmod.wxui.ui.component.pesudo.OnActivePseudoListner;
 import cn.xxzhushou.xmod.wxui.ui.component.pesudo.PesudoStatus;
@@ -104,22 +122,6 @@ import cn.xxzhushou.xmod.wxui.utils.WXReflectionUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXResourceUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXViewUtils;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * abstract component
@@ -922,7 +924,7 @@ public abstract class WXComponent<T extends View> extends WXBasicComponent imple
       return;
     }
 
-    if (realHeight >= WXPerformance.VIEW_LIMIT_HEIGHT && realWidth>=WXPerformance.VIEW_LIMIT_WIDTH){
+    if (this instanceof WXCell && realHeight >= WXPerformance.VIEW_LIMIT_HEIGHT && realWidth>=WXPerformance.VIEW_LIMIT_WIDTH){
       mInstance.getWXPerformance().cellExceedNum++;
     }
 

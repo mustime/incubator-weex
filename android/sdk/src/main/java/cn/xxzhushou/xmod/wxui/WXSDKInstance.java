@@ -91,6 +91,7 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
 
   //Performance
   public boolean mEnd = false;
+  public boolean isJSCreateFinish =false;
   public static final String BUNDLE_URL = "bundleUrl";
   private IWXUserTrackAdapter mUserTrackAdapter;
   private IWXRenderListener mRenderListener;
@@ -784,6 +785,7 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   }
 
   public void onRenderSuccess(final int width, final int height) {
+    isJSCreateFinish = true;
     firstScreenRenderFinished();
 
     long time = System.currentTimeMillis() - mRenderStartTime;
@@ -844,10 +846,10 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
   }
 
   /**
-   * when add/rm/mv element
+   * when add/rm element
    */
-  public void onElementChange(){
-    if (isDestroy() || !mEnd ||null == mRenderContainer || mRenderContainer.isPageHasEvent() ||
+  public void onElementChange(boolean afterJSCreateFinish){
+    if (isDestroy() || !afterJSCreateFinish ||null == mRenderContainer || mRenderContainer.isPageHasEvent() ||
             mWXPerformance == null){
       return;
     }
