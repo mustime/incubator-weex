@@ -33,6 +33,7 @@ RenderObject::RenderObject() {
   this->attributes_ = new std::map<std::string, std::string>();
   this->events_ = new std::set<std::string>();
   this->is_root_render_ = false;
+  setTag(0x1);
 }
 
 RenderObject::~RenderObject() {

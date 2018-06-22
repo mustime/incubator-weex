@@ -10,7 +10,6 @@ plugins {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'checkstyle'
 
 ext.disableCov = project.hasProperty('disableCov') ? project.getProperty('disableCov') : 'false'
 if(!disableCov.toBoolean()){
@@ -19,22 +18,6 @@ if(!disableCov.toBoolean()){
         excludes = ['cn/xxzhushou/xmod/wxui/dom/flex/**','cn/xxzhushou/xmod/wxui/ui/view/refresh/circlebar/**']
     }
 }
-
-task checkstyle(type: Checkstyle) {
-    configFile file("${project.rootDir}/sdk/config/quality/checkstyle.xml") // Where my checkstyle config is...
-    // configProperties.checkstyleSuppressionsPath = file("${project.rootDir}/config/quality/checkstyle/suppressions.xml").absolutePath // Where is my suppressions file for checkstyle is...
-    source 'src'
-    include '**/*.java'
-    exclude '**/gen/**'
-    exclude '**/test/**'
-    exclude '**/cn/xxzhushou/xmod/wxui/dom/flex/**'
-    classpath = files()
-}
-
-checkstyle {
-    toolVersion = '6.9'
-}
-
 
 version = "0.18.13.25"
 
@@ -45,37 +28,12 @@ android {
     buildToolsVersion project.buildToolsVersion
     resourcePrefix "weex"
 
-    delete 'libs/armeabi/libweexcore.so'
     delete 'libs/armeabi-v7a/libweexcore.so'
     delete 'libs/x86/libweexcore.so'
 
     useLibrary 'org.apache.http.legacy'
 
-    if(project.hasProperty('asfRelease')){
-        //download so file if not exist, when compile in source release
-        download{
-            src 'https://git-wip-us.apache.org/repos/asf?p=incubator-weex.git;a=blob_plain;f=android/sdk/libs/armeabi/libweexcore.so;hb=refs/heads/master'
-            dest "${projectDir}/libs/armeabi/libweexcore.so"
-            overwrite false
-        }
-        download{
-            src 'https://git-wip-us.apache.org/repos/asf?p=incubator-weex.git;a=blob_plain;f=android/sdk/libs/x86/libweexcore.so;hb=refs/heads/master'
-            dest "${projectDir}/libs/x86/libweexcore.so"
-            overwrite false
-        }
-    }
-
-    def ARMEABI_Size = new File(projectDir,"libs/armeabi/libweexcore.so").length();
-    def ARMEABIV7_Size = new File(projectDir,"libs/armeabi-v7/libweexcore.so").length();
-    def X86_Size = new File(projectDir,"libs/x86/libweexcore.so").length();
-    println "ARMEABI_Size: "+ARMEABI_Size;
-    println "ARMEABIV7_Size:" + ARMEABIV7_Size;
-    println "X86_Size:" + X86_Size;
-
     defaultConfig {
-        buildConfigField "long", "ARMEABI_Size", "${ARMEABI_Size}"
-        buildConfigField "long", "ARMEABIV7_Size", "${ARMEABIV7_Size}"
-        buildConfigField "long", "X86_Size", "${X86_Size}"
         buildConfigField "String", "buildVersion", "\"${version}\""
         minSdkVersion 14
         targetSdkVersion project.targetSdkVersion
@@ -85,7 +43,7 @@ android {
         versionCode 1
         versionName "1.0"
         ndk {
-            abiFilters "armeabi-v7a","armeabi","x86"
+            abiFilters "armeabi-v7a", "x86"
         }
 
         externalNativeBuild {

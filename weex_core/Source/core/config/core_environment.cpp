@@ -67,11 +67,12 @@ namespace WeexCore {
   }
 
   const std::string &WXCoreEnvironment::GetOption(const std::string &key) {
+    const static std::string EMPTY = "";
     std::map<std::string, std::string>::iterator iter = mOptions.find(key);
     if (iter != mOptions.end()) {
       return iter->second;
     } else {
-      return "";
+      return EMPTY;
     }
   }
 

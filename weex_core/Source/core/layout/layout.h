@@ -144,7 +144,8 @@ namespace WeexCore {
               heightDirty{false},
               mHasNewLayout(true),
               mIsDestroy(false),
-              measureFunc(nullptr) {
+              measureFunc(nullptr),
+              mTag(0) {
         mCssStyle = new WXCoreCSSStyle();
         mLayoutResult = new WXCorelayoutResult();
       }
@@ -219,9 +220,19 @@ namespace WeexCore {
 
     void *context;
 
+    int mTag;
+
     /** ================================ Cache：Last calculate result =================================== **/
 
   public:
+
+    inline void setTag(int tag) {
+      mTag = tag;
+    }
+
+    inline int getTag() {
+      return mTag;
+    }
 
 
     /** ================================ Engine Entry Function =================================== **/
