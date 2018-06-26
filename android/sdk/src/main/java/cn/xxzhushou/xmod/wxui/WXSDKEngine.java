@@ -22,6 +22,10 @@ import android.app.Application;
 import android.content.res.Resources;
 import android.text.TextUtils;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.xxzhushou.xmod.wxui.adapter.IDrawableLoader;
 import cn.xxzhushou.xmod.wxui.adapter.IWXHttpAdapter;
 import cn.xxzhushou.xmod.wxui.adapter.IWXImgLoaderAdapter;
@@ -78,18 +82,9 @@ import cn.xxzhushou.xmod.wxui.ui.module.WXModalUIModule;
 import cn.xxzhushou.xmod.wxui.ui.module.WXWebViewModule;
 import cn.xxzhushou.xmod.wxui.utils.LogLevel;
 import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
-import cn.xxzhushou.xmod.wxui.utils.WXSoInstallMgrSdk;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
-import static cn.xxzhushou.xmod.wxui.WXEnvironment.CORE_SO_NAME;
 
 public class WXSDKEngine implements Serializable {
 
-  public static final String JS_FRAMEWORK_RELOAD="js_framework_reload";
-  private static final String V8_SO_NAME = CORE_SO_NAME;
   private volatile static boolean mIsInit = false;
   private static final Object mLock = new Object();
   private static final String TAG = "WXSDKEngine";
@@ -192,14 +187,7 @@ public class WXSDKEngine implements Serializable {
         if(config != null ) {
           sm.setInitConfig(config);
         }
-        WXSoInstallMgrSdk.init(application,
-                sm.getIWXSoLoaderAdapter(),
-                sm.getWXStatisticsListener());
-        boolean isSoInitSuccess = WXSoInstallMgrSdk.initSo(V8_SO_NAME, 1, config!=null?config.getUtAdapter():null);
-        if (!isSoInitSuccess) {
-          WXLogUtils.e(TAG, "doInitInternal isSoInit false");
-          return;
-        }
+
         sm.getWXBridgeManager().initBridge(application);
 
         WXEnvironment.sSDKInitExecuteTime = System.currentTimeMillis() - start;

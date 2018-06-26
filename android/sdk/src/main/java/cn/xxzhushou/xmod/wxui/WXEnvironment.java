@@ -27,24 +27,19 @@ import android.graphics.Typeface;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
-
-import cn.xxzhushou.xmod.wxui.common.WXConfig;
-import cn.xxzhushou.xmod.wxui.utils.FontDO;
-import cn.xxzhushou.xmod.wxui.utils.LogLevel;
-import cn.xxzhushou.xmod.wxui.utils.TypefaceUtil;
-import cn.xxzhushou.xmod.wxui.utils.WXFileUtils;
-import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
-import cn.xxzhushou.xmod.wxui.utils.WXSoInstallMgrSdk;
-import cn.xxzhushou.xmod.wxui.utils.WXUtils;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.xxzhushou.xmod.core.BuildConfig;
+import cn.xxzhushou.xmod.wxui.common.WXConfig;
+import cn.xxzhushou.xmod.wxui.utils.FontDO;
+import cn.xxzhushou.xmod.wxui.utils.LogLevel;
+import cn.xxzhushou.xmod.wxui.utils.TypefaceUtil;
+import cn.xxzhushou.xmod.wxui.utils.WXFileUtils;
+import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 import dalvik.system.PathClassLoader;
 
 public class WXEnvironment {
@@ -98,11 +93,6 @@ public class WXEnvironment {
   private static boolean openDebugLog = false;
 
   private static String sGlobalFontFamily;
-
-  public static final String CORE_SO_NAME = "weexcore";
-  public static final String CORE_JSS_SO_NAME = "weexjss";
-
-  private static  String CORE_JSS_SO_PATH = null;
 
   private static Map<String, String> options = new HashMap<>();
   static {
@@ -184,46 +174,6 @@ public class WXEnvironment {
 
   public static void addCustomOptions(String key, String value) {
     options.put(key, value);
-  }
-
-  @Deprecated
-  /**
-   * Use {@link #isHardwareSupport()} if you want to see whether current hardware support Weex.
-   */
-  public static boolean isSupport() {
-    boolean isInitialized = WXSDKEngine.isInitialized();
-    if(!isInitialized){
-      WXLogUtils.e("WXSDKEngine.isInitialized():" + isInitialized);
-    }
-    return isHardwareSupport() && isInitialized;
-  }
-
-  /**
-   * Tell whether Weex can run on current hardware.
-   * @return true if weex can run on current hardware, otherwise false.
-   * Weex has removed the restrictions on the tablet, please use {@link #isCPUSupport()}
-   */
-  @Deprecated
-  public static boolean isHardwareSupport() {
-    if (WXEnvironment.isApkDebugable()) {
-      WXLogUtils.d("isTableDevice:" + WXUtils.isTabletDevice());
-    }
-    return isCPUSupport() && !WXUtils.isTabletDevice();
-  }
-
-  /**
-   * Determine whether Weex supports the current CPU architecture
-   * @return true when support
-   */
-  public static boolean isCPUSupport(){
-    boolean excludeX86 = "true".equals(options.get(SETTING_EXCLUDE_X86SUPPORT));
-    boolean isX86AndExcluded = WXSoInstallMgrSdk.isX86() && excludeX86;
-    boolean isCPUSupport = WXSoInstallMgrSdk.isCPUSupport() && !isX86AndExcluded;
-    if (WXEnvironment.isApkDebugable()) {
-      WXLogUtils.d("WXEnvironment.sSupport:" + isCPUSupport
-              + "isX86AndExclueded: "+ isX86AndExcluded);
-    }
-    return isCPUSupport;
   }
 
   public static boolean isApkDebugable() {
@@ -366,36 +316,4 @@ public class WXEnvironment {
     return false;
   }
 
-  private static String findLibJssRealPath() {
-    String soPath = findSoPath(CORE_JSS_SO_NAME);
-    String realName = "lib" + CORE_JSS_SO_NAME + ".so";
-    if (TextUtils.isEmpty(soPath)) {
-      String cacheDir = getCacheDir();
-      if (TextUtils.isEmpty(cacheDir)) {
-        return "";
-      }
-      if (cacheDir.indexOf("/cache") > 0) {
-        soPath = new File(cacheDir.replace("/cache", "/lib"), realName).getAbsolutePath();
-      }
-    }
-    final File soFile = new File(soPath);
-    if (soFile.exists())
-      return soPath;
-    else {
-      //unzip from apk file
-      final boolean success = extractSo();
-      if (success)
-        return new File(getCacheDir(), realName).getAbsolutePath();
-    }
-    return "";
-  }
-
-  public static String getLibJssRealPath() {
-    if(TextUtils.isEmpty(CORE_JSS_SO_PATH)) {
-      CORE_JSS_SO_PATH = findLibJssRealPath();
-      WXLogUtils.e("findLibJssRealPath " + CORE_JSS_SO_PATH);
-    }
-
-    return CORE_JSS_SO_PATH;
-  }
 }
