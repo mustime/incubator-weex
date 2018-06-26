@@ -38,6 +38,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 import cn.xxzhushou.xmod.wxui.WXSDKInstance;
 import cn.xxzhushou.xmod.wxui.WXSDKManager;
 import cn.xxzhushou.xmod.wxui.annotation.JSMethod;
@@ -55,13 +63,6 @@ import cn.xxzhushou.xmod.wxui.utils.TypefaceUtil;
 import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXResourceUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import static cn.xxzhushou.xmod.wxui.dom.WXStyle.UNSET;
 
@@ -409,6 +410,11 @@ public abstract class AbstractEditComponent extends WXComponent<WXEditText> {
   @Override
   protected boolean setProperty(String key, Object param) {
     switch (key) {
+      case Constants.Name.VALUE:
+        String value = WXUtils.getString(param, null);
+        if (value != null)
+          mHost.setText(value);
+        return true;
       case Constants.Name.PLACEHOLDER:
         String placeholder = WXUtils.getString(param, null);
         if (placeholder != null)
