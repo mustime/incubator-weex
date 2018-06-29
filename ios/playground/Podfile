@@ -3,7 +3,7 @@ platform :ios, '8.0'
 #inhibit_all_warnings!
 
 def common
-    pod 'WeexSDK', :path=>'../../'
+    pod 'WeexSDK', :path=>’../../‘
     pod 'WXDevtool', '0.15.3'
     pod 'SDWebImage', '3.7.5'
     pod 'SocketRocket', '0.4.2'

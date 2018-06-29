@@ -208,7 +208,7 @@
     }
     NSString *filePath = [[NSBundle bundleForClass:self] pathForResource:fileName ofType:@"js"];
     NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-    [WXSDKEngine initSDKEnvironment:script];
+//    [WXSDKEngine initSDKEnvironment:script];
     
 #if TARGET_OS_SIMULATOR
     static dispatch_once_t onceToken;

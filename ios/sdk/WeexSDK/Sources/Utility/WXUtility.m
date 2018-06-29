@@ -38,8 +38,8 @@
 
 #import "WXTextComponent.h"
 
-#define KEY_PASSWORD  @"com.taobao.Weex.123456"
-#define KEY_USERNAME_PASSWORD  @"com.taobao.Weex.weex123456"
+#define KEY_PASSWORD  @"cn.xxzhushou.xmod.wxui.123456"
+#define KEY_USERNAME_PASSWORD  @"cn.xxzhushou.xmod.wxui123456"
 
 static BOOL threadSafeCollectionUsingLock = YES;
 
