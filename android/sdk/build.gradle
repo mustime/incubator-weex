@@ -19,7 +19,7 @@ if(!disableCov.toBoolean()){
     }
 }
 
-version = "0.18.13.25"
+version = "0.19.0.4"
 
 android {
 
@@ -131,3 +131,4 @@ dependencies {
     testCompile "org.robolectric:shadows-httpclient:3.3.2"
     testCompile 'org.json:json:20160212'
 }
+
