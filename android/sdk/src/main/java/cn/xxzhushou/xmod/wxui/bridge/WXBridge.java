@@ -21,6 +21,11 @@ package cn.xxzhushou.xmod.wxui.bridge;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
 import cn.xxzhushou.xmod.wxui.WXEnvironment;
 import cn.xxzhushou.xmod.wxui.WXSDKManager;
 import cn.xxzhushou.xmod.wxui.adapter.IWXUserTrackAdapter;
@@ -31,11 +36,6 @@ import cn.xxzhushou.xmod.wxui.layout.ContentBoxMeasurement;
 import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXViewUtils;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
 /**
  * Communication interface for Java code and JavaScript code.
  */
@@ -43,6 +43,8 @@ import java.util.Map;
 public class WXBridge implements IWXBridge {
 
   private native void nativeInit(String width, String height);
+
+  private native boolean nativeInitInstance(String instanceId, String layoutPath, String stylesPath);
 
   private native void nativeBindMeasurementToRenderObject(long ptr);
 
@@ -85,6 +87,11 @@ public class WXBridge implements IWXBridge {
   @Override
   public void init(Context context) {
     nativeInit(String.valueOf(WXViewUtils.getScreenWidth(context)), String.valueOf(WXViewUtils.getScreenHeight(context)));
+  }
+
+  @Override
+  public boolean callInitInstance(String instanceId, String layoutPath, String stylesPath) {
+    return nativeInitInstance(instanceId, layoutPath, stylesPath);
   }
 
   @Override

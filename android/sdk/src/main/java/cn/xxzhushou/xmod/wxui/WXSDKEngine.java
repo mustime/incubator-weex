@@ -89,35 +89,6 @@ public class WXSDKEngine implements Serializable {
   private static final Object mLock = new Object();
   private static final String TAG = "WXSDKEngine";
 
-  /**
-   * Deprecated. Use {@link #initialize(Application, InitConfig)} instead.
-   */
-  @Deprecated
-  public static void init(Application application) {
-    init(application, null);
-  }
-
-  /**
-   * Deprecated. Use {@link #initialize(Application, InitConfig)} instead.
-   */
-  @Deprecated
-  public static void init(Application application, IWXUserTrackAdapter utAdapter) {
-    init(application, utAdapter, null);
-  }
-
-  /**
-   * Deprecated. Use {@link #initialize(Application, InitConfig)} instead.
-   */
-  @Deprecated
-  public static void init(Application application, IWXUserTrackAdapter utAdapter, String framework) {
-    initialize(application,
-            new InitConfig.Builder()
-                    .setUtAdapter(utAdapter)
-                    .build()
-    );
-  }
-
-
   public static boolean isInitialized(){
     synchronized(mLock) {
       return mIsInit;
@@ -129,7 +100,7 @@ public class WXSDKEngine implements Serializable {
    * @param application
    * @param config initial configurations or null
    */
-  public static void initialize(Application application,InitConfig config){
+  public static void initialize(Application application, InitConfig config){
     synchronized (mLock) {
       if (mIsInit) {
         return;
@@ -145,7 +116,7 @@ public class WXSDKEngine implements Serializable {
           WXLogUtils.e(TAG,"WXEnvironment.sApplication is " + WXEnvironment.sApplication);
         }
       }
-      doInitInternal(application,config);
+      doInitInternal(application, config);
       registerApplicationOptions(application);
       WXEnvironment.sSDKInitInvokeTime = System.currentTimeMillis()-start;
       WXLogUtils.renderPerformanceLog("SDKInitInvokeTime", WXEnvironment.sSDKInitInvokeTime);
@@ -154,7 +125,7 @@ public class WXSDKEngine implements Serializable {
     }
   }
 
-  private static void registerApplicationOptions(final Application application) {
+  public static void registerApplicationOptions(final Application application) {
 
     if (application == null) {
       WXLogUtils.e(TAG, "RegisterApplicationOptions application is null");

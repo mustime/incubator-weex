@@ -18,6 +18,7 @@
  */
 package cn.xxzhushou.xmod.wxui.ui.action;
 
+import cn.xxzhushou.xmod.wxui.WXSDKInstance;
 import cn.xxzhushou.xmod.wxui.WXSDKManager;
 import cn.xxzhushou.xmod.wxui.ui.component.WXComponent;
 
@@ -42,5 +43,11 @@ public class GraphicActionLayout extends BasicGraphicAction {
     component.setDemission(mLayoutSize, mLayoutPosition);
     component.setLayout(component);
     component.setPadding(component.getPadding(), component.getBorder());
+    WXSDKInstance instance = WXSDKManager.getInstance().getSDKInstance(getPageId());
+    if(instance != null){
+      if (getRef().contains("root")) {
+        instance.onRenderSuccess(0, 0);
+      }
+    }
   }
 }

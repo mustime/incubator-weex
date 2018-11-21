@@ -39,6 +39,17 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import com.alibaba.fastjson.JSONObject;
+
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import cn.xxzhushou.xmod.wxui.adapter.IDrawableLoader;
 import cn.xxzhushou.xmod.wxui.adapter.IWXHttpAdapter;
 import cn.xxzhushou.xmod.wxui.adapter.IWXImgLoaderAdapter;
@@ -68,17 +79,6 @@ import cn.xxzhushou.xmod.wxui.utils.WXFileUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXJsonUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXReflectionUtils;
-import cn.xxzhushou.xmod.wxui.utils.WXUtils;
-
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -288,11 +288,7 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
     init(context);
   }
 
-  /**
-   * For unittest only.
-   */
-  @RestrictTo(Scope.TESTS)
-  WXSDKInstance(Context context,String id) {
+  public WXSDKInstance(Context context,String id) {
     mInstanceId = id;
     init(context);
   }
@@ -689,10 +685,12 @@ public class WXSDKInstance implements IWXActivityStateListener,View.OnLayoutChan
       WXEvent events= comp.getEvents();
       boolean hasNativeBackHook = events.contains(Constants.Event.NATIVE_BACK);
       if (hasNativeBackHook) {
-        EventResult result = comp.fireEventWait(Constants.Event.NATIVE_BACK, null);
-        if (WXUtils.getBoolean(result.getResult(), false)) {
-          return true;
-        }
+        comp.fireEvent(Constants.Event.NATIVE_BACK);
+        // XXTODO
+//        EventResult result = comp.fireEventWait(Constants.Event.NATIVE_BACK, null);
+//        if (WXUtils.getBoolean(result.getResult(), false)) {
+//          return true;
+//        }
       }
 
       boolean hasBackPressed = events.contains(Constants.Event.CLICKBACKITEM);

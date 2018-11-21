@@ -19,6 +19,7 @@
 package cn.xxzhushou.xmod.wxui.ui.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -47,6 +48,7 @@ public class WXEditText extends EditText implements WXGestureObservable {
     } else {
       setBackgroundDrawable(null);
     }
+    setTextColor(Color.BLACK);
   }
 
   @Override

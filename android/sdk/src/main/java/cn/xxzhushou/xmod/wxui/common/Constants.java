@@ -356,6 +356,7 @@ public class Constants {
     String HTTP = "http";
     String LOCAL = "local";
     String DATA = "data";
+    String XSP = "xsp";
   }
 
   public interface CodeCache {

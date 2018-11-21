@@ -23,6 +23,11 @@ import android.support.annotation.RestrictTo;
 import android.support.annotation.RestrictTo.Scope;
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import cn.xxzhushou.xmod.wxui.WXSDKInstance;
 import cn.xxzhushou.xmod.wxui.common.WXRuntimeException;
 import cn.xxzhushou.xmod.wxui.common.WXThread;
@@ -30,11 +35,6 @@ import cn.xxzhushou.xmod.wxui.dom.RenderContext;
 import cn.xxzhushou.xmod.wxui.ui.action.BasicGraphicAction;
 import cn.xxzhushou.xmod.wxui.ui.component.WXComponent;
 import cn.xxzhushou.xmod.wxui.utils.WXUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Manager class for render operation, mainly for managing {@link RenderContextImpl}.
@@ -111,6 +111,10 @@ public class WXRenderManager {
       // use hashCode to match message's what.
       mWXRenderHandler.removeMessages(instanceId.hashCode());
     }
+  }
+
+  public boolean isInstanceValid(String instanceId) {
+    return mRenderContext.containsKey(instanceId);
   }
 
   public void postGraphicAction(final String instanceId, final BasicGraphicAction action) {

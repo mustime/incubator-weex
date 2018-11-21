@@ -23,6 +23,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import cn.xxzhushou.xmod.wxui.adapter.ClassLoaderAdapter;
 import cn.xxzhushou.xmod.wxui.adapter.DefaultUriAdapter;
 import cn.xxzhushou.xmod.wxui.adapter.DefaultWXHttpAdapter;
@@ -49,12 +55,6 @@ import cn.xxzhushou.xmod.wxui.performance.IWXAnalyzer;
 import cn.xxzhushou.xmod.wxui.ui.WXRenderManager;
 import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Manger class for weex context.
@@ -224,7 +224,7 @@ public class WXSDKManager {
     WXModuleManager.destroyInstanceModules(instanceId);
   }
 
-  String generateInstanceId() {
+  public String generateInstanceId() {
     return String.valueOf(sInstanceId.incrementAndGet());
   }
 

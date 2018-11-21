@@ -18,8 +18,6 @@
  */
 package cn.xxzhushou.xmod.wxui.ui.component.list.template.jni;
 
-import android.util.Log;
-
 import cn.xxzhushou.xmod.wxui.base.CalledByNative;
 import cn.xxzhushou.xmod.wxui.ui.component.WXComponent;
 
@@ -62,7 +60,7 @@ public class NativeRenderObjectUtils {
     public static native boolean nativeRenderObjectHasNewLayout(long ptr);
     public static native int nativeRenderObjectChildCount(long ptr);
     public static native long nativeRenderObjectGetChild(long ptr, int index);
-    public static native long nativeRenderObjectUpdateComponent(long ptr, WXComponent component);
+    public static native void nativeRenderObjectUpdateComponent(long ptr, WXComponent component);
     public static native void nativeRenderObjectChildWaste(long ptr, boolean waster);
 
 

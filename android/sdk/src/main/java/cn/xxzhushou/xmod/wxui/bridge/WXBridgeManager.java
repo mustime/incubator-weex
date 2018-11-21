@@ -25,6 +25,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
+import cn.xxzhushou.xmod.wxui.WXCallbackManager;
 import cn.xxzhushou.xmod.wxui.WXEnvironment;
 import cn.xxzhushou.xmod.wxui.WXSDKInstance;
 import cn.xxzhushou.xmod.wxui.WXSDKManager;
@@ -48,12 +55,6 @@ import cn.xxzhushou.xmod.wxui.ui.action.GraphicSize;
 import cn.xxzhushou.xmod.wxui.ui.component.WXComponent;
 import cn.xxzhushou.xmod.wxui.utils.WXLogUtils;
 import cn.xxzhushou.xmod.wxui.utils.WXViewUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 public class WXBridgeManager {
 
@@ -132,12 +133,7 @@ public class WXBridgeManager {
       throw new WXRuntimeException(
               "fireEvent must be called by main thread");
     }
-    WXLogUtils.e("weex", "fireEventOnNode ref = " + ref + ", type = " + type);
-    if(callback == null) {
-      // XXTODO
-    }else{
-      // XXTODO
-    }
+    WXCallbackManager.nativeOnComponentCallback(instanceId, ref, type);
   }
 
   private boolean checkMainThread() {
@@ -202,6 +198,10 @@ public class WXBridgeManager {
     public String callbackId;
     public long time;
     public String instanceId;
+  }
+
+  public boolean callInitInstance(String instanceId, String layoutPath, String stylesPath) {
+    return mWXBridge.callInitInstance(instanceId, layoutPath, stylesPath);
   }
 
   public int callCreateBody(String pageId, String componentType, String ref,

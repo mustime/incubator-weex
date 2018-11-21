@@ -20,11 +20,11 @@ package cn.xxzhushou.xmod.wxui.common;
 
 import android.content.Context;
 
-import cn.xxzhushou.xmod.wxui.dom.CSSShorthand;
-import cn.xxzhushou.xmod.wxui.layout.ContentBoxMeasurement;
-
 import java.util.HashMap;
 import java.util.HashSet;
+
+import cn.xxzhushou.xmod.wxui.dom.CSSShorthand;
+import cn.xxzhushou.xmod.wxui.layout.ContentBoxMeasurement;
 
 /**
  * Bridge interface, native bridge and debug bridge both need to implement this interface
@@ -36,6 +36,8 @@ public interface IWXBridge extends IWXObject {
   int INSTANCE_RENDERING_ERROR = 0;
 
   void init(Context context);
+
+  boolean callInitInstance(String instanceId, String layoutPath, String stylesPath);
 
   int callCreateBody(String instanceId, String componentType, String ref,
                             HashMap<String, String> styles, HashMap<String, String> attributes, HashSet<String> events,

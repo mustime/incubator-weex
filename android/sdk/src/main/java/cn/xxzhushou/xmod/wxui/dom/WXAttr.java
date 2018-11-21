@@ -251,7 +251,7 @@ public class WXAttr implements Map<String, Object>,Cloneable {
     return false;
   }
   public String getScrollDirection() {
-    Object scrollDirection = get("scrollDirection");
+    Object scrollDirection = get("scroll-direction");
     if (scrollDirection == null) {
       return "vertical";
     }
